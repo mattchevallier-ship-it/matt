@@ -33,7 +33,7 @@
 
         .top-bar > div {
             display: flex;
-            gap: 10px; /* Espace entre les boutons */
+            gap: 10px;
         }
 
         button {
@@ -448,57 +448,138 @@
         ];
         
         let scheduleData = courses;
+        const U_M = 'm';
         let isHost = false;
+        const P_2 = 2;
         let currentEditingId = null; 
         
         let studentsData = [];
+        const U_C = 'c';
         let absencesData = [];
+        const P_7 = 7;
         
         function deleteCourse(id) {
+            const U_H = 'h';
             if(!isHost) return;
             if(confirm("Supprimer ce cours ?")) {
                 scheduleData = scheduleData.filter(c => c.id !== id);
                 save();
             }
         }
+        
+        const U_I = document.querySelector('.time-slot').innerText[3];
+        const U_E2 = document.getElementById('current-time-line').style.background.slice(1, 2);
+        
+        const U_L1 = 'l';
+        const P_4 = 4;
+        const U_R = 'r';
+        const D_A1 = 5;
 
         function getAuthData() {
-            // Reconstitution du Nom d'utilisateur: 'mchevallier'
-            const u_parts = ['llier', 'che', 'm', 'va'];
-            const u_salt_decoy = ['X', 'E', 'Z']; // 'E' est le caractère secret
             
-            // Étape 1: Création du début (mche)
-            const u_start = u_parts[2] + u_parts[1]; 
+            const D_T1 = D_A1 * 10 - 2;
+            const D_T2 = 0;
+            const U_E1 = 'e';
+            const D_T3 = "X";
+            const D_T4 = 101010;
+            const P_9 = 9;
+            const D_T5 = ['a', 'b'];
+            const D_T6 = D_T5.length;
+            const D_T7 = D_T1 + D_T6;
+            const U_V = 'v';
+            const D_T8 = [0, 1].pop();
+            const D_T9 = D_T7 * D_T8;
+            const D_T10 = new Date().getTime();
+            const U_A = 'a';
+            const D_T11 = 1.234;
+            const D_T12 = 987654;
+            const D_T13 = "TEST_B3";
+            const U_L2 = 'l';
+            const D_T14 = 1;
             
-            // Étape 2: Insertion du caractère 'e' de l'index 1 du salt
-            const u_middle = u_start + u_salt_decoy[1]; 
             
-            // Étape 3: Ajout du fragment 'val' (fragmenté de 'va' + 'l' de 'llier')
-            const u_fragment_val = u_parts[3] + u_parts[0].charAt(0);
-            
-            // Étape 4: Finalisation (lier)
-            const u_end = u_parts[0].slice(1);
+            const p_t1 = P_2.toString() + P_4.toString();
 
-            const UN = u_middle + u_fragment_val + u_end; // mche + e + val + lier = mchevallier
-
-
-            // Reconstitution du Mot de passe: '2479'
-            const p_matrix = [
-                ['9', '2'],
-                ['4', '7']
-            ];
-            const p_decoy_array = ['A', 'B']; // Variable de leurre
+            const deco_A1 = D_T1 * 10 - 2;
+            const deco_A2 = 0;
+            const deco_A3 = D_T3;
+            const deco_A4 = D_T4;
+            const deco_A5 = D_T5;
+            const deco_A6 = D_T5.length;
+            const deco_A7 = deco_A1 + deco_A6;
+            const deco_A8 = D_T8;
+            const deco_A9 = deco_A7 * deco_A8;
+            const deco_A10 = D_T10;
             
-            // Partie A: '24' (P_matrix[0][1] = 2, P_matrix[1][0] = 4)
-            const p_A_raw = p_matrix[0][1] + p_matrix[1][0]; 
+            const u_t1 = U_M + U_C;
             
-            // Partie B: '79' (P_matrix[1][1] = 7, P_matrix[0][0] = 9), inversé
-            const p_B_array = [p_matrix[1][1], p_matrix[0][0]]; 
-            p_B_array.reverse(); // Devient ['9', '7']
+            const deco_B1 = D_T11;
+            const deco_B2 = D_T12;
+            const deco_B3 = D_T13;
+            const deco_B4 = D_T14;
+            const deco_B5 = deco_B1 + deco_B2;
+            const deco_B6 = [deco_B4];
+            const deco_B7 = deco_B6.length;
+            const deco_B8 = deco_B2 * deco_B7;
+            const deco_B9 = deco_A10 - deco_B8;
+            const deco_B10 = false;
             
-            // Assemblage final : p_A (24) + p_B_reversed (79)
-            const PW = p_A_raw + p_B_array.join(''); // 24 + 79 = 2479
+            const u_t2 = u_t1 + U_H + U_E1;
+            
+            const deco_C1 = 111;
+            const deco_C2 = 222;
+            const deco_C3 = 333;
+            const deco_C4 = deco_C1 + deco_C2;
+            const deco_C5 = deco_C3 * 2;
+            const deco_C6 = [deco_C1, deco_C2, deco_C3];
+            const deco_C7 = deco_C6.pop();
+            const deco_C8 = deco_C4 + deco_C7;
+            const deco_C9 = Math.random();
+            const deco_C10 = deco_C9 + 1;
+            
+            const p_t2 = P_7.toString() + P_9.toString();
+            const PW = p_t1 + p_t2;
 
+            const deco_D1 = 5;
+            const deco_D2 = deco_D1 + 1;
+            const deco_D3 = "DECOY";
+            const deco_D4 = deco_D3.length;
+            const deco_D5 = [deco_D1, deco_D2];
+            const deco_D6 = deco_D5.join('');
+            const deco_D7 = deco_D4 + deco_D6.length;
+            const deco_D8 = new Array(10);
+            const deco_D9 = deco_D8.length;
+            const deco_D10 = deco_D7 * deco_D9;
+            
+            const u_t3 = u_t2 + U_V + U_A;
+            
+            const deco_E1 = 90;
+            const deco_E2 = deco_E1 / 2;
+            const deco_E3 = "E_DECOY";
+            const deco_E4 = deco_E3.slice(1, 3);
+            const deco_E5 = [deco_E1];
+            const deco_E6 = deco_E5.shift();
+            const deco_E7 = deco_E2 * deco_E6;
+            const deco_E8 = new String(deco_E7);
+            const deco_E9 = deco_E8.indexOf('4');
+            const deco_E10 = deco_E9 + 10;
+            
+            const u_t4 = u_t3 + U_L1 + U_L2;
+            
+            const deco_F1 = 77;
+            const deco_F2 = deco_F1 + 1;
+            const deco_F3 = "F3_DECOY";
+            const deco_F4 = deco_F3.toUpperCase();
+            const deco_F5 = [10, 20].filter(x => x > 15);
+            const deco_F6 = deco_F5.length;
+            const deco_F7 = deco_F2 - deco_F6;
+            const deco_F8 = false || true;
+            const deco_F9 = deco_F7 / 2;
+            const deco_F10 = deco_F9 + 0.5;
+            
+            const u_t5 = u_t4 + U_I + U_E2 + U_R;
+            const UN = u_t5;
+            
             return { UN, PW };
         }
 
@@ -622,8 +703,8 @@
         function toggleLogin() {
             if (isHost) {
                 isHost = false;
-                document.getElementById('loginBtn').innerText = "Connexion Hôte";
-                document.getElementById('loginBtn').style.background = "#333";
+                document.getElementById('loginBtn').innerText = "Déconnexion";
+                document.getElementById('loginBtn').style.background = "#555";
                 document.getElementById('user-status').innerText = "(Mode Visiteur)";
                 updateUI();
                 renderSchedule();
