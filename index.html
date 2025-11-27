@@ -1,1 +1,561 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mon Emploi du Temps</title><style>:root{--bg-color:#f4f6f8;--grid-line-color:#e0e0e0;--accent-color:#007bff;--current-time-color:#e02e2e;--slot-height:70px;}body{font-family:'Segoe UI',sans-serif;background-color:var(--bg-color);margin:0;padding:20px;color:#333;}.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;max-width:1200px;margin-left:auto;margin-right:auto;}.top-bar>div{display:flex;gap:10px;}button{padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;transition:0.2s;}.btn-login{background-color:#333;color:white;}.btn-save-edit{background-color:#007bff;color:white;display:inline-block;width:100%;margin-top:10px;}#login-modal,#editor-modal,#students-modal,#absences-viewer-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;}.modal-content{background:white;padding:30px;border-radius:8px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:center;}input,select{width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}.delete-student-btn{color:#dc3545;font-weight:bold;font-size:1.2em;cursor:pointer;padding:0 5px;margin-left:15px;}#students-list-container div{padding:8px;margin-bottom:5px;background:#f8f8f8;border:1px solid #eee;border-radius:4px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:0.1s;}#students-list-container div:hover{background:#f0f0f0;}.schedule-container{display:grid;grid-template-columns:60px repeat(5,1fr);background:#fff;border-radius:8px 8px 0 0;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;max-width:1200px;margin:0 auto;border:1px solid #ddd;}.header{padding:15px;text-align:center;font-weight:600;border-bottom:1px solid var(--grid-line-color);border-right:1px solid var(--grid-line-color);background:#fff;z-index:20;}.time-column{background-color:#fafafa;border-right:1px solid var(--grid-line-color);}.time-slot{height:var(--slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}.day-column{position:relative;border-right:1px solid var(--grid-line-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--slot-height);}#cantine-band{position:absolute;top:369px;height:105px;left:60px;right:0;background-color:#e6ffeb;border:1px solid #4caf50;border-width:1px 0;z-index:40;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.8em;color:#388e3c;pointer-events:none;box-sizing:border-box;}.course{position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 2px 5px rgba(0,0,0,0.1);overflow:hidden;}.course strong{display:block;margin-bottom:2px;}.course .time-display{font-size:0.75em;font-weight:600;color:#555;display:block;}.delete-btn{position:absolute;top:2px;right:2px;background:rgba(255,255,255,0.7);color:red;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;font-weight:bold;cursor:pointer;display:none;font-size:12px;z-index:60;}.delete-btn:hover{background:red;color:white;}.c-jaune{background:#fffddb;border-left:4px solid #f9a825;color:#333;}.c-violet{background:#f3e5f5;border-left:4px solid #9c27b0;color:#333;}.c-bleu{background:#e6f7ff;border-left:4px solid #2196f3;color:#333;}.c-vert{background:#e0ffe0;border-left:4px solid #4caf50;color:#333;}.c-jaune .time-display{color:#888;}.c-violet .time-display{color:#888;}.c-bleu .time-display{color:#888;}.c-vert .time-display{color:#888;}.homework-container{display:grid;grid-template-columns:60px repeat(5,1fr);max-width:1200px;margin:0 auto;border-bottom:1px solid #ddd;border-left:1px solid #ddd;border-right:1px solid #ddd;border-radius:0 0 8px 8px;}.devoirs-empty{grid-column:1;background-color:#fafafa;border-right:1px solid var(--grid-line-color);}.devoirs-day{padding:15px;text-align:center;height:80px;font-size:0.9em;box-sizing:border-box;border-right:1px solid var(--grid-line-color);}.devoirs-day:last-child{border-right:none;}.c-orange-pale{background:#fff8e1;color:#ef6c00;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;}#absences-list{max-height:300px;overflow-y:auto;border:1px solid #ddd;padding:10px;margin-top:10px;}#absences-list table{width:100%;border-collapse:collapse;font-size:0.9em;}#absences-list th,#absences-list td{border:1px solid #eee;padding:8px;text-align:left;}#absences-list th{background-color:#f0f0f0;font-weight:bold;}#current-time-line{position:absolute;left:60px;right:0;height:2px;background-color:var(--current-time-color);z-index:50;pointer-events:none;display:none;}#time-badge{position:absolute;left:-60px;top:-10px;background:var(--current-time-color);color:white;padding:2px 5px;border-radius:4px;font-size:0.7rem;}</style></head><body><div class="top-bar"><h2>📅 Emploi du temps <span id="user-status" style="font-size:0.6em;color:#666;">(Mode Visiteur)</span></h2><div><button class="btn-manage-students" id="host-button-students" onclick="openStudentsModal()" style="background-color:#007bff;color:white;display:none;">👥 Gérer Élèves</button><button class="btn-add" id="host-button-add" onclick="openEditor()" style="background-color:#28a745;color:white;display:none;">+ Ajouter un cours</button><button class="btn-reset" id="host-button-reset" onclick="resetData()" style="background-color:#dc3545;color:white;display:none;">Réinitialiser</button><button class="btn-login" id="loginBtn" onclick="toggleLogin()">Connexion Hôte</button></div></div><div class="schedule-container"><div id="cantine-band">CANTINE</div><div id="current-time-line"><div id="time-badge">--:--</div></div><div class="header" style="border-bottom:none;"></div><div class="header">Lundi</div><div class="header">Mardi</div><div class="header">Mercredi</div><div class="header">Jeudi</div><div class="header">Vendredi</div><div class="time-column" id="time-column"></div><div class="day-column" id="day-0"></div><div class="day-column" id="day-1"></div><div class="day-column" id="day-2"></div><div class="day-column" id="day-3"></div><div class="day-column" id="day-4"></div></div><div class="homework-title" style="max-width:1200px;margin:20px auto 0 auto;padding-left:60px;font-weight:bold;font-size:1.1em;">Devoirs à Rendre (Répétitifs)</div><div class="homework-container"><div class="devoirs-empty"></div><div class="devoirs-day c-orange-pale">|Maths|</div><div class="devoirs-day c-orange-pale">|Histoire-Géo / Svt|</div><div class="devoirs-day c-orange-pale">|SES-Eco-Gest / LVB|</div><div class="devoirs-day c-orange-pale">|Physique / SNT|</div><div class="devoirs-day c-orange-pale">|FR / ANG|</div></div><div id="login-modal"><div class="modal-content" id="login-form-content"><h3>🔒 Accès Hôte</h3><input type="text" id="username-input" placeholder="Nom d'utilisateur"><input type="password" id="password-input" placeholder="Mot de passe"><button onclick="checkLogin()" class="btn-login" style="width:100%">Valider</button><button onclick="closeModal('login-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button></div></div><div id="editor-modal"><div class="modal-content" id="editor-form-content"><h3 id="editor-title">Nouveau Cours</h3><input type="hidden" id="course-id"><label>Matière</label><input type="text" id="course-name" placeholder="Ex: Maths"><label>Salle</label><input type="text" id="course-room" placeholder="Ex: G111"><label>Jour</label><select id="course-day"><option value="0">Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option><option value="3">Jeudi</option><option value="4">Vendredi</option></select><div style="display:flex;gap:10px;"><div style="flex:1"><label>Heure Début</label><select id="course-start-time"></select></div><div style="flex:1"><label>Heure de Fin</label><select id="course-end-time"></select></div></div><label>Couleur</label><select id="course-color"><option value="c-jaune">Jaune très pâle</option><option value="c-violet">Violet très pâle</option><option value="c-bleu">Bleu très pâle</option><option value="c-vert">Vert pâle</option></select><hr style="margin-top:20px;"><h4>Marquer une Absence (Optionnel)</h4><select id="absence-student-select"><option value="">-- Choisir un élève --</option></select><input type="date" id="absence-date-input" value=""><input type="text" id="absence-reason-input" placeholder="Raison (Ex: Maladie)"><button onclick="recordAbsence()" style="background-color:#dc3545;color:white;width:100%;margin-top:5px;">Enregistrer l'Absence pour ce cours</button><hr><button onclick="saveCourse()" class="btn-save-edit" id="editor-action-btn">Ajouter</button><button onclick="closeModal('editor-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button></div></div><div id="students-modal"><div class="modal-content" style="width:400px;text-align:left;"><h3>👥 Gestion des Élèves</h3><label>Prénom</label><input type="text" id="student-name-input" placeholder="Prénom de l'élève"><label>Nom de famille</label><input type="text" id="student-lastname-input" placeholder="Nom de famille de l'élève"><button onclick="addStudent()" class="btn-save-edit" style="background-color:#28a745;">Ajouter cet élève</button><hr style="margin:20px 0;"><h4>Liste des Élèves (cliquez pour voir les absences)</h4><div id="students-list-container"><p style="text-align:center;color:#888;">Aucun élève enregistré.</p></div><button onclick="closeModal('students-modal')" style="background:transparent;color:#888;margin-top:20px;">Fermer</button></div></div><div id="absences-viewer-modal"><div class="modal-content" style="width:500px;text-align:left;"><h3 id="absences-viewer-title">Absences de [Élève]</h3><div id="absences-list"><p style="text-align:center;color:#888;">Cet élève n'a aucune absence enregistrée.</p></div><button onclick="closeModal('absences-viewer-modal')" class="btn-login" style="width:100%;margin-top:20px;">Fermer</button></div></div><script>const courses=[{id:1,day:0,start:8,duration:2,name:"Mathématiques",room:"G111",color:"c-bleu"},{id:2,day:0,start:14,duration:1,name:"Anglais",room:"G111",color:"c-vert"},{id:3,day:2,start:10,duration:2,name:"Français",room:"G111",color:"c-jaune"},{id:4,day:4,start:15,duration:2,name:"Sport",room:"G111",color:"c-violet"}];let scheduleData=courses;let isHost=false;let currentEditingId=null;// --- Variables Leurre Alpha Globales (Inutiles ou utilisées comme base de calcul pour la complexité) ---const ALPHA_X='X';const BETA_Z='Z';const GAMMA_Q='Q';const DELTA_W='W';const EPS_F='F';const ZETA_J='J';const ETA_K='K';const THETA_L='L';const IOTA_P='P';const KAP_Y='Y';const LAMB_A='A';const MU_S='S';let studentsData=[];let absencesData=[];function deleteCourse(id){if(!isHost)return;if(confirm("Supprimer ce cours?")){scheduleData=scheduleData.filter(c=>c.id!==id);save();}}// --- Variables Leurre Numériques Globales (utilisées pour créer un chaos de calcul dans getAuthData) ---const BASE_N_987=987.65;const CONST_42=42;const TINY_001=0.01;const CONST_15=15;const PI_APPROX=3.14159;const HUNDRED=100;const NINETEEN=19;function getAuthData(){// Calculs pour les fragments numériques du mot de passe (2479)const CALC_P2=Math.round(Math.sqrt(HUNDRED/25));const NOISE_1A=(NINETEEN+CONST_42)*TINY_001;const CALC_P4=Math.round((CONST_42/10.5));const NOISE_2B=PI_APPROX*HUNDRED;const CALC_P7=Math.round(Math.pow(2,3)-1);const NOISE_3C=BASE_N_987/CONST_15;const CALC_P9=Math.round(CONST_15*0.6);const PW=CALC_P2.toString()+CALC_P4.toString()+CALC_P7.toString()+CALC_P9.toString();const NOISE_4D=CONST_42+NINETEEN;// Calculs pour les fragments du Nom d'utilisateur (mchevallier)const FRAG_M_BASE=HUNDRED+9;const FRAG_M=String.fromCharCode(FRAG_M_BASE+(CONST_15*0.0)+(NINETEEN-19));const DECOY_COMBINE=ALPHA_X+BETA_Z+GAMMA_Q;const FRAG_C=String.fromCharCode(HUNDRED-1);const DECOY_MULT=BASE_N_987*TINY_001;const FRAG_H=String.fromCharCode(HUNDRED+CONST_42/7-2);const DECOY_COMBINE2=DELTA_W+EPS_F;const FRAG_E1=String.fromCharCode(HUNDRED+1);const DECOY_SUM=BASE_N_987+CONST_42+TINY_001;const FRAG_V=String.fromCharCode(HUNDRED+18);const DECOY_COMBINE3=ZETA_J+ETA_K+THETA_L;const FRAG_A=String.fromCharCode(HUNDRED-3);const DECOY_PROD_N=CONST_15*NINETEEN;const FRAG_L1=String.fromCharCode(Math.round(HUNDRED+8));const DECOY_COMBINE4=IOTA_P+KAP_Y;const FRAG_L2=FRAG_L1;const DECOY_SUM2=BASE_N_987+NINETEEN;const FRAG_I=String.fromCharCode(Math.round(HUNDRED+5));const DECOY_COMBINE5=LAMB_A+MU_S;const FRAG_E2=FRAG_E1;const DECOY_DIFF_N=CONST_15-TINY_001;const FRAG_R=String.fromCharCode(HUNDRED+14);const UN=FRAG_M+FRAG_C+FRAG_H+FRAG_E1+FRAG_V+FRAG_A+FRAG_L1+FRAG_L2+FRAG_I+FRAG_E2+FRAG_R;return{UN,PW};}function checkLogin(){const u=document.getElementById('username-input').value.trim();const p=document.getElementById('password-input').value;const auth=getAuthData();if(u===auth.UN&&p===auth.PW){isHost=true;document.getElementById('loginBtn').innerText="Déconnexion";document.getElementById('loginBtn').style.background="#555";document.getElementById('user-status').innerText=`(Mode Hôte - Édition) | Connecté: ${u}`;document.getElementById('username-input').value="";document.getElementById('password-input').value="";closeModal('login-modal');updateUI();renderSchedule();}else{alert("Nom d'utilisateur ou mot de passe incorrect.");}}function formatTime(decimalHour){const totalMinutes=Math.round(decimalHour*60);const hours=Math.floor(totalMinutes/60);const minutes=totalMinutes%60;return`${hours<10?'0':''}${hours}h${minutes<10?'0':''}${minutes}`;}function decimalToTimeStr(decimalHour){const totalMinutes=Math.round(decimalHour*60);const hours=Math.floor(totalMinutes/60);const minutes=totalMinutes%60;return`${hours<10?'0':''}${hours}:${minutes<10?'0':''}${minutes}`;}function timeStrToDecimal(timeStr){const[hours,minutes]=timeStr.split(':').map(Number);return hours+minutes/60;}function generateTimeOptions(){const startSelect=document.getElementById('course-start-time');const endSelect=document.getElementById('course-end-time');startSelect.innerHTML='';endSelect.innerHTML='';for(let h=8;h<=20;h++){for(let m=0;m<60;m+=5){if(h===20&&m>0)break;const timeStr=`${h<10?'0'+h:h}:${m<10?'0'+m:m}`;const option=new Option(timeStr,timeStr);startSelect.add(option.cloneNode(true));endSelect.add(option.cloneNode(true));}}endSelect.add(new Option('24:00','24:00'));}window.onload=function(){generateTimeOptions();const timeCol=document.getElementById('time-column');for(let i=8;i<=20;i++){let div=document.createElement('div');div.className='time-slot';div.innerText=i+":00";timeCol.appendChild(div);}const storedSchedule=localStorage.getItem('myScheduleData');if(storedSchedule)scheduleData=JSON.parse(storedSchedule);const storedStudents=localStorage.getItem('studentsData');if(storedStudents)studentsData=JSON.parse(storedStudents);const storedAbsences=localStorage.getItem('absencesData');if(storedAbsences)absencesData=JSON.parse(storedAbsences);document.getElementById('absence-date-input').valueAsDate=new Date();const loginModalContent=document.getElementById('login-modal');loginModalContent.addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();checkLogin();}});const editorModalContent=document.getElementById('editor-modal');editorModalContent.addEventListener('keydown',function(event){if(event.key==='Enter'&&event.target.tagName!=='BUTTON'&&event.target.tagName!=='SELECT'){event.preventDefault();saveCourse();}});renderSchedule();updateTimeLine();setInterval(updateTimeLine,60000);};function updateAbsenceStudentSelect(){const select=document.getElementById('absence-student-select');const currentSelectedId=select.value;select.innerHTML='<option value="">-- Choisir un élève --</option>';studentsData.forEach(student=>{const option=new Option(`${student.firstName} ${student.lastName}`,student.id);select.add(option);});if(currentSelectedId&&studentsData.some(s=>s.id==currentSelectedId)){select.value=currentSelectedId;}}function toggleLogin(){if(isHost){isHost=false;document.getElementById('loginBtn').innerText="Déconnexion";document.getElementById('loginBtn').style.background="#555";document.getElementById('user-status').innerText="(Mode Visiteur)";updateUI();renderSchedule();}else{document.getElementById('login-modal').style.display='flex';document.getElementById('username-input').focus();}}function updateUI(){const deleteBtns=document.querySelectorAll('.delete-btn');const studentsBtn=document.getElementById('host-button-students');const addBtn=document.getElementById('host-button-add');const resetBtn=document.getElementById('host-button-reset');if(isHost){studentsBtn.style.display='inline-block';addBtn.style.display='inline-block';resetBtn.style.display='inline-block';deleteBtns.forEach(btn=>btn.style.display='block');}else{studentsBtn.style.display='none';addBtn.style.display='none';resetBtn.style.display='none';deleteBtns.forEach(btn=>btn.style.display='none');}}function save(){localStorage.setItem('myScheduleData',JSON.stringify(scheduleData));localStorage.setItem('studentsData',JSON.stringify(studentsData));localStorage.setItem('absencesData',JSON.stringify(absencesData));renderSchedule();}function renderSchedule(){for(let i=0;i<5;i++){document.getElementById('day-'+i).innerHTML='';}scheduleData.forEach(c=>{const dayCol=document.getElementById('day-'+c.day);const el=document.createElement('div');el.className=`course ${c.color}`;const top=(c.start-8)*70;const height=c.duration*70;el.style.top=top+"px";el.style.height=height+"px";const endTime=c.start+c.duration;const timeStr=`${formatTime(c.start)} - ${formatTime(endTime)}`;el.innerHTML=`<div class="time-display">${timeStr}</div><strong>${c.name}</strong><span style="font-size:0.8em">${c.room}</span><div class="delete-btn" onclick="deleteCourse(${c.id})">×</div>`;if(isHost){el.ondblclick=()=>openEditor(c.id);el.style.cursor='pointer';}else{el.style.cursor='default';}dayCol.appendChild(el);});updateUI();}function openStudentsModal(){if(!isHost)return;document.getElementById('students-modal').style.display='flex';renderStudentsList();}function addStudent(){if(!isHost)return;const firstName=document.getElementById('student-name-input').value.trim();const lastName=document.getElementById('student-lastname-input').value.trim();if(!firstName||!lastName){alert("Veuillez entrer le prénom ET le nom de famille.");return;}const newStudent={id:Date.now(),firstName:firstName,lastName:lastName};studentsData.push(newStudent);saveStudentsData();document.getElementById('student-name-input').value='';document.getElementById('student-lastname-input').value='';renderStudentsList();updateAbsenceStudentSelect();}function deleteStudent(id){if(!isHost)return;event.stopPropagation();if(confirm("Supprimer cet élève? Toutes ses absences seront également effacées.")){studentsData=studentsData.filter(s=>s.id!==id);absencesData=absencesData.filter(a=>a.studentId!==id);saveStudentsData();renderStudentsList();updateAbsenceStudentSelect();}}function saveStudentsData(){localStorage.setItem('studentsData',JSON.stringify(studentsData));localStorage.setItem('absencesData',JSON.stringify(absencesData));}function renderStudentsList(){const container=document.getElementById('students-list-container');container.innerHTML='';if(studentsData.length===0){container.innerHTML='<p style="text-align:center;color:#888;">Aucun élève enregistré.</p>';return;}studentsData.forEach(student=>{const div=document.createElement('div');div.innerHTML=`<span>${student.firstName} <strong>${student.lastName}</strong></span><span class="delete-student-btn" onclick="deleteStudent(${student.id})">×</span>`;div.onclick=()=>viewAbsences(student.id);container.appendChild(div);});}function recordAbsence(){if(!isHost)return;const courseId=parseInt(document.getElementById('course-id').value);const studentId=parseInt(document.getElementById('absence-student-select').value);const dateStr=document.getElementById('absence-date-input').value;const reason=document.getElementById('absence-reason-input').value.trim();if(!courseId)return alert("Veuillez d'abord sélectionner ou créer un cours.");if(!studentId)return alert("Veuillez sélectionner un élève.");if(!dateStr)return alert("Veuillez sélectionner une date.");const course=scheduleData.find(c=>c.id===courseId);if(!course)return alert("Cours introuvable.");const newAbsence={id:Date.now(),studentId:studentId,courseId:courseId,courseName:course.name,date:dateStr,reason:reason||'Non spécifiée',start:course.start,end:course.start+course.duration};absencesData.push(newAbsence);saveStudentsData();alert(`Absence enregistrée pour ${studentsData.find(s=>s.id===studentId).firstName} en ${course.name} le ${dateStr}.`);document.getElementById('absence-student-select').value='';document.getElementById('absence-reason-input').value='';document.getElementById('absence-date-input').valueAsDate=new Date();}function viewAbsences(studentId){const student=studentsData.find(s=>s.id===studentId);if(!student)return;const studentAbsences=absencesData.filter(a=>a.studentId===studentId).sort((a,b)=>new Date(b.date)-new Date(a.date));document.getElementById('absences-viewer-title').innerText=`Absences de ${student.firstName} ${student.lastName}`;const listContainer=document.getElementById('absences-list');listContainer.innerHTML='';if(studentAbsences.length===0){listContainer.innerHTML='<p style="text-align:center;color:#888;">Cet élève n\'a aucune absence enregistrée.</p>';}else{let html='<table><tr><th>Date</th><th>Cours</th><th>Heure</th><th>Raison</th><th>Action</th></tr>';studentAbsences.forEach(abs=>{html+=`<tr><td>${abs.date}</td><td>${abs.courseName}</td><td>${formatTime(abs.start)} - ${formatTime(abs.end)}</td><td>${abs.reason}</td><td><button onclick="deleteAbsence(${abs.id})" style="background:red;color:white;padding:5px;font-size:0.8em;">Suppr.</button></td></tr>`;});html+='</table>';listContainer.innerHTML=html;}document.getElementById('absences-viewer-modal').style.display='flex';}function deleteAbsence(absenceId){if(!isHost||!confirm("Voulez-vous vraiment supprimer cette absence?"))return;absencesData=absencesData.filter(a=>a.id!==absenceId);saveStudentsData();const studentId=absencesData.find(a=>a.id===absenceId)?.studentId||parseInt(document.getElementById('absences-viewer-modal').querySelector('h3').innerText.match(/\d+/)||0);viewAbsences(studentId);}function saveCourse(){const id=document.getElementById('course-id').value;const name=document.getElementById('course-name').value;const room=document.getElementById('course-room').value;const day=parseInt(document.getElementById('course-day').value);const startTimeStr=document.getElementById('course-start-time').value;const endTimeStr=document.getElementById('course-end-time').value;const start=timeStrToDecimal(startTimeStr);const end=timeStrToDecimal(endTimeStr);const color=document.getElementById('course-color').value;if(!name)return alert("Nom du cours requis!");if(end<=start)return alert("L'heure de fin doit être strictement après l'heure de début.");if(start<8||end>24)return alert("Heure invalide. L'emploi du temps couvre 08h00 à 20h00 (début) et 24h00 (fin max).");const duration=end-start;const newCourseData={id:id?parseInt(id):Date.now(),day,start,duration,name,room,color};if(id){scheduleData=scheduleData.map(c=>c.id===newCourseData.id?newCourseData:c);}else{scheduleData.push(newCourseData);}save();closeModal('editor-modal');}function openEditor(id=null){if(!isHost)return;const modalTitle=document.getElementById('editor-title');const actionBtn=document.getElementById('editor-action-btn');document.getElementById('course-id').value='';document.getElementById('course-name').value='';document.getElementById('course-room').value='G111';document.getElementById('course-day').value=0;document.getElementById('course-start-time').value='08:00';document.getElementById('course-end-time').value='09:00';document.getElementById('course-color').value='c-jaune';updateAbsenceStudentSelect();document.getElementById('absence-student-select').value='';document.getElementById('absence-reason-input').value='';document.getElementById('absence-date-input').valueAsDate=new Date();if(id){const course=scheduleData.find(c=>c.id===id);if(course){modalTitle.innerText="Modifier Cours";actionBtn.innerText="Sauvegarder les modifications";const endTime=course.start+course.duration;document.getElementById('course-id').value=course.id;document.getElementById('course-name').value=course.name;document.getElementById('course-room').value=course.room;document.getElementById('course-day').value=course.day;document.getElementById('course-start-time').value=decimalToTimeStr(course.start);document.getElementById('course-end-time').value=decimalToTimeStr(endTime);document.getElementById('course-color').value=course.color;}}else{modalTitle.innerText="Nouveau Cours";actionBtn.innerText="Ajouter";}document.getElementById('editor-modal').style.display='flex';}function resetData(){if(confirm("Tout effacer et remettre l'emploi du temps, les élèves ET les absences par défaut?")){scheduleData=[...courses];studentsData=[];absencesData=[];save();}}function closeModal(id){document.getElementById(id).style.display='none';}function updateTimeLine(){const now=new Date();const h=now.getHours();const m=now.getMinutes();const badge=document.getElementById('time-badge');const line=document.getElementById('current-time-line');badge.textContent=`${h}:${m<10?'0'+m:m}`;if(h>=8&&h<20){line.style.display='block';const topPos=((h-8)*70)+(m*(70/60))+54;line.style.top=topPos+'px';}else{line.style.display='none';}}</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Emploi du Temps</title>
+    <style>
+        /* Styles CSS rétablis avec des sauts de ligne pour éviter l'échec de parsing */
+        :root {--bg-color:#f4f6f8;--grid-line-color:#e0e0e0;--accent-color:#007bff;--current-time-color:#e02e2e;--slot-height:70px;}
+        body {font-family:'Segoe UI',sans-serif;background-color:var(--bg-color);margin:0;padding:20px;color:#333;}
+        .top-bar {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;max-width:1200px;margin-left:auto;margin-right:auto;}
+        .top-bar > div {display:flex;gap:10px;}
+        button {padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;transition:0.2s;}
+        .btn-login {background-color:#333;color:white;}
+        .btn-save-edit {background-color:#007bff;color:white;display:inline-block;width:100%;margin-top:10px;}
+        #login-modal,#editor-modal,#students-modal,#absences-viewer-modal {position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;}
+        .modal-content {background:white;padding:30px;border-radius:8px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:center;}
+        input,select {width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
+        .delete-student-btn {color:#dc3545;font-weight:bold;font-size:1.2em;cursor:pointer;padding:0 5px;margin-left:15px;}
+        #students-list-container div {padding:8px;margin-bottom:5px;background:#f8f8f8;border:1px solid #eee;border-radius:4px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:0.1s;}
+        #students-list-container div:hover {background:#f0f0f0;}
+        .schedule-container {display:grid;grid-template-columns:60px repeat(5,1fr);background:#fff;border-radius:8px 8px 0 0;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;max-width:1200px;margin:0 auto;border:1px solid #ddd;}
+        .header {padding:15px;text-align:center;font-weight:600;border-bottom:1px solid var(--grid-line-color);border-right:1px solid var(--grid-line-color);background:#fff;z-index:20;}
+        .time-column {background-color:#fafafa;border-right:1px solid var(--grid-line-color);}
+        .time-slot {height:var(--slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}
+        .day-column {position:relative;border-right:1px solid var(--grid-line-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--slot-height);}
+        #cantine-band {position:absolute;top:369px;height:105px;left:60px;right:0;background-color:#e6ffeb;border:1px solid #4caf50;border-width:1px 0;z-index:40;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.8em;color:#388e3c;pointer-events:none;box-sizing:border-box;}
+        .course {position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 2px 5px rgba(0,0,0,0.1);overflow:hidden;}
+        .course strong {display:block;margin-bottom:2px;}
+        .course .time-display {font-size:0.75em;font-weight:600;color:#555;display:block;}
+        .delete-btn {position:absolute;top:2px;right:2px;background:rgba(255,255,255,0.7);color:red;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;font-weight:bold;cursor:pointer;display:none;font-size:12px;z-index:60;}
+        .delete-btn:hover {background:red;color:white;}
+        .c-jaune {background:#fffddb;border-left:4px solid #f9a825;color:#333;}
+        .c-violet {background:#f3e5f5;border-left:4px solid #9c27b0;color:#333;}
+        .c-bleu {background:#e6f7ff;border-left:4px solid #2196f3;color:#333;}
+        .c-vert {background:#e0ffe0;border-left:4px solid #4caf50;color:#333;}
+        .c-jaune .time-display {color:#888;}
+        .c-violet .time-display {color:#888;}
+        .c-bleu .time-display {color:#888;}
+        .c-vert .time-display {color:#888;}
+        .homework-container {display:grid;grid-template-columns:60px repeat(5,1fr);max-width:1200px;margin:0 auto;border-bottom:1px solid #ddd;border-left:1px solid #ddd;border-right:1px solid #ddd;border-radius:0 0 8px 8px;}
+        .devoirs-empty {grid-column:1;background-color:#fafafa;border-right:1px solid var(--grid-line-color);}
+        .devoirs-day {padding:15px;text-align:center;height:80px;font-size:0.9em;box-sizing:border-box;border-right:1px solid var(--grid-line-color);}
+        .devoirs-day:last-child {border-right:none;}
+        .c-orange-pale {background:#fff8e1;color:#ef6c00;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;}
+        #absences-list {max-height:300px;overflow-y:auto;border:1px solid #ddd;padding:10px;margin-top:10px;}
+        #absences-list table {width:100%;border-collapse:collapse;font-size:0.9em;}
+        #absences-list th,#absences-list td {border:1px solid #eee;padding:8px;text-align:left;}
+        #absences-list th {background-color:#f0f0f0;font-weight:bold;}
+        #current-time-line {position:absolute;left:60px;right:0;height:2px;background-color:var(--current-time-color);z-index:50;pointer-events:none;display:none;}
+        #time-badge {position:absolute;left:-60px;top:-10px;background:var(--current-time-color);color:white;padding:2px 5px;border-radius:4px;font-size:0.7rem;}
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <h2>📅 Emploi du temps <span id="user-status" style="font-size:0.6em;color:#666;">(Mode Visiteur)</span></h2>
+        <div>
+            <button class="btn-manage-students" id="host-button-students" onclick="openStudentsModal()" style="background-color:#007bff;color:white;display:none;">👥 Gérer Élèves</button>
+            <button class="btn-add" id="host-button-add" onclick="openEditor()" style="background-color:#28a745;color:white;display:none;">+ Ajouter un cours</button>
+            <button class="btn-reset" id="host-button-reset" onclick="resetData()" style="background-color:#dc3545;color:white;display:none;">Réinitialiser</button>
+            <button class="btn-login" id="loginBtn" onclick="toggleLogin()">Connexion Hôte</button>
+        </div>
+    </div>
+
+    <div class="schedule-container">
+        <div id="cantine-band">CANTINE</div>
+        <div id="current-time-line"><div id="time-badge">--:--</div></div>
+
+        <div class="header" style="border-bottom:none;"></div>
+        <div class="header">Lundi</div>
+        <div class="header">Mardi</div>
+        <div class="header">Mercredi</div>
+        <div class="header">Jeudi</div>
+        <div class="header">Vendredi</div>
+
+        <div class="time-column" id="time-column">
+        </div>
+
+        <div class="day-column" id="day-0"></div>
+        <div class="day-column" id="day-1"></div>
+        <div class="day-column" id="day-2"></div>
+        <div class="day-column" id="day-3"></div>
+        <div class="day-column" id="day-4"></div>
+    </div>
+
+    <div class="homework-title" style="max-width:1200px;margin:20px auto 0 auto;padding-left:60px;font-weight:bold;font-size:1.1em;">
+        Devoirs à Rendre (Répétitifs)
+    </div>
+
+    <div class="homework-container">
+        <div class="devoirs-empty"></div>
+        <div class="devoirs-day c-orange-pale">|Maths|</div>
+        <div class="devoirs-day c-orange-pale">|Histoire-Géo / Svt|</div>
+        <div class="devoirs-day c-orange-pale">|SES-Eco-Gest / LVB|</div>
+        <div class="devoirs-day c-orange-pale">|Physique / SNT|</div>
+        <div class="devoirs-day c-orange-pale">|FR / ANG|</div>
+    </div>
+
+    <div id="login-modal">
+        <div class="modal-content" id="login-form-content">
+            <h3>🔒 Accès Hôte</h3>
+            <input type="text" id="username-input" placeholder="Nom d'utilisateur">
+            <input type="password" id="password-input" placeholder="Mot de passe">
+            <button onclick="checkLogin()" class="btn-login" style="width:100%">Valider</button>
+            <button onclick="closeModal('login-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button>
+        </div>
+    </div>
+
+    <div id="editor-modal">
+        <div class="modal-content" id="editor-form-content">
+            <h3 id="editor-title">Nouveau Cours</h3>
+            <input type="hidden" id="course-id">
+
+            <label>Matière</label>
+            <input type="text" id="course-name" placeholder="Ex: Maths">
+
+            <label>Salle</label>
+            <input type="text" id="course-room" placeholder="Ex: G111">
+
+            <label>Jour</label>
+            <select id="course-day">
+                <option value="0">Lundi</option>
+                <option value="1">Mardi</option>
+                <option value="2">Mercredi</option>
+                <option value="3">Jeudi</option>
+                <option value="4">Vendredi</option>
+            </select>
+
+            <div style="display:flex;gap:10px;">
+                <div style="flex:1">
+                    <label>Heure Début</label>
+                    <select id="course-start-time"></select>
+                </div>
+                <div style="flex:1">
+                    <label>Heure de Fin</label>
+                    <select id="course-end-time"></select>
+                </div>
+            </div>
+
+            <label>Couleur</label>
+            <select id="course-color">
+                <option value="c-jaune">Jaune très pâle</option>
+                <option value="c-violet">Violet très pâle</option>
+                <option value="c-bleu">Bleu très pâle</option>
+                <option value="c-vert">Vert pâle</option>
+            </select>
+
+            <hr style="margin-top:20px;">
+            <h4>Marquer une Absence (Optionnel)</h4>
+            <select id="absence-student-select">
+                <option value="">-- Choisir un élève --</option>
+                </select>
+            <input type="date" id="absence-date-input" value="">
+            <input type="text" id="absence-reason-input" placeholder="Raison (Ex: Maladie)">
+            <button onclick="recordAbsence()" style="background-color:#dc3545;color:white;width:100%;margin-top:5px;">Enregistrer l'Absence pour ce cours</button>
+            <hr>
+
+            <button onclick="saveCourse()" class="btn-save-edit" id="editor-action-btn">Ajouter</button>
+            <button onclick="closeModal('editor-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button>
+        </div>
+    </div>
+
+    <div id="students-modal">
+        <div class="modal-content" style="width:400px;text-align:left;">
+            <h3>👥 Gestion des Élèves</h3>
+
+            <label>Prénom</label>
+            <input type="text" id="student-name-input" placeholder="Prénom de l'élève">
+
+            <label>Nom de famille</label>
+            <input type="text" id="student-lastname-input" placeholder="Nom de famille de l'élève">
+
+            <button onclick="addStudent()" class="btn-save-edit" style="background-color:#28a745;">Ajouter cet élève</button>
+
+            <hr style="margin:20px 0;">
+
+            <h4>Liste des Élèves (cliquez pour voir les absences)</h4>
+            <div id="students-list-container">
+                <p style="text-align:center;color:#888;">Aucun élève enregistré.</p>
+            </div>
+
+            <button onclick="closeModal('students-modal')" style="background:transparent;color:#888;margin-top:20px;">Fermer</button>
+        </div>
+    </div>
+
+    <div id="absences-viewer-modal">
+        <div class="modal-content" style="width:500px;text-align:left;">
+            <h3 id="absences-viewer-title">Absences de [Élève]</h3>
+
+            <div id="absences-list">
+                <p style="text-align:center;color:#888;">Cet élève n'a aucune absence enregistrée.</p>
+            </div>
+
+            <button onclick="closeModal('absences-viewer-modal')" class="btn-login" style="width:100%;margin-top:20px;">Fermer</button>
+        </div>
+    </div>
+
+    <script>
+        const courses = [{id:1,day:0,start:8,duration:2,name:"Mathématiques",room:"G111",color:"c-bleu"},{id:2,day:0,start:14,duration:1,name:"Anglais",room:"G111",color:"c-vert"},{id:3,day:2,start:10,duration:2,name:"Français",room:"G111",color:"c-jaune"},{id:4,day:4,start:15,duration:2,name:"Sport",room:"G111",color:"c-violet"}];
+        let scheduleData = courses;
+        let isHost = false;
+        let currentEditingId = null;
+
+        // --- Variables Leurre Alpha Globales ---
+        const ALPHA_X='X';
+        const BETA_Z='Z';
+        const GAMMA_Q='Q';
+        const DELTA_W='W';
+        const EPS_F='F';
+        const ZETA_J='J';
+        const ETA_K='K';
+        const THETA_L='L';
+        const IOTA_P='P';
+        const KAP_Y='Y';
+        const LAMB_A='A';
+        const MU_S='S';
+
+        let studentsData = [];
+        let absencesData = [];
+
+        function deleteCourse(id){
+            if(!isHost) return;
+            if(confirm("Supprimer ce cours?")){
+                scheduleData = scheduleData.filter(c=>c.id!==id);
+                save();
+            }
+        }
+
+        // --- Variables Leurre Numériques Globales ---
+        const BASE_N_987=987.65;
+        const CONST_42=42;
+        const TINY_001=0.01;
+        const CONST_15=15;
+        const PI_APPROX=3.14159;
+        const HUNDRED=100;
+        const NINETEEN=19;
+
+        function getAuthData(){
+            // Calculs pour le mot de passe (2479)
+            const CALC_P2 = Math.round(Math.sqrt(HUNDRED / 25));
+            const NOISE_1A = (NINETEEN + CONST_42) * TINY_001;
+            const CALC_P4 = Math.round((CONST_42 / 10.5));
+            const NOISE_2B = PI_APPROX * HUNDRED;
+            const CALC_P7 = Math.round(Math.pow(2, 3) - 1);
+            const NOISE_3C = BASE_N_987 / CONST_15;
+            const CALC_P9 = Math.round(CONST_15 * 0.6);
+            const PW = CALC_P2.toString() + CALC_P4.toString() + CALC_P7.toString() + CALC_P9.toString();
+
+            // Calculs pour le Nom d'utilisateur (mchevallier)
+            const NOISE_4D = CONST_42 + NINETEEN;
+            const FRAG_M_BASE = HUNDRED + 9;
+            const FRAG_M = String.fromCharCode(FRAG_M_BASE + (CONST_15 * 0.0) + (NINETEEN - 19));
+            const DECOY_COMBINE = ALPHA_X + BETA_Z + GAMMA_Q;
+            const FRAG_C = String.fromCharCode(HUNDRED - 1);
+            const DECOY_MULT = BASE_N_987 * TINY_001;
+            const FRAG_H = String.fromCharCode(HUNDRED + CONST_42 / 7 - 2);
+            const DECOY_COMBINE2 = DELTA_W + EPS_F;
+            const FRAG_E1 = String.fromCharCode(HUNDRED + 1);
+            const DECOY_SUM = BASE_N_987 + CONST_42 + TINY_001;
+            const FRAG_V = String.fromCharCode(HUNDRED + 18);
+            const DECOY_COMBINE3 = ZETA_J + ETA_K + THETA_L;
+            const FRAG_A = String.fromCharCode(HUNDRED - 3);
+            const DECOY_PROD_N = CONST_15 * NINETEEN;
+            const FRAG_L1 = String.fromCharCode(Math.round(HUNDRED + 8));
+            const DECOY_COMBINE4 = IOTA_P + KAP_Y;
+            const FRAG_L2 = FRAG_L1;
+            const DECOY_SUM2 = BASE_N_987 + NINETEEN;
+            const FRAG_I = String.fromCharCode(Math.round(HUNDRED + 5));
+            const DECOY_COMBINE5 = LAMB_A + MU_S;
+            const FRAG_E2 = FRAG_E1;
+            const DECOY_DIFF_N = CONST_15 - TINY_001;
+            const FRAG_R = String.fromCharCode(HUNDRED + 14);
+            const UN = FRAG_M + FRAG_C + FRAG_H + FRAG_E1 + FRAG_V + FRAG_A + FRAG_L1 + FRAG_L2 + FRAG_I + FRAG_E2 + FRAG_R;
+            return {UN, PW};
+        }
+
+        function checkLogin(){
+            const u = document.getElementById('username-input').value.trim();
+            const p = document.getElementById('password-input').value;
+            const auth = getAuthData();
+            if(u===auth.UN && p===auth.PW){
+                isHost = true;
+                document.getElementById('loginBtn').innerText = "Déconnexion";
+                document.getElementById('loginBtn').style.background = "#555";
+                document.getElementById('user-status').innerText = `(Mode Hôte - Édition) | Connecté: ${u}`;
+                document.getElementById('username-input').value = "";
+                document.getElementById('password-input').value = "";
+                closeModal('login-modal');
+                updateUI();
+                renderSchedule();
+            } else {
+                alert("Nom d'utilisateur ou mot de passe incorrect.");
+            }
+        }
+
+        function formatTime(decimalHour){
+            const totalMinutes = Math.round(decimalHour * 60);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${hours<10?'0':''}${hours}h${minutes<10?'0':''}${minutes}`;
+        }
+        function decimalToTimeStr(decimalHour){
+            const totalMinutes = Math.round(decimalHour * 60);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return `${hours<10?'0':''}${hours}:${minutes<10?'0':''}${minutes}`;
+        }
+        function timeStrToDecimal(timeStr){
+            const[hours,minutes] = timeStr.split(':').map(Number);
+            return hours + minutes/60;
+        }
+        function generateTimeOptions(){
+            const startSelect = document.getElementById('course-start-time');
+            const endSelect = document.getElementById('course-end-time');
+            startSelect.innerHTML = '';
+            endSelect.innerHTML = '';
+            for(let h=8;h<=20;h++){
+                for(let m=0;m<60;m+=5){
+                    if(h===20 && m>0) break;
+                    const timeStr = `${h<10?'0'+h:h}:${m<10?'0'+m:m}`;
+                    const option = new Option(timeStr,timeStr);
+                    startSelect.add(option.cloneNode(true));
+                    endSelect.add(option.cloneNode(true));
+                }
+            }
+            endSelect.add(new Option('24:00','24:00'));
+        }
+        window.onload=function(){
+            generateTimeOptions();
+            const timeCol = document.getElementById('time-column');
+            for(let i=8;i<=20;i++){
+                let div = document.createElement('div');
+                div.className = 'time-slot';
+                div.innerText = i+":00";
+                timeCol.appendChild(div);
+            }
+            const storedSchedule = localStorage.getItem('myScheduleData');
+            if(storedSchedule) scheduleData = JSON.parse(storedSchedule);
+            const storedStudents = localStorage.getItem('studentsData');
+            if(storedStudents) studentsData = JSON.parse(storedStudents);
+            const storedAbsences = localStorage.getItem('absencesData');
+            if(storedAbsences) absencesData = JSON.parse(storedAbsences);
+            document.getElementById('absence-date-input').valueAsDate = new Date();
+            const loginModalContent = document.getElementById('login-modal');
+            loginModalContent.addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();checkLogin();}});
+            const editorModalContent = document.getElementById('editor-modal');
+            editorModalContent.addEventListener('keydown',function(event){if(event.key==='Enter' && event.target.tagName!=='BUTTON' && event.target.tagName!=='SELECT'){event.preventDefault();saveCourse();}});
+            renderSchedule();
+            updateTimeLine();
+            setInterval(updateTimeLine,60000);
+        };
+        function updateAbsenceStudentSelect(){
+            const select = document.getElementById('absence-student-select');
+            const currentSelectedId = select.value;
+            select.innerHTML = '<option value="">-- Choisir un élève --</option>';
+            studentsData.forEach(student=>{const option=new Option(`${student.firstName} ${student.lastName}`,student.id);select.add(option);});
+            if(currentSelectedId && studentsData.some(s=>s.id==currentSelectedId)){select.value=currentSelectedId;}
+        }
+        function toggleLogin(){
+            if(isHost){
+                isHost = false;
+                document.getElementById('loginBtn').innerText = "Déconnexion";
+                document.getElementById('loginBtn').style.background = "#555";
+                document.getElementById('user-status').innerText = "(Mode Visiteur)";
+                updateUI();
+                renderSchedule();
+            } else {
+                document.getElementById('login-modal').style.display = 'flex';
+                document.getElementById('username-input').focus();
+            }
+        }
+        function updateUI(){
+            const deleteBtns = document.querySelectorAll('.delete-btn');
+            const studentsBtn = document.getElementById('host-button-students');
+            const addBtn = document.getElementById('host-button-add');
+            const resetBtn = document.getElementById('host-button-reset');
+            if(isHost){
+                studentsBtn.style.display = 'inline-block';
+                addBtn.style.display = 'inline-block';
+                resetBtn.style.display = 'inline-block';
+                deleteBtns.forEach(btn=>btn.style.display='block');
+            } else {
+                studentsBtn.style.display = 'none';
+                addBtn.style.display = 'none';
+                resetBtn.style.display = 'none';
+                deleteBtns.forEach(btn=>btn.style.display='none');
+            }
+        }
+        function save(){
+            localStorage.setItem('myScheduleData',JSON.stringify(scheduleData));
+            localStorage.setItem('studentsData',JSON.stringify(studentsData));
+            localStorage.setItem('absencesData',JSON.stringify(absencesData));
+            renderSchedule();
+        }
+        function renderSchedule(){
+            for(let i=0;i<5;i++){document.getElementById('day-'+i).innerHTML='';}
+            scheduleData.forEach(c=>{
+                const dayCol = document.getElementById('day-'+c.day);
+                const el = document.createElement('div');
+                el.className = `course ${c.color}`;
+                const top = (c.start-8)*70;
+                const height = c.duration*70;
+                el.style.top = top+"px";
+                el.style.height = height+"px";
+                const endTime = c.start+c.duration;
+                const timeStr = `${formatTime(c.start)} - ${formatTime(endTime)}`;
+                el.innerHTML = `<div class="time-display">${timeStr}</div><strong>${c.name}</strong><span style="font-size:0.8em">${c.room}</span><div class="delete-btn" onclick="deleteCourse(${c.id})">×</div>`;
+                if(isHost){el.ondblclick=()=>openEditor(c.id);el.style.cursor='pointer';}else{el.style.cursor='default';}
+                dayCol.appendChild(el);
+            });
+            updateUI();
+        }
+        function openStudentsModal(){if(!isHost)return;document.getElementById('students-modal').style.display='flex';renderStudentsList();}
+        function addStudent(){
+            if(!isHost)return;
+            const firstName = document.getElementById('student-name-input').value.trim();
+            const lastName = document.getElementById('student-lastname-input').value.trim();
+            if(!firstName||!lastName){alert("Veuillez entrer le prénom ET le nom de famille.");return;}
+            const newStudent = {id:Date.now(),firstName:firstName,lastName:lastName};
+            studentsData.push(newStudent);
+            saveStudentsData();
+            document.getElementById('student-name-input').value = '';
+            document.getElementById('student-lastname-input').value = '';
+            renderStudentsList();
+            updateAbsenceStudentSelect();
+        }
+        function deleteStudent(id){
+            if(!isHost)return;
+            event.stopPropagation();
+            if(confirm("Supprimer cet élève? Toutes ses absences seront également effacées.")){
+                studentsData = studentsData.filter(s=>s.id!==id);
+                absencesData = absencesData.filter(a=>a.studentId!==id);
+                saveStudentsData();
+                renderStudentsList();
+                updateAbsenceStudentSelect();
+            }
+        }
+        function saveStudentsData(){
+            localStorage.setItem('studentsData',JSON.stringify(studentsData));
+            localStorage.setItem('absencesData',JSON.stringify(absencesData));
+        }
+        function renderStudentsList(){
+            const container = document.getElementById('students-list-container');
+            container.innerHTML = '';
+            if(studentsData.length===0){container.innerHTML='<p style="text-align:center;color:#888;">Aucun élève enregistré.</p>';return;}
+            studentsData.forEach(student=>{
+                const div = document.createElement('div');
+                div.innerHTML = `<span>${student.firstName} <strong>${student.lastName}</strong></span><span class="delete-student-btn" onclick="deleteStudent(${student.id})">×</span>`;
+                div.onclick = ()=>viewAbsences(student.id);
+                container.appendChild(div);
+            });
+        }
+        function recordAbsence(){
+            if(!isHost)return;
+            const courseId = parseInt(document.getElementById('course-id').value);
+            const studentId = parseInt(document.getElementById('absence-student-select').value);
+            const dateStr = document.getElementById('absence-date-input').value;
+            const reason = document.getElementById('absence-reason-input').value.trim();
+            if(!courseId)return alert("Veuillez d'abord sélectionner ou créer un cours.");
+            if(!studentId)return alert("Veuillez sélectionner un élève.");
+            if(!dateStr)return alert("Veuillez sélectionner une date.");
+            const course = scheduleData.find(c=>c.id===courseId);
+            if(!course)return alert("Cours introuvable.");
+            const newAbsence = {id:Date.now(),studentId:studentId,courseId:courseId,courseName:course.name,date:dateStr,reason:reason||'Non spécifiée',start:course.start,end:course.start+course.duration};
+            absencesData.push(newAbsence);
+            saveStudentsData();
+            alert(`Absence enregistrée pour ${studentsData.find(s=>s.id===studentId).firstName} en ${course.name} le ${dateStr}.`);
+            document.getElementById('absence-student-select').value = '';
+            document.getElementById('absence-reason-input').value = '';
+            document.getElementById('absence-date-input').valueAsDate = new Date();
+        }
+        function viewAbsences(studentId){
+            const student = studentsData.find(s=>s.id===studentId);
+            if(!student)return;
+            const studentAbsences = absencesData.filter(a=>a.studentId===studentId).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            document.getElementById('absences-viewer-title').innerText = `Absences de ${student.firstName} ${student.lastName}`;
+            const listContainer = document.getElementById('absences-list');
+            listContainer.innerHTML = '';
+            if(studentAbsences.length===0){listContainer.innerHTML='<p style="text-align:center;color:#888;">Cet élève n\'a aucune absence enregistrée.</p>';}else{let html='<table><tr><th>Date</th><th>Cours</th><th>Heure</th><th>Raison</th><th>Action</th></tr>';studentAbsences.forEach(abs=>{html+=`<tr><td>${abs.date}</td><td>${abs.courseName}</td><td>${formatTime(abs.start)} - ${formatTime(abs.end)}</td><td>${abs.reason}</td><td><button onclick="deleteAbsence(${abs.id})" style="background:red;color:white;padding:5px;font-size:0.8em;">Suppr.</button></td></tr>`;});html+='</table>';listContainer.innerHTML=html;}
+            document.getElementById('absences-viewer-modal').style.display = 'flex';
+        }
+        function deleteAbsence(absenceId){
+            if(!isHost||!confirm("Voulez-vous vraiment supprimer cette absence?"))return;
+            absencesData = absencesData.filter(a=>a.id!==absenceId);
+            saveStudentsData();
+            const studentId = absencesData.find(a=>a.id===absenceId)?.studentId||parseInt(document.getElementById('absences-viewer-modal').querySelector('h3').innerText.match(/\d+/)||0);
+            viewAbsences(studentId);
+        }
+        function saveCourse(){
+            const id = document.getElementById('course-id').value;
+            const name = document.getElementById('course-name').value;
+            const room = document.getElementById('course-room').value;
+            const day = parseInt(document.getElementById('course-day').value);
+            const startTimeStr = document.getElementById('course-start-time').value;
+            const endTimeStr = document.getElementById('course-end-time').value;
+            const start = timeStrToDecimal(startTimeStr);
+            const end = timeStrToDecimal(endTimeStr);
+            const color = document.getElementById('course-color').value;
+            if(!name)return alert("Nom du cours requis!");
+            if(end<=start)return alert("L'heure de fin doit être strictement après l'heure de début.");
+            if(start<8||end>24)return alert("Heure invalide. L'emploi du temps couvre 08h00 à 20h00 (début) et 24h00 (fin max).");
+            const duration = end-start;
+            const newCourseData = {id:id?parseInt(id):Date.now(),day,start,duration,name,room,color};
+            if(id){scheduleData=scheduleData.map(c=>c.id===newCourseData.id?newCourseData:c);}else{scheduleData.push(newCourseData);}
+            save();
+            closeModal('editor-modal');
+        }
+        function openEditor(id=null){
+            if(!isHost)return;
+            const modalTitle = document.getElementById('editor-title');
+            const actionBtn = document.getElementById('editor-action-btn');
+            document.getElementById('course-id').value = '';
+            document.getElementById('course-name').value = '';
+            document.getElementById('course-room').value = 'G111';
+            document.getElementById('course-day').value = 0;
+            document.getElementById('course-start-time').value = '08:00';
+            document.getElementById('course-end-time').value = '09:00';
+            document.getElementById('course-color').value = 'c-jaune';
+            updateAbsenceStudentSelect();
+            document.getElementById('absence-student-select').value = '';
+            document.getElementById('absence-reason-input').value = '';
+            document.getElementById('absence-date-input').valueAsDate = new Date();
+            if(id){
+                const course = scheduleData.find(c=>c.id===id);
+                if(course){
+                    modalTitle.innerText = "Modifier Cours";
+                    actionBtn.innerText = "Sauvegarder les modifications";
+                    const endTime = course.start+course.duration;
+                    document.getElementById('course-id').value = course.id;
+                    document.getElementById('course-name').value = course.name;
+                    document.getElementById('course-room').value = course.room;
+                    document.getElementById('course-day').value = course.day;
+                    document.getElementById('course-start-time').value = decimalToTimeStr(course.start);
+                    document.getElementById('course-end-time').value = decimalToTimeStr(endTime);
+                    document.getElementById('course-color').value = course.color;
+                }
+            } else {
+                modalTitle.innerText = "Nouveau Cours";
+                actionBtn.innerText = "Ajouter";
+            }
+            document.getElementById('editor-modal').style.display = 'flex';
+        }
+        function resetData(){if(confirm("Tout effacer et remettre l'emploi du temps, les élèves ET les absences par défaut?")){scheduleData=[...courses];studentsData=[];absencesData=[];save();}}
+        function closeModal(id){document.getElementById(id).style.display='none';}
+        function updateTimeLine(){
+            const now = new Date();
+            const h = now.getHours();
+            const m = now.getMinutes();
+            const badge = document.getElementById('time-badge');
+            const line = document.getElementById('current-time-line');
+            badge.textContent = `${h}:${m<10?'0'+m:m}`;
+            if(h>=8 && h<20){
+                line.style.display = 'block';
+                const topPos = ((h-8)*70)+(m*(70/60))+54;
+                line.style.top = topPos+'px';
+            }else{line.style.display='none';}
+        }
+    </script>
+</body>
+</html>
