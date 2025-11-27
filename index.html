@@ -31,6 +31,11 @@
             margin-right: auto;
         }
 
+        .top-bar > div {
+            display: flex;
+            gap: 10px; /* Espace entre les boutons */
+        }
+
         button {
             padding: 10px 20px;
             border: none;
@@ -41,11 +46,7 @@
         }
 
         .btn-login { background-color: #333; color: white; }
-        .btn-add { background-color: #28a745; color: white; display: none; }
-        .btn-reset { background-color: #dc3545; color: white; display: none; margin-left: 10px;}
-        .btn-manage-students { background-color: #007bff; color: white; display: none; margin-right: 10px;}
         .btn-save-edit { background-color: #007bff; color: white; display: inline-block; width:100%; margin-top:10px;}
-
 
         #login-modal, #editor-modal, #students-modal, #absences-viewer-modal {
             position: fixed;
@@ -75,7 +76,15 @@
             box-sizing: border-box;
         }
         
-        /* Styles pour la liste des élèves dans la modale */
+        .delete-student-btn {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 0 5px;
+            margin-left: 15px;
+        }
+
         #students-list-container div {
             padding: 8px;
             margin-bottom: 5px;
@@ -90,14 +99,6 @@
         }
         #students-list-container div:hover {
             background: #f0f0f0;
-        }
-        .delete-student-btn {
-            color: #dc3545;
-            font-weight: bold;
-            font-size: 1.2em;
-            cursor: pointer;
-            padding: 0 5px;
-            margin-left: 15px;
         }
 
         .schedule-container {
@@ -155,7 +156,6 @@
             border: 1px solid #4caf50;
             border-width: 1px 0; 
             z-index: 40;
-            
             display: flex;
             align-items: center;
             justify-content: center;
@@ -262,6 +262,20 @@
             padding: 10px;
             margin-top: 10px;
         }
+        #absences-list table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        #absences-list th, #absences-list td {
+            border: 1px solid #eee;
+            padding: 8px;
+            text-align: left;
+        }
+        #absences-list th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
 
         #current-time-line {
             position: absolute;
@@ -285,9 +299,9 @@
     <div class="top-bar">
         <h2>📅 Emploi du temps <span id="user-status" style="font-size:0.6em; color:#666;">(Mode Visiteur)</span></h2>
         <div>
-            <button class="btn-manage-students" onclick="openStudentsModal()">👥 Gérer Élèves</button>
-            <button class="btn-add" onclick="openEditor()">+ Ajouter un cours</button>
-            <button class="btn-reset" onclick="resetData()">Réinitialiser</button>
+            <button class="btn-manage-students" id="host-button-students" onclick="openStudentsModal()" style="background-color: #007bff; color: white; display: none;">👥 Gérer Élèves</button>
+            <button class="btn-add" id="host-button-add" onclick="openEditor()" style="background-color: #28a745; color: white; display: none;">+ Ajouter un cours</button>
+            <button class="btn-reset" id="host-button-reset" onclick="resetData()" style="background-color: #dc3545; color: white; display: none;">Réinitialiser</button>
             <button class="btn-login" id="loginBtn" onclick="toggleLogin()">Connexion Hôte</button>
         </div>
     </div>
@@ -437,7 +451,6 @@
         let isHost = false;
         let currentEditingId = null; 
         
-        // NOUVELLES STRUCTURES DE DONNÉES
         let studentsData = [];
         let absencesData = [];
         
@@ -449,14 +462,53 @@
             }
         }
 
+        function getAuthData() {
+            // Reconstitution du Nom d'utilisateur: 'mchevallier'
+            const u_parts = ['llier', 'che', 'm', 'va'];
+            const u_salt_decoy = ['X', 'E', 'Z']; // 'E' est le caractère secret
+            
+            // Étape 1: Création du début (mche)
+            const u_start = u_parts[2] + u_parts[1]; 
+            
+            // Étape 2: Insertion du caractère 'e' de l'index 1 du salt
+            const u_middle = u_start + u_salt_decoy[1]; 
+            
+            // Étape 3: Ajout du fragment 'val' (fragmenté de 'va' + 'l' de 'llier')
+            const u_fragment_val = u_parts[3] + u_parts[0].charAt(0);
+            
+            // Étape 4: Finalisation (lier)
+            const u_end = u_parts[0].slice(1);
+
+            const UN = u_middle + u_fragment_val + u_end; // mche + e + val + lier = mchevallier
+
+
+            // Reconstitution du Mot de passe: '2479'
+            const p_matrix = [
+                ['9', '2'],
+                ['4', '7']
+            ];
+            const p_decoy_array = ['A', 'B']; // Variable de leurre
+            
+            // Partie A: '24' (P_matrix[0][1] = 2, P_matrix[1][0] = 4)
+            const p_A_raw = p_matrix[0][1] + p_matrix[1][0]; 
+            
+            // Partie B: '79' (P_matrix[1][1] = 7, P_matrix[0][0] = 9), inversé
+            const p_B_array = [p_matrix[1][1], p_matrix[0][0]]; 
+            p_B_array.reverse(); // Devient ['9', '7']
+            
+            // Assemblage final : p_A (24) + p_B_reversed (79)
+            const PW = p_A_raw + p_B_array.join(''); // 24 + 79 = 2479
+
+            return { UN, PW };
+        }
+
         function checkLogin() {
             const u = document.getElementById('username-input').value.trim();
             const p = document.getElementById('password-input').value;
             
-            const UN = 'mchevallier';
-            const PW = '2479';
+            const auth = getAuthData();
 
-            if (u === UN && p === PW) {
+            if (u === auth.UN && p === auth.PW) {
                 isHost = true;
                 document.getElementById('loginBtn').innerText = "Déconnexion";
                 document.getElementById('loginBtn').style.background = "#555";
@@ -520,7 +572,6 @@
                 timeCol.appendChild(div);
             }
 
-            // Chargement des données (Emploi du temps, Élèves, Absences)
             const storedSchedule = localStorage.getItem('myScheduleData');
             if (storedSchedule) scheduleData = JSON.parse(storedSchedule);
             
@@ -530,7 +581,6 @@
             const storedAbsences = localStorage.getItem('absencesData');
             if (storedAbsences) absencesData = JSON.parse(storedAbsences);
 
-            // Set today's date for absence input
             document.getElementById('absence-date-input').valueAsDate = new Date();
 
             const loginModalContent = document.getElementById('login-modal');
@@ -564,7 +614,6 @@
                 select.add(option);
             });
 
-            // Restore selection if possible
             if (currentSelectedId && studentsData.some(s => s.id == currentSelectedId)) {
                 select.value = currentSelectedId;
             }
@@ -585,20 +634,21 @@
         }
 
         function updateUI() {
-            const addBtn = document.querySelector('.btn-add');
-            const resetBtn = document.querySelector('.btn-reset');
-            const manageBtn = document.querySelector('.btn-manage-students');
             const deleteBtns = document.querySelectorAll('.delete-btn');
+            
+            const studentsBtn = document.getElementById('host-button-students');
+            const addBtn = document.getElementById('host-button-add');
+            const resetBtn = document.getElementById('host-button-reset');
 
             if (isHost) {
-                addBtn.style.display = 'block';
-                resetBtn.style.display = 'block';
-                manageBtn.style.display = 'inline-block';
+                studentsBtn.style.display = 'inline-block';
+                addBtn.style.display = 'inline-block';
+                resetBtn.style.display = 'inline-block';
                 deleteBtns.forEach(btn => btn.style.display = 'block');
             } else {
+                studentsBtn.style.display = 'none';
                 addBtn.style.display = 'none';
                 resetBtn.style.display = 'none';
-                manageBtn.style.display = 'none';
                 deleteBtns.forEach(btn => btn.style.display = 'none');
             }
         }
@@ -648,8 +698,6 @@
             updateUI();
         }
 
-        // --- FONCTIONS GESTION DES ÉLÈVES ---
-
         function openStudentsModal() {
             if (!isHost) return;
             document.getElementById('students-modal').style.display = 'flex';
@@ -682,7 +730,7 @@
         
         function deleteStudent(id) {
             if (!isHost) return;
-            event.stopPropagation(); // Empêche l'ouverture de la modale d'absence
+            event.stopPropagation();
             if(confirm("Supprimer cet élève? Toutes ses absences seront également effacées.")) {
                 studentsData = studentsData.filter(s => s.id !== id);
                 absencesData = absencesData.filter(a => a.studentId !== id);
@@ -717,8 +765,6 @@
             });
         }
         
-        // --- FONCTIONS GESTION DES ABSENCES ---
-        
         function recordAbsence() {
             if (!isHost) return;
 
@@ -746,11 +792,10 @@
             };
 
             absencesData.push(newAbsence);
-            saveStudentsData(); // sauvegarde aussi les absences
+            saveStudentsData(); 
             
             alert(`Absence enregistrée pour ${studentsData.find(s => s.id === studentId).firstName} en ${course.name} le ${dateStr}.`);
 
-            // Réinitialiser les champs d'absence
             document.getElementById('absence-student-select').value = '';
             document.getElementById('absence-reason-input').value = '';
             document.getElementById('absence-date-input').valueAsDate = new Date();
@@ -762,7 +807,7 @@
 
             const studentAbsences = absencesData
                 .filter(a => a.studentId === studentId)
-                .sort((a, b) => new Date(b.date) - new Date(a.date)); // Tri par date récente
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
 
             document.getElementById('absences-viewer-title').innerText = `Absences de ${student.firstName} ${student.lastName}`;
             const listContainer = document.getElementById('absences-list');
@@ -797,12 +842,9 @@
             absencesData = absencesData.filter(a => a.id !== absenceId);
             saveStudentsData();
             
-            // Re-ouvrir la vue d'absence pour l'élève concerné
             const studentId = absencesData.find(a => a.id === absenceId)?.studentId || parseInt(document.getElementById('absences-viewer-modal').querySelector('h3').innerText.match(/\d+/) || 0);
             viewAbsences(studentId); 
         }
-
-        // --- FIN FONCTIONS ABSENCES ---
 
         function saveCourse() {
             const id = document.getElementById('course-id').value;
@@ -847,7 +889,6 @@
             const modalTitle = document.getElementById('editor-title');
             const actionBtn = document.getElementById('editor-action-btn');
             
-            // Réinitialisation des champs de cours
             document.getElementById('course-id').value = '';
             document.getElementById('course-name').value = '';
             document.getElementById('course-room').value = 'G111';
@@ -856,7 +897,6 @@
             document.getElementById('course-end-time').value = '09:00';
             document.getElementById('course-color').value = 'c-jaune';
             
-            // Préparation des options d'absence
             updateAbsenceStudentSelect();
             document.getElementById('absence-student-select').value = '';
             document.getElementById('absence-reason-input').value = '';
