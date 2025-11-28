@@ -12,7 +12,6 @@
             --bg-color: #f7f7f7;
             --card-bg: #fff;
             --border-color: #e0e0e0;
-            --time-slot-height: 70px;
         }
         body {
             font-family: Arial, sans-serif;
@@ -90,124 +89,13 @@
             margin-top: 0;
             margin-bottom: 15px;
         }
-        
-        /* --- EMPLOI DU TEMPS (EDT) --- */
-        .schedule-column {position: relative;}
-        .schedule-container {
-            display: grid;
-            grid-template-columns: 60px repeat(5,1fr);
-            background:#fff;
-            position:relative;
-            border:1px solid var(--border-color);
-        }
-        .schedule-container > .header {
-            padding: 10px 0;
-            text-align:center;
-            font-weight:600;
-            border-bottom:1px solid var(--border-color);
-            border-right:1px solid var(--border-color);
-            background:#fcfcfc;
-            font-size: 0.9em;
-        }
-        .time-column {background-color:#fcfcfc;border-right:1px solid var(--border-color);}
-        .time-slot {height:var(--time-slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}
-        .day-column {position:relative;border-right:1px solid var(--border-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--time-slot-height);}
-        
-        #cantine-band {
-            position:absolute;
-            top:280px; 
-            height:105px; 
-            left:60px;
-            right:0;
-            background-color: #f0f0f0; 
-            border-left: 4px solid #9e9e9e; 
-            color: #616161;
-            z-index:40;
-            display:flex;
-            flex-direction: column; 
-            align-items:center;
-            justify-content:center;
-            font-weight:bold;
-            font-size:1.1em;
-            pointer-events:none;
-            box-sizing:border-box;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        #cantine-band .time-display {
-            font-size: 0.75em;
-            font-weight: 600;
-            color: #757575;
-            margin-bottom: 5px;
-        }
-
-        .course {
-            position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .course strong {display:block;margin-bottom:2px;font-weight: bold;}
-        .course .time-display {font-size:0.75em;font-weight:600;color:#555;display:block;}
-        .c-jaune {background:#fff3e0;border-left:4px solid #ff9800;color:#333;} 
-        .c-violet {background:#e6e6ff;border-left:4px solid #673ab7;color:#333;} 
-        .c-bleu {background:#e0f7fa;border-left:4px solid #00bcd4;color:#333;} 
-        .c-vert {background:#e8f5e9;border-left:4px solid #4caf50;color:#333;} 
-
-        /* --- TÂCHES & ABSENCES --- */
-        .info-block {
-            background: #fcfcfc;
-            border-left: 3px solid var(--pronote-blue);
-            padding: 8px 10px;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-        .devoirs-title-day {
-            font-weight: bold;
-            font-size: 1em;
-            color: var(--pronote-blue);
-            margin-bottom: 5px;
-            padding-left: 5px;
-        }
-        .devoirs-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-            border-left: 3px solid #ff9800; 
-            position: relative;
-        }
-        .devoirs-item .matiere {
-            font-weight: bold;
-            color: #ff9800;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .devoirs-item .student-name {
-            font-size: 0.8em;
-            color: var(--pronote-blue);
-            font-weight: normal;
-        }
-        .devoirs-item .actions button {
-            background-color: #d4edda; color: #155724; border-color: #c3e6cb;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 0.8em;
-            margin-left: 5px;
-            cursor: pointer;
-            float: right;
-        }
-
-        /* --- MODALS & CONTROLES --- */
         .top-bar-controls {display: flex;gap: 10px;margin-bottom: 10px;justify-content: flex-end;}
         .top-bar-controls button {padding: 8px 15px;border: none;border-radius: 4px;cursor: pointer;font-weight: bold;transition: 0.2s;font-size: 0.9em;}
-        .btn-login, .btn-manage-students {background-color: var(--pronote-blue);color: white;}
-        .btn-add {background-color: #28a745;color: white;}
-        .btn-reset {background-color: #dc3545;color: white;}
+        .btn-login {background-color: var(--pronote-blue);color: white;}
         #user-status {font-size:0.8em;color:#666;margin-left: 10px; align-self: center;}
-        .delete-btn {
-            position:absolute;top:2px;right:2px;background:rgba(255,255,255,0.7);color:red;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;font-weight:bold;cursor:pointer;display:none;font-size:12px;z-index:60;
-        }
-        #login-modal,#editor-modal,#students-modal,#absences-viewer-modal, #homework-editor-modal, #under-construction-modal {
+        
+        /* Styles pour le Modal de Login */
+        #login-modal {
             position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;
         }
         .modal-content {
@@ -217,7 +105,6 @@
         
         /* Classe pour cacher les éléments sensibles en mode visiteur */
         .host-only { display: none !important; }
-
     </style>
 </head>
 <body>
@@ -230,22 +117,20 @@
         <nav id="main-nav">
             <a href="#" id="nav-edt" class="active">Emploi du temps</a>
             
-            <a onclick="openHomeworkEditorModal()" class="host-only" id="nav-cahier">Cahier de textes</a>
-            <a onclick="openUnderConstructionModal()" id="nav-notes">Notes</a>
-            <a onclick="openUnderConstructionModal()" class="host-only" id="nav-competences">Compétences</a>
-            <a onclick="openUnderConstructionModal()" class="host-only" id="nav-resultats">Résultats</a>
-            <a onclick="openAbsenceViewerModal()" id="nav-vie">Vie scolaire</a> 
-            <a onclick="openUnderConstructionModal()" class="host-only" id="nav-stage">Stage</a>
-            <a onclick="openUnderConstructionModal()" class="host-only" id="nav-communication">Communication</a>
+            <a href="#" onclick="alert('Page en construction.')" id="nav-notes">Notes</a>
+            <a href="#" onclick="alert('Page en construction.')" id="nav-vie">Vie scolaire</a> 
+
+            <a href="#" onclick="alert('Cahier de textes (Hôte seulement)')" class="host-only" id="nav-cahier">Cahier de textes</a>
+            <a href="#" onclick="alert('Page en construction.')" class="host-only" id="nav-competences">Compétences</a>
+            <a href="#" onclick="alert('Page en construction.')" class="host-only" id="nav-resultats">Résultats</a>
+            <a href="#" onclick="alert('Page en construction.')" class="host-only" id="nav-stage">Stage</a>
+            <a href="#" onclick="alert('Page en construction.')" class="host-only" id="nav-communication">Communication</a>
         </nav>
     </header>
 
     <div class="main-content">
         <div class="schedule-column">
             <div class="top-bar-controls">
-                <button class="btn-manage-students host-only" id="host-button-students" onclick="openStudentsModal()">👥 Gérer Élèves</button>
-                <button class="btn-add host-only" id="host-button-add" onclick="openEditor()">+ Ajouter un cours</button>
-                <button class="btn-reset host-only" id="host-button-reset" onclick="resetData()">Réinitialiser</button>
                 <button class="btn-login" id="loginBtn" onclick="toggleLogin()">Connexion Hôte</button>
                 <span id="user-status">(Mode Visiteur)</span>
             </div>
@@ -254,42 +139,25 @@
                 <h3 class="card-title" style="padding: 15px; margin: 0; border-bottom: 1px solid var(--border-color);">
                     📅 Emploi du temps (Semaine Q2)
                 </h3>
-                <div class="schedule-container" style="border: none; box-shadow: none;">
-                    <div id="cantine-band"><span class="time-display">12h00 - 13h30</span>RESTAURATION SCOLAIRE</div>
-                    <div id="current-time-line"><div id="time-badge">--:--</div></div>
-
-                    <div class="header" style="border-bottom:none;"></div>
-                    <div class="header">Lun.</div>
-                    <div class="header">Mar.</div>
-                    <div class="header">Mer.</div>
-                    <div class="header">Jeu.</div>
-                    <div class="header">Ven.</div>
-
-                    <div class="time-column" id="time-column">
-                    </div>
-
-                    <div class="day-column" id="day-0"></div>
-                    <div class="day-column" id="day-1"></div>
-                    <div class="day-column" id="day-2"></div>
-                    <div class="day-column" id="day-3"></div>
-                    <div class="day-column" id="day-4"></div>
+                <div id="schedule-placeholder" style="min-height: 400px; display: flex; justify-content: center; align-items: center; color: #888;">
+                    (Contenu de l'EDT)
                 </div>
             </div>
             
         </div>
 
-        <div class="tasks-column" id="tasks-column">
+        <div class="tasks-column">
             <div class="card host-only" id="devoirs-card">
                 <h3 class="card-title">📚 Prochains Devoirs à Rendre</h3>
                 <div id="devoirs-list-container">
-                    <p style="text-align: center; color: #888;">Aucun devoir n'est planifié pour le moment.</p>
+                    <p style="text-align: center; color: #888;">Cahier de textes visible en mode Hôte.</p>
                 </div>
             </div>
 
             <div class="card" id="absence-card">
                 <h3 class="card-title">📨 Carnet de correspondance (Absences)</h3>
                 <div id="absence-summary-container">
-                    <p style="text-align: center; color: #888;">Connectez-vous pour voir les absences détaillées.</p>
+                    <p style="text-align: center; color: #888;">Informations visibles en mode Hôte.</p>
                 </div>
             </div>
         </div>
@@ -306,681 +174,60 @@
         </div>
     </div>
 
-    <div id="editor-modal">
-        <div class="modal-content">
-            <h3 id="editor-title">Nouveau Cours</h3>
-            <input type="hidden" id="course-id">
-            <label>Matière</label><input type="text" id="course-name" placeholder="Ex: Maths">
-            <label>Salle</label><input type="text" id="course-room" placeholder="Ex: G111">
-            <label>Jour</label>
-            <select id="course-day"><option value="0">Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option><option value="3">Jeudi</option><option value="4">Vendredi</option></select>
-            <div style="display:flex;gap:10px;">
-                <div style="flex:1"><label>Heure Début</label><select id="course-start-time"></select></div>
-                <div style="flex:1"><label>Heure de Fin</label><select id="course-end-time"></select></div>
-            </div>
-            <label>Couleur</label>
-            <select id="course-color"><option value="c-jaune">Orange très pâle</option><option value="c-violet">Violet très pâle</option><option value="c-bleu">Bleu très pâle</option><option value="c-vert">Vert pâle</option></select>
-            <hr style="margin-top:20px;"><h4>Marquer une Absence (Optionnel)</h4>
-            <select id="absence-student-select"><option value="">-- Choisir un élève --</option></select>
-            <input type="date" id="absence-date-input" value="">
-            <input type="text" id="absence-reason-input" placeholder="Raison (Ex: Maladie)">
-            <button onclick="recordAbsence()" style="background-color:#dc3545;color:white;width:100%;margin-top:5px;">Enregistrer l'Absence pour ce cours</button>
-            <hr>
-            <button onclick="saveCourse()" class="btn-save-edit" id="editor-action-btn">Ajouter</button>
-            <button onclick="closeModal('editor-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button>
-        </div>
-    </div>
-
-    <div id="homework-editor-modal">
-        <div class="modal-content" style="width: 500px;">
-            <h3>📝 Nouveau Devoir</h3>
-            <label>Matière</label><input type="text" id="homework-subject" placeholder="Ex: Français">
-            <label>À rendre pour (Date)</label><input type="date" id="homework-date" value="">
-            <label>Pour quel élève?</label>
-            <select id="homework-student-select"><option value="all">Tous les élèves</option></select>
-            <label>Détails du travail</label>
-            <textarea id="homework-details" placeholder="Ex: Lire le chapitre 3 et faire l'exercice 4 p. 25" rows="5"></textarea>
-            <button onclick="saveHomework()" class="btn-add" style="width:100%;">Ajouter le Devoir</button>
-            <hr>
-            <h4>Devoirs en attente (cliquez pour supprimer)</h4>
-            <div id="active-homework-list">
-                <p style="text-align: center; color: #888;">Aucun devoir à supprimer.</p>
-            </div>
-            <button onclick="closeModal('homework-editor-modal')" style="background:transparent;color:#888;margin-top:10px;">Fermer</button>
-        </div>
-    </div>
-
-    <div id="students-modal">
-        <div class="modal-content" style="width:400px;text-align:left;">
-            <h3>👥 Gestion des Élèves</h3>
-            <label>Prénom</label><input type="text" id="student-name-input" placeholder="Prénom de l'élève">
-            <label>Nom de famille</label><input type="text" id="student-lastname-input" placeholder="Nom de famille de l'élève">
-            <button onclick="addStudent()" class="btn-add">Ajouter cet élève</button>
-            <hr style="margin:20px 0;"><h4>Liste des Élèves (cliquez sur "Vie scolaire" pour les absences)</h4>
-            <div id="students-list-container"><p style="text-align:center;color:#888;">Aucun élève enregistré.</p></div>
-            <button onclick="closeModal('students-modal')" style="background:transparent;color:#888;margin-top:20px;">Fermer</button>
-        </div>
-    </div>
-
-    <div id="absences-viewer-modal">
-        <div class="modal-content" style="width:500px;text-align:left;">
-            <h3 id="absences-viewer-title">Historique des Absences</h3>
-            <div id="absences-select-student-container">
-                <label>Sélectionnez un élève:</label>
-                <select id="select-student-for-absence-view" onchange="renderAbsencesList(this.value)">
-                    <option value="">-- Choisir un élève --</option>
-                </select>
-            </div>
-            <hr>
-            <div id="absences-list"><p style="text-align:center;color:#888;">Veuillez vous connecter pour voir l'historique d'absences.</p></div>
-            <button onclick="closeModal('absences-viewer-modal')" class="btn-login" style="width:100%;margin-top:20px;">Fermer</button>
-        </div>
-    </div>
-
-    <div id="under-construction-modal">
-        <div class="modal-content" style="text-align:center;">
-            <h3>🚧 Page en construction 🚧</h3>
-            <p>Cette fonctionnalité n'est pas encore disponible dans votre version.</p>
-            <button onclick="closeModal('under-construction-modal')" class="btn-login">Fermer</button>
-        </div>
-    </div>
-
 
     <script>
-        // Data Storage
-        // Utilisation d'un emploi du temps par défaut pour l'affichage Visiteur
-        const defaultCourses = [{id:1,day:0,start:8,duration:2,name:"Mathématiques",room:"G111",color:"c-bleu"},{id:2,day:0,start:14,duration:1,name:"Anglais",room:"G111",color:"c-vert"},{id:3,day:2,start:10,duration:2,name:"Français",room:"G111",color:"c-jaune"},{id:4,day:4,start:15,duration:2,name:"Sport",room:"G111",color:"c-violet"}];
-        let scheduleData = [...defaultCourses]; // Commencez avec le défaut
         let isHost = false;
-        let studentsData = [];
-        let absencesData = [];
-        let homeworkData = [];
-
-        // --- Utility Functions ---
-        function formatTime(decimalHour){
-            const totalMinutes = Math.round(decimalHour * 60);
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
-            return `${hours<10?'0':''}${hours}h${minutes<10?'0':''}${minutes}`;
-        }
-        function decimalToTimeStr(decimalHour){
-            const totalMinutes = Math.round(decimalHour * 60);
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
-            return `${hours<10?'0':''}${hours}:${minutes<10?'0':''}${minutes}`;
-        }
-        function timeStrToDecimal(timeStr){
-            const[hours,minutes] = timeStr.split(':').map(Number);
-            return hours + minutes/60;
-        }
-
-        // --- Authentication ---
         const AUTH_USER = 'mchevallier';
         const AUTH_PASS = '2479';
 
+        // --- Utility Functions ---
+        function closeModal(id){
+            document.getElementById(id).style.display='none';
+        }
+
+        // --- Authentication ---
         function checkLogin(){
             const u = document.getElementById('username-input').value.trim();
             const p = document.getElementById('password-input').value;
             if(u===AUTH_USER && p===AUTH_PASS){
                 isHost = true;
-                
-                // Mettre à jour l'affichage de l'en-tête
                 document.getElementById('header-user-display').innerText = `MODE HÔTE - ${u.toUpperCase()}`;
-                
                 document.getElementById('loginBtn').innerText = "Déconnexion";
                 document.getElementById('loginBtn').style.background = "#555";
                 document.getElementById('user-status').innerText = `(Connecté: ${u})`;
                 closeModal('login-modal');
-                document.getElementById('username-input').value = "";
-                document.getElementById('password-input').value = "";
-                
-                // Recharger les données Hôte
-                load();
                 updateUI();
-                renderSchedule();
-                renderHomeworkList();
-                renderAbsenceSummary();
-                renderActiveHomeworkList();
-
             } else {
                 alert("Nom d'utilisateur ou mot de passe incorrect.");
             }
         }
+
         function toggleLogin(){
             if(isHost){
                 isHost = false;
-                
-                // Revenir à l'affichage Visiteur
                 document.getElementById('header-user-display').innerText = `ESPACE VISITEUR`;
-
                 document.getElementById('loginBtn').innerText = "Connexion Hôte";
                 document.getElementById('loginBtn').style.background = "var(--pronote-blue)";
                 document.getElementById('user-status').innerText = "(Mode Visiteur)";
-                
-                // Revenir aux données par défaut
-                scheduleData = [...defaultCourses];
-                
                 updateUI();
-                renderSchedule();
-                renderHomeworkList(); // Vide la liste des devoirs si non Hôte
-                renderAbsenceSummary(); // Simplifie l'affichage des absences
             } else {
                 document.getElementById('login-modal').style.display = 'flex';
                 document.getElementById('username-input').focus();
             }
         }
 
-        // --- UI & Modal Handlers ---
-        function closeModal(id){document.getElementById(id).style.display='none';}
-        function openUnderConstructionModal(){document.getElementById('under-construction-modal').style.display = 'flex';}
-        
+        // --- UI Update (Simplifiée) ---
         function updateUI(){
             const hostElements = document.querySelectorAll('.host-only');
-            const deleteBtns = document.querySelectorAll('.delete-btn');
             
-            // 1. Gérer la visibilité des éléments Host-Only
             hostElements.forEach(el => {
                 el.style.display = isHost ? el.tagName === 'A' || el.tagName === 'BUTTON' ? 'inline-block' : 'block' : 'none';
-            });
-
-            // 2. Gérer la visibilité du contenu des cartes et des boutons d'action
-            deleteBtns.forEach(btn=>btn.style.display=isHost?'block':'none');
-            
-            // 3. Gérer la visibilité de la colonne des tâches (Devoirs et Absences simplifiées)
-            document.getElementById('devoirs-card').style.display = isHost ? 'block' : 'none';
-            document.getElementById('absence-card').style.display = 'block'; // L'absence reste visible
-
-            // 4. Gérer l'affichage des sélecteurs d'élèves
-            const absenceSelectContainer = document.getElementById('absences-select-student-container');
-            if(absenceSelectContainer) {
-                absenceSelectContainer.style.display = isHost ? 'block' : 'none';
-            }
-        }
-        
-        // --- Data Management ---
-        function save(){
-            if (!isHost) return; // Seul l'hôte peut sauvegarder
-            localStorage.setItem('myScheduleData',JSON.stringify(scheduleData));
-            localStorage.setItem('studentsData',JSON.stringify(studentsData));
-            localStorage.setItem('absencesData',JSON.stringify(absencesData));
-            localStorage.setItem('homeworkData',JSON.stringify(homeworkData));
-            renderSchedule();
-            renderHomeworkList();
-            renderAbsenceSummary();
-        }
-        function load(){
-            const storedData = (key) => {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : [];
-            };
-            // Charge les données personnalisées de l'Hôte si disponible
-            scheduleData = storedData('myScheduleData').length ? storedData('myScheduleData') : [...defaultCourses];
-            studentsData = storedData('studentsData');
-            absencesData = storedData('absencesData');
-            homeworkData = storedData('homeworkData');
-        }
-
-        function resetData(){if(!isHost) return; if(confirm("Tout effacer et remettre l'emploi du temps, les élèves, les absences ET les devoirs par défaut?")){scheduleData=[...defaultCourses];studentsData=[];absencesData=[];homeworkData=[];save();}}
-        
-        // --- Schedule Rendering and Editing (Fonctionnalités Hôte) ---
-        function generateTimeOptions(){
-            // (Aucun changement nécessaire)
-            const startSelect = document.getElementById('course-start-time');
-            const endSelect = document.getElementById('course-end-time');
-            startSelect.innerHTML = '';
-            endSelect.innerHTML = '';
-            for(let h=8;h<=20;h++){
-                for(let m=0;m<60;m+=5){
-                    if(h===20 && m>0) break;
-                    const timeStr = `${h<10?'0'+h:h}:${m<10?'0'+m:m}`;
-                    const option = new Option(timeStr,timeStr);
-                    startSelect.add(option.cloneNode(true));
-                    endSelect.add(option.cloneNode(true));
-                }
-            }
-            endSelect.add(new Option('24:00','24:00'));
-        }
-        function renderSchedule(){
-            for(let i=0;i<5;i++){document.getElementById('day-'+i).innerHTML='';}
-            
-            // Affichage de l'EDT basé sur scheduleData (par défaut en mode Visiteur, personnalisé en mode Hôte)
-            scheduleData.forEach(c=>{
-                const dayCol = document.getElementById('day-'+c.day);
-                const el = document.createElement('div');
-                el.className = `course ${c.color}`;
-                const top = (c.start-8)*70;
-                const height = c.duration*70;
-                el.style.top = top+"px";
-                el.style.height = height+"px";
-                const endTime = c.start+c.duration;
-                const timeStr = `${formatTime(c.start)} - ${formatTime(endTime)}`;
-                el.innerHTML = `<div class="time-display">${timeStr}</div><strong>${c.name}</strong><span style="font-size:0.8em">${c.room}</span><div class="delete-btn" onclick="deleteCourse(${c.id})">×</div>`;
-                
-                // Double-clic et suppression uniquement en mode Hôte
-                if(isHost){el.ondblclick=()=>openEditor(c.id);el.style.cursor='pointer';}else{el.style.cursor='default';}
-                
-                dayCol.appendChild(el);
-            });
-            updateUI();
-        }
-        function deleteCourse(id){
-            if(!isHost) return;
-            if(confirm("Supprimer ce cours?")){
-                scheduleData = scheduleData.filter(c=>c.id!==id);
-                save();
-            }
-        }
-        function saveCourse(){
-            // (Aucun changement nécessaire - fonction Hôte)
-            const id = document.getElementById('course-id').value;
-            const name = document.getElementById('course-name').value;
-            const room = document.getElementById('course-room').value;
-            const day = parseInt(document.getElementById('course-day').value);
-            const startTimeStr = document.getElementById('course-start-time').value;
-            const endTimeStr = document.getElementById('course-end-time').value;
-            const start = timeStrToDecimal(startTimeStr);
-            const end = timeStrToDecimal(endTimeStr);
-            const color = document.getElementById('course-color').value;
-            if(!name)return alert("Nom du cours requis!");
-            if(end<=start)return alert("L'heure de fin doit être strictement après l'heure de début.");
-            const duration = end-start;
-            const newCourseData = {id:id?parseInt(id):Date.now(),day,start,duration,name,room,color};
-            if(id){scheduleData=scheduleData.map(c=>c.id===newCourseData.id?newCourseData:c);}else{scheduleData.push(newCourseData);}
-            save();
-            closeModal('editor-modal');
-        }
-        function openEditor(id=null){
-            if(!isHost)return;
-            // (Aucun changement nécessaire - fonction Hôte)
-            document.getElementById('editor-title').innerText = id ? "Modifier Cours" : "Nouveau Cours";
-            document.getElementById('editor-action-btn').innerText = id ? "Sauvegarder les modifications" : "Ajouter";
-            
-            if (id) {
-                const course = scheduleData.find(c=>c.id===id);
-                document.getElementById('course-id').value = course.id;
-                document.getElementById('course-name').value = course.name;
-                document.getElementById('course-room').value = course.room;
-                document.getElementById('course-day').value = course.day;
-                document.getElementById('course-start-time').value = decimalToTimeStr(course.start);
-                document.getElementById('course-end-time').value = decimalToTimeStr(course.start + course.duration);
-                document.getElementById('course-color').value = course.color;
-            } else {
-                document.getElementById('course-id').value = '';
-                document.getElementById('course-name').value = '';
-                document.getElementById('course-room').value = 'G111';
-                document.getElementById('course-day').value = 0;
-                document.getElementById('course-start-time').value = '08:00';
-                document.getElementById('course-end-time').value = '09:00';
-                document.getElementById('course-color').value = 'c-jaune';
-            }
-
-            updateSelects(); 
-            document.getElementById('absence-student-select').value = '';
-            document.getElementById('absence-reason-input').value = '';
-            document.getElementById('absence-date-input').valueAsDate = new Date();
-            
-            document.getElementById('editor-modal').style.display = 'flex';
-        }
-        function updateTimeLine(){
-            // (Aucun changement nécessaire)
-            const now = new Date();
-            const h = now.getHours();
-            const m = now.getMinutes();
-            const badge = document.getElementById('time-badge');
-            const line = document.getElementById('current-time-line');
-            badge.textContent = `${h}:${m<10?'0'+m:m}`;
-            if(h>=8 && h<20){
-                line.style.display = 'block';
-                const topPos = ((h-8)*70)+(m*(70/60))+54;
-                line.style.top = topPos+'px';
-            }else{line.style.display='none';}
-        }
-
-        // --- Students and Absences (Vie Scolaire) ---
-        function openStudentsModal(){if(!isHost)return;document.getElementById('students-modal').style.display='flex';renderStudentsList();}
-        function addStudent(){
-            // (Aucun changement nécessaire - fonction Hôte)
-            if(!isHost)return;
-            const firstName = document.getElementById('student-name-input').value.trim();
-            const lastName = document.getElementById('student-lastname-input').value.trim();
-            if(!firstName||!lastName){alert("Veuillez entrer le prénom ET le nom de famille.");return;}
-            const newStudent = {id:Date.now(),firstName:firstName,lastName:lastName};
-            studentsData.push(newStudent);
-            save();
-            document.getElementById('student-name-input').value = '';
-            document.getElementById('student-lastname-input').value = '';
-            renderStudentsList();
-            updateSelects();
-        }
-        function deleteStudent(id){
-            // (Aucun changement nécessaire - fonction Hôte)
-            if(!isHost)return;
-            event.stopPropagation();
-            if(confirm("Supprimer cet élève? Toutes ses absences et devoirs seront également effacés.")){
-                studentsData = studentsData.filter(s=>s.id!==id);
-                absencesData = absencesData.filter(a=>a.studentId!==id);
-                homeworkData = homeworkData.filter(h=>h.studentId!==id && h.studentId!=='all');
-                save();
-                renderStudentsList();
-                updateSelects();
-            }
-        }
-        function renderStudentsList(){
-            // (Aucun changement nécessaire - fonction Hôte)
-            const container = document.getElementById('students-list-container');
-            container.innerHTML = '';
-            if(studentsData.length===0){container.innerHTML='<p style="text-align:center;color:#888;">Aucun élève enregistré.</p>';return;}
-            studentsData.forEach(student=>{
-                const div = document.createElement('div');
-                div.style.cssText = 'border-bottom: 1px solid #eee; padding: 5px 0; display: flex; justify-content: space-between;';
-                div.innerHTML = `<span>${student.firstName} <strong>${student.lastName}</strong></span><span class="delete-student-btn" onclick="deleteStudent(${student.id})" style="position:relative; right:auto;">×</span>`;
-                container.appendChild(div);
-            });
-        }
-        function updateSelects(){
-            // (Aucun changement nécessaire - fonction Hôte)
-            const selects = ['absence-student-select', 'homework-student-select', 'select-student-for-absence-view'];
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                const currentVal = select.value;
-                select.innerHTML = '';
-                
-                if (selectId === 'homework-student-select') {
-                    select.add(new Option('Tous les élèves', 'all'));
-                } else {
-                    select.add(new Option('-- Choisir un élève --', ''));
-                }
-
-                studentsData.forEach(student => {
-                    const option = new Option(`${student.firstName} ${student.lastName}`, student.id);
-                    select.add(option);
-                });
-
-                if (studentsData.some(s => s.id == currentVal) || currentVal === 'all' || currentVal === '') {
-                    select.value = currentVal;
-                }
-            });
-        }
-        function recordAbsence(){
-            // (Aucun changement nécessaire - fonction Hôte)
-            if(!isHost)return;
-            const courseId = parseInt(document.getElementById('course-id').value);
-            const studentId = document.getElementById('absence-student-select').value;
-            const dateStr = document.getElementById('absence-date-input').value;
-            const reason = document.getElementById('absence-reason-input').value.trim();
-            
-            if(!studentId)return alert("Veuillez sélectionner un élève.");
-            if(!dateStr)return alert("Veuillez sélectionner une date.");
-            
-            const course = scheduleData.find(c=>c.id===courseId);
-            const student = studentsData.find(s=>s.id==studentId);
-            if(!course)return alert("Cours introuvable. Veuillez d'abord sauvegarder le cours.");
-            if(!student)return alert("Élève introuvable.");
-
-            const newAbsence = {
-                id:Date.now(),
-                studentId:student.id,
-                studentName: `${student.firstName} ${student.lastName}`,
-                courseName:course.name,
-                date:dateStr,
-                reason:reason||'Non spécifiée',
-                start:course.start,
-                end:course.start+course.duration,
-                status: 'injustifiée'
-            };
-            absencesData.push(newAbsence);
-            save();
-            alert(`Absence enregistrée pour ${student.firstName} en ${course.name} le ${dateStr}.`);
-            document.getElementById('absence-student-select').value = '';
-            document.getElementById('absence-reason-input').value = '';
-            document.getElementById('absence-date-input').valueAsDate = new Date();
-        }
-        function openAbsenceViewerModal(){
-            document.getElementById('absences-viewer-modal').style.display='flex';
-            updateSelects(); 
-            document.getElementById('select-student-for-absence-view').value = '';
-            renderAbsencesList(''); 
-        }
-        function renderAbsencesList(studentId){
-            const listContainer = document.getElementById('absences-list');
-            listContainer.innerHTML = '';
-            
-            // Si pas Hôte, on affiche un message de connexion
-            if (!isHost) {
-                listContainer.innerHTML='<p style="text-align:center;color:#888;">Veuillez vous connecter pour voir l\'historique d\'absences.</p>';
-                document.getElementById('absences-viewer-title').innerText = `Historique des Absences`;
-                return;
-            }
-
-            const student = studentsData.find(s=>s.id==studentId);
-
-            if (!studentId || !student) {
-                listContainer.innerHTML='<p style="text-align:center;color:#888;">Veuillez choisir un élève pour voir son historique d\'absences.</p>';
-                document.getElementById('absences-viewer-title').innerText = `Historique des Absences`;
-                return;
-            }
-
-            document.getElementById('absences-viewer-title').innerText = `Absences de ${student.firstName} ${student.lastName}`;
-            
-            const studentAbsences = absencesData
-                .filter(a=>a.studentId==studentId)
-                .sort((a,b)=>new Date(b.date)-new Date(a.date));
-
-            if(studentAbsences.length===0){
-                listContainer.innerHTML='<p style="text-align:center;color:#888;">Cet élève n\'a aucune absence enregistrée.</p>';
-            }else{
-                let html='<table style="width:100%; border-collapse: collapse; font-size: 0.9em;"><tr><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Date</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Cours</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Heure</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Raison/Statut</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Action</th></tr>';
-                studentAbsences.forEach(abs=>{
-                    const statusColor = abs.status === 'injustifiée' ? '#dc3545' : '#28a745';
-                    html+=`<tr>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${abs.date}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${abs.courseName}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;">${formatTime(abs.start)} - ${formatTime(abs.end)}</td>
-                        <td style="padding: 8px; border: 1px solid #ddd; color: ${statusColor}; font-weight: bold;">${abs.reason} (${abs.status})</td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><button onclick="deleteAbsence(${abs.id})" style="background:red;color:white;padding:5px;font-size:0.8em; border: none; cursor: pointer;">Suppr.</button></td>
-                    </tr>`;
-                });
-                html+='</table>';
-                listContainer.innerHTML=html;
-            }
-        }
-        function deleteAbsence(absenceId){
-            if(!isHost||!confirm("Voulez-vous vraiment supprimer cette absence?"))return;
-            const absenceToDelete = absencesData.find(a => a.id === absenceId);
-            if (!absenceToDelete) return;
-            const studentId = absenceToDelete.studentId;
-            absencesData = absencesData.filter(a=>a.id!==absenceId);
-            save();
-            renderAbsencesList(studentId); 
-        }
-        function renderAbsenceSummary() {
-            const container = document.getElementById('absence-summary-container');
-            
-            // Si pas Hôte, affichage simple
-            if (!isHost) {
-                 container.innerHTML = '<p style="text-align: center; color: #888;">Connectez-vous pour voir les absences détaillées.</p>';
-                 return;
-            }
-
-            // Si Hôte, affichage détaillé
-            const recentAbsences = absencesData
-                .sort((a,b)=>new Date(b.date)-new Date(a.date))
-                .slice(0, 3); 
-
-            if (recentAbsences.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #888;">Aucune absence récente enregistrée.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            recentAbsences.forEach(abs => {
-                const statusColor = abs.status === 'injustifiée' ? '#dc3545' : '#28a745';
-                const statusBlockStyle = `border-left: 3px solid ${statusColor};`;
-                const student = studentsData.find(s => s.id === abs.studentId);
-                const studentName = student ? `${student.firstName} ${student.lastName}` : 'Élève inconnu';
-
-                container.innerHTML += `
-                    <div class="info-block" style="${statusBlockStyle}">
-                        <strong>${abs.courseName}</strong> - ${studentName}
-                        <span>Le ${abs.date} de ${formatTime(abs.start)} à ${formatTime(abs.end)}. Raison : ${abs.reason}</span>
-                    </div>
-                `;
-            });
-        }
-
-
-        // --- Homework (Cahier de Textes) ---
-        function openHomeworkEditorModal(){
-            if(!isHost)return alert("Veuillez vous connecter en mode Hôte pour gérer les devoirs.");
-            if(studentsData.length === 0) return alert("Veuillez d'abord ajouter des élèves via le bouton 'Gérer Élèves' pour pouvoir leur attribuer des devoirs.");
-
-            document.getElementById('homework-editor-modal').style.display = 'flex';
-            document.getElementById('homework-date').valueAsDate = new Date();
-            updateSelects(); 
-            renderActiveHomeworkList();
-        }
-        function saveHomework(){
-            // (Aucun changement nécessaire - fonction Hôte)
-            if(!isHost)return;
-            const subject = document.getElementById('homework-subject').value.trim();
-            const dateStr = document.getElementById('homework-date').value;
-            const studentId = document.getElementById('homework-student-select').value;
-            const details = document.getElementById('homework-details').value.trim();
-
-            if(!subject || !dateStr || !details) return alert("Veuillez remplir la matière, la date et les détails.");
-            
-            let studentName = "";
-            if (studentId === 'all') {
-                studentName = 'Tous les élèves';
-            } else {
-                const student = studentsData.find(s => s.id == studentId);
-                if (!student) return alert("Élève sélectionné invalide.");
-                studentName = `${student.firstName} ${student.lastName}`;
-            }
-
-            const newHomework = {
-                id: Date.now(),
-                studentId: studentId, 
-                studentName: studentName,
-                date: dateStr,
-                subject: subject,
-                details: details,
-                done: false
-            };
-            homeworkData.push(newHomework);
-            save();
-            alert(`Devoir de ${subject} ajouté pour ${studentName}.`);
-            document.getElementById('homework-subject').value = '';
-            document.getElementById('homework-details').value = '';
-            document.getElementById('homework-student-select').value = 'all';
-            renderActiveHomeworkList();
-        }
-        function deleteHomework(id){
-            // (Aucun changement nécessaire - fonction Hôte)
-            if(!isHost||!confirm("Voulez-vous vraiment supprimer ce devoir?"))return;
-            homeworkData = homeworkData.filter(h=>h.id!==id);
-            save();
-            renderActiveHomeworkList();
-        }
-        function toggleHomeworkDone(id){
-            // (Aucun changement nécessaire - fonction Hôte)
-            const homework = homeworkData.find(h=>h.id===id);
-            if(homework){
-                homework.done = !homework.done;
-                save();
-            }
-        }
-        function renderActiveHomeworkList() {
-            // (Aucun changement nécessaire - fonction Hôte)
-            const activeListContainer = document.getElementById('active-homework-list');
-            activeListContainer.innerHTML = '';
-            
-            if (homeworkData.length === 0) {
-                activeListContainer.innerHTML = '<p style="text-align: center; color: #888;">Aucun devoir à supprimer.</p>';
-                return;
-            }
-
-            homeworkData.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(hw => {
-                const div = document.createElement('div');
-                div.style.cssText = 'border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; align-items: center;';
-                div.innerHTML = `
-                    <span>
-                        <strong style="color: ${hw.done ? '#28a745' : '#ff9800'};">${hw.subject}</strong> (${hw.date}) <br>
-                        <span style="font-size: 0.8em; color: #666;">Pour: ${hw.studentName}</span>
-                    </span>
-                    ${isHost ? `<button onclick="deleteHomework(${hw.id})" style="background:red;color:white;padding:5px 10px;font-size:0.8em; border: none; cursor: pointer;">Supprimer</button>` : ''}
-                `;
-                activeListContainer.appendChild(div);
-            });
-        }
-        function renderHomeworkList() {
-            const container = document.getElementById('devoirs-list-container');
-            container.innerHTML = '';
-            
-            // Les devoirs ne sont affichés qu'en mode Hôte
-            if (!isHost) {
-                container.innerHTML = '<p style="text-align: center; color: #888;">Connectez-vous pour voir le cahier de textes.</p>';
-                return;
-            }
-
-            const pendingHomework = homeworkData
-                .filter(hw => !hw.done)
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            if (pendingHomework.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #888;">Aucun devoir n\'est planifié pour le moment.</p>';
-                return;
-            }
-
-            let currentDate = null;
-
-            pendingHomework.forEach(hw => {
-                const dueDate = new Date(hw.date);
-                const dateString = dueDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-
-                if (dueDate.setHours(0, 0, 0, 0) !== currentDate) {
-                    container.innerHTML += `<div class="devoirs-title-day" style="margin-top: 20px;">Pour ${dateString}</div>`;
-                    currentDate = dueDate.setHours(0, 0, 0, 0);
-                }
-
-                container.innerHTML += `
-                    <div class="devoirs-item">
-                        <div class="matiere">${hw.subject.toUpperCase()}</div>
-                        <span class="student-name">${hw.studentName}</span>
-                        <div class="actions">
-                            <button onclick="toggleHomeworkDone(${hw.id})">Fait</button>
-                        </div>
-                        <div class="detail">${hw.details}</div>
-                    </div>
-                `;
             });
         }
 
         // --- Initialization ---
         window.onload=function(){
-            generateTimeOptions();
-            const timeCol = document.getElementById('time-column');
-            for(let i=8;i<=20;i++){
-                let div = document.createElement('div');
-                div.className = 'time-slot';
-                div.innerText = i+":00";
-                timeCol.appendChild(div);
-            }
-            
-            // Charge les données
-            load(); 
-
-            // Initial Render (par défaut en mode visiteur)
-            document.getElementById('absence-date-input').valueAsDate = new Date();
-            document.getElementById('homework-date').valueAsDate = new Date();
-            updateSelects();
-            renderSchedule(); 
-            renderHomeworkList(); 
-            renderAbsenceSummary();
-            updateUI(); // Appelé une fois pour le mode visiteur par défaut
-            
-            updateTimeLine();
-            setInterval(updateTimeLine,60000);
+            updateUI(); // S'assure que l'affichage Visiteur est correct au chargement
         };
     </script>
 </body>
