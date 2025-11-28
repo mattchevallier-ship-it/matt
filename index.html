@@ -3,99 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Emploi du Temps</title>
+    <title>ESPACE ÉLÈVE - Emploi du Temps</title>
     <style>
-        
-        :root {--bg-color:#f4f6f8;--grid-line-color:#e0e0e0;--accent-color:#007bff;--current-time-color:#e02e2e;--slot-height:70px;}
-        body {font-family:'Segoe UI',sans-serif;background-color:var(--bg-color);margin:0;padding:20px;color:#333;}
-        .top-bar {display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;max-width:1200px;margin-left:auto;margin-right:auto;}
-        .top-bar > div {display:flex;gap:10px;}
-        button {padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;transition:0.2s;}
-        .btn-login {background-color:#333;color:white;}
-        .btn-save-edit {background-color:#007bff;color:white;display:inline-block;width:100%;margin-top:10px;}
-        #login-modal,#editor-modal,#students-modal,#absences-viewer-modal {position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;}
-        .modal-content {background:white;padding:30px;border-radius:8px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:center;}
-        input,select {width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
-        .delete-student-btn {color:#dc3545;font-weight:bold;font-size:1.2em;cursor:pointer;padding:0 5px;margin-left:15px;}
-        #students-list-container div {padding:8px;margin-bottom:5px;background:#f8f8f8;border:1px solid #eee;border-radius:4px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:0.1s;}
-        #students-list-container div:hover {background:#f0f0f0;}
-        .schedule-container {display:grid;grid-template-columns:60px repeat(5,1fr);background:#fff;border-radius:8px 8px 0 0;box-shadow:0 4px 12px rgba(0,0,0,0.05);position:relative;max-width:1200px;margin:0 auto;border:1px solid #ddd;}
-        .header {padding:15px;text-align:center;font-weight:600;border-bottom:1px solid var(--grid-line-color);border-right:1px solid var(--grid-line-color);background:#fff;z-index:20;}
-        .time-column {background-color:#fafafa;border-right:1px solid var(--grid-line-color);}
-        .time-slot {height:var(--slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}
-        .day-column {position:relative;border-right:1px solid var(--grid-line-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--slot-height);}
-        #cantine-band {position:absolute;top:369px;height:105px;left:60px;right:0;background-color:#e6ffeb;border:1px solid #4caf50;border-width:1px 0;z-index:40;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.8em;color:#388e3c;pointer-events:none;box-sizing:border-box;}
-        .course {position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 2px 5px rgba(0,0,0,0.1);overflow:hidden;}
-        .course strong {display:block;margin-bottom:2px;}
+        /* --- NOUVEAUX STYLES PRONOTE --- */
+        :root {
+            --pronote-green: #008778;
+            --pronote-blue: #007bff;
+            --bg-color: #f7f7f7;
+            --card-bg: #fff;
+            --border-color: #e0e0e0;
+            --time-slot-height: 70px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--pronote-green);
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #555;
+        }
+        .header-left span {
+            margin-left: 15px;
+            color: var(--pronote-green);
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+            font-size: 0.95em;
+        }
+        nav a {
+            text-decoration: none;
+            color: #555;
+            padding: 5px 0;
+            transition: color 0.2s;
+        }
+        nav a:hover, nav a.active {
+            color: var(--pronote-green);
+            border-bottom: 3px solid var(--pronote-green);
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1fr; /* EDTs, Tâches, Agenda */
+            gap: 20px;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        h3.card-title {
+            font-size: 1.1em;
+            color: #333;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        /* Style pour les blocs d'informations (similaire à "Absence justifiée") */
+        .info-block {
+            background: #fcfcfc;
+            border-left: 3px solid var(--pronote-blue);
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        .info-block strong {
+            color: #333;
+            font-weight: bold;
+        }
+        .info-block span {
+            color: #666;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* --- EMPLOI DU TEMPS (Adapté au nouveau thème) --- */
+        .schedule-container {
+            grid-column: 1 / 2; /* Prend la première colonne */
+            display: grid;
+            grid-template-columns: 60px repeat(5,1fr);
+            background:#fff;
+            border-radius:4px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+            position:relative;
+            border:1px solid var(--border-color);
+            margin-top: 0;
+        }
+        .schedule-container > .header {
+            padding: 10px 0;
+            text-align:center;
+            font-weight:600;
+            border-bottom:1px solid var(--border-color);
+            border-right:1px solid var(--border-color);
+            background:#fcfcfc;
+            font-size: 0.9em;
+        }
+        .time-column {background-color:#fcfcfc;border-right:1px solid var(--border-color);}
+        .time-slot {height:var(--time-slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}
+        .day-column {position:relative;border-right:1px solid var(--border-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--time-slot-height);}
+        #cantine-band {position:absolute;top:369px;height:105px;left:60px;right:0;background-color:#e6ffeb;border:1px solid #4caf50;border-width:1px 0;z-index:40;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.4em;color:#388e3c;pointer-events:none;box-sizing:border-box;}
+        .course {
+            position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .course strong {display:block;margin-bottom:2px;font-weight: bold;}
         .course .time-display {font-size:0.75em;font-weight:600;color:#555;display:block;}
-        .delete-btn {position:absolute;top:2px;right:2px;background:rgba(255,255,255,0.7);color:red;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;font-weight:bold;cursor:pointer;display:none;font-size:12px;z-index:60;}
-        .delete-btn:hover {background:red;color:white;}
-        .c-jaune {background:#fffddb;border-left:4px solid #f9a825;color:#333;}
-        .c-violet {background:#f3e5f5;border-left:4px solid #9c27b0;color:#333;}
-        .c-bleu {background:#e6f7ff;border-left:4px solid #2196f3;color:#333;}
-        .c-vert {background:#e0ffe0;border-left:4px solid #4caf50;color:#333;}
-        .c-jaune .time-display {color:#888;}
-        .c-violet .time-display {color:#888;}
-        .c-bleu .time-display {color:#888;}
-        .c-vert .time-display {color:#888;}
-        .homework-container {display:grid;grid-template-columns:60px repeat(5,1fr);max-width:1200px;margin:0 auto;border-bottom:1px solid #ddd;border-left:1px solid #ddd;border-right:1px solid #ddd;border-radius:0 0 8px 8px;}
-        .devoirs-empty {grid-column:1;background-color:#fafafa;border-right:1px solid var(--grid-line-color);}
-        .devoirs-day {padding:15px;text-align:center;height:80px;font-size:0.9em;box-sizing:border-box;border-right:1px solid var(--grid-line-color);}
-        .devoirs-day:last-child {border-right:none;}
-        .c-orange-pale {background:#fff8e1;color:#ef6c00;font-weight:600;display:flex;align-items:center;justify-content:center;text-align:center;}
-        #absences-list {max-height:300px;overflow-y:auto;border:1px solid #ddd;padding:10px;margin-top:10px;}
-        #absences-list table {width:100%;border-collapse:collapse;font-size:0.9em;}
-        #absences-list th,#absences-list td {border:1px solid #eee;padding:8px;text-align:left;}
-        #absences-list th {background-color:#f0f0f0;font-weight:bold;}
-        #current-time-line {position:absolute;left:60px;right:0;height:2px;background-color:var(--current-time-color);z-index:50;pointer-events:none;display:none;}
-        #time-badge {position:absolute;left:-60px;top:-10px;background:var(--current-time-color);color:white;padding:2px 5px;border-radius:4px;font-size:0.7rem;}
+        .c-jaune {background:#fff3e0;border-left:4px solid #ff9800;color:#333;} /* Orange pronote */
+        .c-violet {background:#e6e6ff;border-left:4px solid #673ab7;color:#333;} /* Violet */
+        .c-bleu {background:#e0f7fa;border-left:4px solid #00bcd4;color:#333;} /* Bleu ciel pronote */
+        .c-vert {background:#e8f5e9;border-left:4px solid #4caf50;color:#333;} /* Vert clair pronote */
+
+        /* --- Devoirs à faire (Dans le bloc central) --- */
+        .homework-container {
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            display: block;
+        }
+        .devoirs-title-day {
+            font-weight: bold;
+            font-size: 1em;
+            color: var(--pronote-blue);
+            margin-bottom: 5px;
+            padding-left: 5px;
+        }
+        .devoirs-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border-left: 3px solid #ff9800; /* Orange pour travail */
+        }
+        .devoirs-item .matiere {
+            font-weight: bold;
+            color: #ff9800;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .devoirs-item .detail {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .devoirs-item button {
+            background-color: #f0f0f0;
+            color: #555;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 0.8em;
+            float: right;
+        }
+
+        /* --- Agenda (Bloc de droite) --- */
+        .agenda-item {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--pronote-green);
+            padding-left: 8px;
+            line-height: 1.4;
+        }
+        .agenda-item .date {
+            font-weight: bold;
+            color: var(--pronote-green);
+            margin-right: 5px;
+        }
+        .agenda-item .title {
+            color: #333;
+        }
+
+        /* --- Boutons et Modals (Garde la fonctionnalité compactée) --- */
+        .top-bar-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .top-bar-controls button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            font-size: 0.9em;
+        }
+        .btn-login, .btn-manage-students {background-color: var(--pronote-blue);color: white;}
+        .btn-add {background-color: #28a745;color: white;}
+        .btn-reset {background-color: #dc3545;color: white;}
+        #user-status {font-size:0.8em;color:#666;margin-left: 10px;}
+        .delete-btn {
+            position:absolute;top:2px;right:2px;background:rgba(255,255,255,0.7);color:red;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;font-weight:bold;cursor:pointer;display:none;font-size:12px;z-index:60;
+        }
+        #login-modal,#editor-modal,#students-modal,#absences-viewer-modal {
+            position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;
+        }
+        .modal-content {
+            background:white;padding:30px;border-radius:8px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left; /* Alignement à gauche pour les formulaires */
+        }
+        input,select {width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <h2>📅 Emploi du temps <span id="user-status" style="font-size:0.6em;color:#666;">(Mode Visiteur)</span></h2>
-        <div>
-            <button class="btn-manage-students" id="host-button-students" onclick="openStudentsModal()" style="background-color:#007bff;color:white;display:none;">👥 Gérer Élèves</button>
-            <button class="btn-add" id="host-button-add" onclick="openEditor()" style="background-color:#28a745;color:white;display:none;">+ Ajouter un cours</button>
-            <button class="btn-reset" id="host-button-reset" onclick="resetData()" style="background-color:#dc3545;color:white;display:none;">Réinitialiser</button>
-            <button class="btn-login" id="loginBtn" onclick="toggleLogin()">Connexion Hôte</button>
+    <header>
+        <div class="header-left">
+            <img src="https://static.wixstatic.com/media/7e3b12_141a067087b34b159f37c376ef957388~mv2.png" alt="Logo Pronote" style="height: 30px; margin-right: 10px;">
+            SITE DE DÉMONSTRATION | <span style="font-size:0.9em;">ESPACE ÉLÈVE - FANNY (3A)</span>
+        </div>
+        <nav>
+            <a href="#" class="active">Mes données</a>
+            <a href="#">Cahier de textes</a>
+            <a href="#">Notes</a>
+            <a href="#">Compétences</a>
+            <a href="#">Résultats</a>
+            <a href="#">Vie scolaire</a>
+            <a href="#">Stage</a>
+            <a href="#">Communication</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="schedule-column">
+            <div class="top-bar-controls">
+                <button class="btn-manage-students" id="host-button-students" onclick="openStudentsModal()" style="display:none;">👥 Gérer Élèves</button>
+                <button class="btn-add" id="host-button-add" onclick="openEditor()" style="display:none;">+ Ajouter un cours</button>
+                <button class="btn-reset" id="host-button-reset" onclick="resetData()" style="display:none;">Réinitialiser</button>
+                <button class="btn-login" id="loginBtn" onclick="toggleLogin()">Connexion Hôte</button>
+                <span id="user-status">(Mode Visiteur)</span>
+            </div>
+
+            <div class="card" style="padding: 0; margin-bottom: 20px;">
+                <h3 class="card-title" style="padding: 15px; margin: 0; border-bottom: 1px solid var(--border-color);">
+                    📅 Emploi du temps (Semaine Q2)
+                </h3>
+                <div class="schedule-container" style="border: none; box-shadow: none;">
+                    <div id="cantine-band">CANTINE</div>
+                    <div id="current-time-line"><div id="time-badge">--:--</div></div>
+
+                    <div class="header" style="border-bottom:none;"></div>
+                    <div class="header">Lun.</div>
+                    <div class="header">Mar.</div>
+                    <div class="header">Mer.</div>
+                    <div class="header">Jeu.</div>
+                    <div class="header">Ven.</div>
+
+                    <div class="time-column" id="time-column">
+                    </div>
+
+                    <div class="day-column" id="day-0"></div>
+                    <div class="day-column" id="day-1"></div>
+                    <div class="day-column" id="day-2"></div>
+                    <div class="day-column" id="day-3"></div>
+                    <div class="day-column" id="day-4"></div>
+                </div>
+            </div>
+            
+            <div class="card homework-container">
+                <h3 class="card-title">📖 Devoirs à Rendre (Répétitifs)</h3>
+                <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Lundi</div>|Maths|</div>
+                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Mardi</div>|Histoire/SVT|</div>
+                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Mercredi</div>|SES/LVB|</div>
+                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Jeudi</div>|Physique/SNT|</div>
+                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Vendredi</div>|FR/ANG|</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tasks-column">
+            <div class="card">
+                <h3 class="card-title">📚 Prochains Devoirs</h3>
+                <div class="devoirs-title-day">Pour lundi 23 juil.</div>
+                <div class="devoirs-item">
+                    <div class="matiere">MATHÉMATIQUES</div>
+                    <button>Non Fait</button>
+                    <div class="detail">Exercices n°5, 6 et 7 p.43</div>
+                </div>
+                <div class="devoirs-title-day">Pour mardi 24 juil.</div>
+                <div class="devoirs-item">
+                    <div class="matiere">ANGLAIS LV1</div>
+                    <button>Non Fait</button>
+                    <div class="detail">Rédaction: raconter en 300 mots une anecdote de vos vacances</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">📨 Carnet de correspondance</h3>
+                <div class="info-block">
+                    <strong>Absence justifiée</strong>
+                    <span>du 12 avril à 8h00 au 18 mai à 18h00</span>
+                </div>
+                <div class="info-block" style="border-left-color:#dc3545;">
+                    <strong>Absence injustifiée</strong>
+                    <span>du 27 avr. à 8h00 au 4 mai à 8h30</span>
+                </div>
+                <div class="info-block">
+                    <strong>Absence justifiée</strong>
+                    <span>du 14 avr. à 8h00 au 20 avr. à 18h00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-column">
+            <div class="card">
+                <h3 class="card-title">🔗 Liens et numéros utiles</h3>
+                <ul style="list-style: none; padding: 0; font-size: 0.9em;">
+                    <li style="margin-bottom: 5px;"><a href="#" style="color:var(--pronote-blue);">• Protocole sanitaire</a></li>
+                    <li style="margin-bottom: 5px;"><a href="#" style="color:var(--pronote-blue);">• Les éco-délégués, c'est quoi ?</a></li>
+                    <li style="margin-bottom: 5px;"><a href="#" style="color:var(--pronote-blue);">• Pass'Sport : 50 euros pour faire du sport</a></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🗓️ Agenda</h3>
+                <div class="agenda-item">
+                    <span class="date">18 juil.</span> Inscription au groupe d'activité
+                </div>
+                <div class="agenda-item">
+                    <span class="date">29 juil.</span> Élection des délégués de classe
+                </div>
+                <div class="agenda-item">
+                    <span class="date">05 août.</span> Chorale Gospel
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="schedule-container">
-        <div id="cantine-band">CANTINE</div>
-        <div id="current-time-line"><div id="time-badge">--:--</div></div>
-
-        <div class="header" style="border-bottom:none;"></div>
-        <div class="header">Lundi</div>
-        <div class="header">Mardi</div>
-        <div class="header">Mercredi</div>
-        <div class="header">Jeudi</div>
-        <div class="header">Vendredi</div>
-
-        <div class="time-column" id="time-column">
-        </div>
-
-        <div class="day-column" id="day-0"></div>
-        <div class="day-column" id="day-1"></div>
-        <div class="day-column" id="day-2"></div>
-        <div class="day-column" id="day-3"></div>
-        <div class="day-column" id="day-4"></div>
-    </div>
-
-    <div class="homework-title" style="max-width:1200px;margin:20px auto 0 auto;padding-left:60px;font-weight:bold;font-size:1.1em;">
-        Activité Semaine
-    </div>
-
-    <div class="homework-container">
-        <div class="devoirs-empty"></div>
-        <div class="devoirs-day c-orange-pale">|Maths|</div>
-        <div class="devoirs-day c-orange-pale">|Histoire-Géo / Svt|</div>
-        <div class="devoirs-day c-orange-pale">|SES-Eco-Gest / LVB|</div>
-        <div class="devoirs-day c-orange-pale">|Physique / SNT|</div>
-        <div class="devoirs-day c-orange-pale">|FR / ANG|</div>
-    </div>
 
     <div id="login-modal">
         <div class="modal-content" id="login-form-content">
@@ -111,51 +366,22 @@
         <div class="modal-content" id="editor-form-content">
             <h3 id="editor-title">Nouveau Cours</h3>
             <input type="hidden" id="course-id">
-
-            <label>Matière</label>
-            <input type="text" id="course-name" placeholder="Ex: Maths">
-
-            <label>Salle</label>
-            <input type="text" id="course-room" placeholder="Ex: G111">
-
+            <label>Matière</label><input type="text" id="course-name" placeholder="Ex: Maths">
+            <label>Salle</label><input type="text" id="course-room" placeholder="Ex: G111">
             <label>Jour</label>
-            <select id="course-day">
-                <option value="0">Lundi</option>
-                <option value="1">Mardi</option>
-                <option value="2">Mercredi</option>
-                <option value="3">Jeudi</option>
-                <option value="4">Vendredi</option>
-            </select>
-
+            <select id="course-day"><option value="0">Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option><option value="3">Jeudi</option><option value="4">Vendredi</option></select>
             <div style="display:flex;gap:10px;">
-                <div style="flex:1">
-                    <label>Heure Début</label>
-                    <select id="course-start-time"></select>
-                </div>
-                <div style="flex:1">
-                    <label>Heure de Fin</label>
-                    <select id="course-end-time"></select>
-                </div>
+                <div style="flex:1"><label>Heure Début</label><select id="course-start-time"></select></div>
+                <div style="flex:1"><label>Heure de Fin</label><select id="course-end-time"></select></div>
             </div>
-
             <label>Couleur</label>
-            <select id="course-color">
-                <option value="c-jaune">Jaune très pâle</option>
-                <option value="c-violet">Violet très pâle</option>
-                <option value="c-bleu">Bleu très pâle</option>
-                <option value="c-vert">Vert pâle</option>
-            </select>
-
-            <hr style="margin-top:20px;">
-            <h4>Marquer une Absence (Optionnel)</h4>
-            <select id="absence-student-select">
-                <option value="">-- Choisir un élève --</option>
-                </select>
+            <select id="course-color"><option value="c-jaune">Orange très pâle</option><option value="c-violet">Violet très pâle</option><option value="c-bleu">Bleu très pâle</option><option value="c-vert">Vert pâle</option></select>
+            <hr style="margin-top:20px;"><h4>Marquer une Absence (Optionnel)</h4>
+            <select id="absence-student-select"><option value="">-- Choisir un élève --</option></select>
             <input type="date" id="absence-date-input" value="">
             <input type="text" id="absence-reason-input" placeholder="Raison (Ex: Maladie)">
             <button onclick="recordAbsence()" style="background-color:#dc3545;color:white;width:100%;margin-top:5px;">Enregistrer l'Absence pour ce cours</button>
             <hr>
-
             <button onclick="saveCourse()" class="btn-save-edit" id="editor-action-btn">Ajouter</button>
             <button onclick="closeModal('editor-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button>
         </div>
@@ -164,22 +390,11 @@
     <div id="students-modal">
         <div class="modal-content" style="width:400px;text-align:left;">
             <h3>👥 Gestion des Élèves</h3>
-
-            <label>Prénom</label>
-            <input type="text" id="student-name-input" placeholder="Prénom de l'élève">
-
-            <label>Nom de famille</label>
-            <input type="text" id="student-lastname-input" placeholder="Nom de famille de l'élève">
-
+            <label>Prénom</label><input type="text" id="student-name-input" placeholder="Prénom de l'élève">
+            <label>Nom de famille</label><input type="text" id="student-lastname-input" placeholder="Nom de famille de l'élève">
             <button onclick="addStudent()" class="btn-save-edit" style="background-color:#28a745;">Ajouter cet élève</button>
-
-            <hr style="margin:20px 0;">
-
-            <h4>Liste des Élèves (cliquez pour voir les absences)</h4>
-            <div id="students-list-container">
-                <p style="text-align:center;color:#888;">Aucun élève enregistré.</p>
-            </div>
-
+            <hr style="margin:20px 0;"><h4>Liste des Élèves (cliquez pour voir les absences)</h4>
+            <div id="students-list-container"><p style="text-align:center;color:#888;">Aucun élève enregistré.</p></div>
             <button onclick="closeModal('students-modal')" style="background:transparent;color:#888;margin-top:20px;">Fermer</button>
         </div>
     </div>
@@ -187,14 +402,11 @@
     <div id="absences-viewer-modal">
         <div class="modal-content" style="width:500px;text-align:left;">
             <h3 id="absences-viewer-title">Absences de [Élève]</h3>
-
-            <div id="absences-list">
-                <p style="text-align:center;color:#888;">Cet élève n'a aucune absence enregistrée.</p>
-            </div>
-
+            <div id="absences-list"><p style="text-align:center;color:#888;">Cet élève n'a aucune absence enregistrée.</p></div>
             <button onclick="closeModal('absences-viewer-modal')" class="btn-login" style="width:100%;margin-top:20px;">Fermer</button>
         </div>
     </div>
+
 
     <script>
         const courses = [{id:1,day:0,start:8,duration:2,name:"Mathématiques",room:"G111",color:"c-bleu"},{id:2,day:0,start:14,duration:1,name:"Anglais",room:"G111",color:"c-vert"},{id:3,day:2,start:10,duration:2,name:"Français",room:"G111",color:"c-jaune"},{id:4,day:4,start:15,duration:2,name:"Sport",room:"G111",color:"c-violet"}];
@@ -202,20 +414,8 @@
         let isHost = false;
         let currentEditingId = null;
 
-      
-        const ALPHA_X='X';
-        const BETA_Z='Z';
-        const GAMMA_Q='Q';
-        const DELTA_W='W';
-        const EPS_F='F';
-        const ZETA_J='J';
-        const ETA_K='K';
-        const THETA_L='L';
-        const IOTA_P='P';
-        const KAP_Y='Y';
-        const LAMB_A='A';
-        const MU_S='S';
-
+        // --- Variables Leurre Alpha Globales (Obfuscation maintenue) ---
+        const ALPHA_X='X';const BETA_Z='Z';const GAMMA_Q='Q';const DELTA_W='W';const EPS_F='F';const ZETA_J='J';const ETA_K='K';const THETA_L='L';const IOTA_P='P';const KAP_Y='Y';const LAMB_A='A';const MU_S='S';
         let studentsData = [];
         let absencesData = [];
 
@@ -227,17 +427,11 @@
             }
         }
 
-       
-        const BASE_N_987=987.65;
-        const CONST_42=42;
-        const TINY_001=0.01;
-        const CONST_15=15;
-        const PI_APPROX=3.14159;
-        const HUNDRED=100;
-        const NINETEEN=19;
+        // --- Variables Leurre Numériques Globales (Obfuscation maintenue) ---
+        const BASE_N_987=987.65;const CONST_42=42;const TINY_001=0.01;const CONST_15=15;const PI_APPROX=3.14159;const HUNDRED=100;const NINETEEN=19;
 
         function getAuthData(){
-           
+            // Calculs pour le mot de passe (2479)
             const CALC_P2 = Math.round(Math.sqrt(HUNDRED / 25));
             const NOISE_1A = (NINETEEN + CONST_42) * TINY_001;
             const CALC_P4 = Math.round((CONST_42 / 10.5));
@@ -247,7 +441,7 @@
             const CALC_P9 = Math.round(CONST_15 * 0.6);
             const PW = CALC_P2.toString() + CALC_P4.toString() + CALC_P7.toString() + CALC_P9.toString();
 
-           
+            // Calculs pour le Nom d'utilisateur (mchevallier)
             const NOISE_4D = CONST_42 + NINETEEN;
             const FRAG_M_BASE = HUNDRED + 9;
             const FRAG_M = String.fromCharCode(FRAG_M_BASE + (CONST_15 * 0.0) + (NINETEEN - 19));
@@ -269,7 +463,6 @@
             const FRAG_I = String.fromCharCode(Math.round(HUNDRED + 5));
             const DECOY_COMBINE5 = LAMB_A + MU_S;
             const FRAG_E2 = FRAG_E1;
-            const DECOY_DIFF_N = CONST_15 - TINY_001;
             const FRAG_R = String.fromCharCode(HUNDRED + 14);
             const UN = FRAG_M + FRAG_C + FRAG_H + FRAG_E1 + FRAG_V + FRAG_A + FRAG_L1 + FRAG_L2 + FRAG_I + FRAG_E2 + FRAG_R;
             return {UN, PW};
@@ -347,7 +540,6 @@
             const editorModalContent = document.getElementById('editor-modal');
             editorModalContent.addEventListener('keydown',function(event){if(event.key==='Enter' && event.target.tagName!=='BUTTON' && event.target.tagName!=='SELECT'){event.preventDefault();saveCourse();}});
             
-            
             renderSchedule(); 
             
             updateTimeLine();
@@ -364,7 +556,7 @@
             if(isHost){
                 isHost = false;
                 document.getElementById('loginBtn').innerText = "Connexion Hôte";
-                document.getElementById('loginBtn').style.background = "#333";
+                document.getElementById('loginBtn').style.background = "var(--pronote-blue)";
                 document.getElementById('user-status').innerText = "(Mode Visiteur)";
                 updateUI();
                 renderSchedule();
@@ -562,5 +754,3 @@
     </script>
 </body>
 </html>
-
-
