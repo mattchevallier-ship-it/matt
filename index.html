@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lycée George Brière - Espace Élève</title>
     <style>
-        /* --- STYLES PRONOTE --- */
+        /* --- STYLES GLOBALES & COULEURS PRONOTE --- */
         :root {
             --pronote-green: #008778;
             --pronote-blue: #007bff;
@@ -20,7 +20,6 @@
             margin: 0;
             padding: 0;
             color: #333;
-            /* CRUCIAL : Décale le contenu sous le header fixe */
             padding-top: 90px; 
         }
         header {
@@ -31,7 +30,6 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            /* CRUCIAL : Rendre le header fixe */
             position: fixed;
             top: 0;
             left: 0;
@@ -47,7 +45,7 @@
             color: #555;
         }
         .header-left img {
-            height: 40px; /* Nouvelle taille pour le nouveau logo */
+            height: 40px; 
             margin-right: 15px;
         }
         .header-left span {
@@ -56,26 +54,21 @@
             font-size: 0.9em;
             font-weight: normal;
         }
-        nav {
-            display: flex;
-            gap: 20px;
-            font-size: 0.95em;
-        }
+        nav {display: flex; gap: 20px; font-size: 0.95em;}
         nav a {
             text-decoration: none;
             color: #555;
             padding: 5px 0;
             transition: color 0.2s;
-            cursor: pointer; /* Pour indiquer la clicabilité */
+            cursor: pointer;
         }
         nav a:hover, nav a.active {
             color: var(--pronote-green);
             border-bottom: 3px solid var(--pronote-green);
         }
-        /* Nouvelle grille 2 colonnes */
         .main-content {
             display: grid;
-            grid-template-columns: 3fr 2fr; /* EDTs et Tâches */
+            grid-template-columns: 3fr 2fr; 
             gap: 20px;
             padding: 20px 40px;
             max-width: 1400px;
@@ -98,7 +91,7 @@
             margin-bottom: 15px;
         }
         
-        /* --- EMPLOI DU TEMPS --- */
+        /* --- EMPLOI DU TEMPS (EDT) --- */
         .schedule-column {position: relative;}
         .schedule-container {
             display: grid;
@@ -120,7 +113,6 @@
         .time-slot {height:var(--time-slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}
         .day-column {position:relative;border-right:1px solid var(--border-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--time-slot-height);}
         
-        /* NOUVEAU STYLE CANTINE (Comme un cours, mais général) */
         #cantine-band {
             position:absolute;
             top:280px; 
@@ -147,7 +139,6 @@
             color: #757575;
             margin-bottom: 5px;
         }
-        /* Fin NOUVEAU STYLE CANTINE */
 
         .course {
             position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;
@@ -160,8 +151,14 @@
         .c-bleu {background:#e0f7fa;border-left:4px solid #00bcd4;color:#333;} 
         .c-vert {background:#e8f5e9;border-left:4px solid #4caf50;color:#333;} 
 
-        /* --- Devoirs Dynamiques --- */
-        .devoirs-list-container {}
+        /* --- TÂCHES & ABSENCES --- */
+        .info-block {
+            background: #fcfcfc;
+            border-left: 3px solid var(--pronote-blue);
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
         .devoirs-title-day {
             font-weight: bold;
             font-size: 1em;
@@ -189,29 +186,18 @@
             color: var(--pronote-blue);
             font-weight: normal;
         }
-        .devoirs-item .detail {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-            white-space: pre-wrap;
-        }
-        .devoirs-item .actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
         .devoirs-item .actions button {
-            background-color: #f0f0f0;
-            color: #555;
+            background-color: #d4edda; color: #155724; border-color: #c3e6cb;
             padding: 5px 10px;
             border: 1px solid #ccc;
             border-radius: 3px;
             font-size: 0.8em;
             margin-left: 5px;
             cursor: pointer;
+            float: right;
         }
 
-        /* --- Boutons et Modals --- */
+        /* --- MODALS & CONTROLES --- */
         .top-bar-controls {display: flex;gap: 10px;margin-bottom: 10px;justify-content: flex-end;}
         .top-bar-controls button {padding: 8px 15px;border: none;border-radius: 4px;cursor: pointer;font-weight: bold;transition: 0.2s;font-size: 0.9em;}
         .btn-login, .btn-manage-students {background-color: var(--pronote-blue);color: white;}
@@ -225,7 +211,7 @@
             position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;
         }
         .modal-content {
-            background:white;padding:30px;border-radius:8px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left;
+            background:white;padding:30px;border-radius:8px;width:300px;max-width: 90%;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left;
         }
         input,select,textarea {width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
     </style>
@@ -243,7 +229,8 @@
             <a onclick="openUnderConstructionModal()">Notes</a>
             <a onclick="openUnderConstructionModal()">Compétences</a>
             <a onclick="openUnderConstructionModal()">Résultats</a>
-            <a onclick="openAbsenceViewerModal()">Vie scolaire</a> <a onclick="openUnderConstructionModal()">Stage</a>
+            <a onclick="openAbsenceViewerModal()">Vie scolaire</a> 
+            <a onclick="openUnderConstructionModal()">Stage</a>
             <a onclick="openUnderConstructionModal()">Communication</a>
         </nav>
     </header>
@@ -305,17 +292,17 @@
 
 
     <div id="login-modal">
-        <div class="modal-content" id="login-form-content">
+        <div class="modal-content">
             <h3>🔒 Accès Hôte</h3>
-            <input type="text" id="username-input" placeholder="Nom d'utilisateur">
-            <input type="password" id="password-input" placeholder="Mot de passe">
+            <input type="text" id="username-input" placeholder="Nom d'utilisateur (mchevallier)">
+            <input type="password" id="password-input" placeholder="Mot de passe (2479)">
             <button onclick="checkLogin()" class="btn-login" style="width:100%">Valider</button>
             <button onclick="closeModal('login-modal')" style="background:transparent;color:#888;margin-top:10px;">Annuler</button>
         </div>
     </div>
 
     <div id="editor-modal">
-        <div class="modal-content" id="editor-form-content">
+        <div class="modal-content">
             <h3 id="editor-title">Nouveau Cours</h3>
             <input type="hidden" id="course-id">
             <label>Matière</label><input type="text" id="course-name" placeholder="Ex: Maths">
@@ -393,15 +380,15 @@
 
 
     <script>
-        // Cours par défaut
+        // Data Storage
         const courses = [{id:1,day:0,start:8,duration:2,name:"Mathématiques",room:"G111",color:"c-bleu"},{id:2,day:0,start:14,duration:1,name:"Anglais",room:"G111",color:"c-vert"},{id:3,day:2,start:10,duration:2,name:"Français",room:"G111",color:"c-jaune"},{id:4,day:4,start:15,duration:2,name:"Sport",room:"G111",color:"c-violet"}];
         let scheduleData = courses;
         let isHost = false;
         let studentsData = [];
         let absencesData = [];
-        let homeworkData = []; // Nouveau tableau pour les devoirs
+        let homeworkData = [];
 
-        // --- Fonctions utilitaires ---
+        // --- Utility Functions ---
         function formatTime(decimalHour){
             const totalMinutes = Math.round(decimalHour * 60);
             const hours = Math.floor(totalMinutes / 60);
@@ -418,39 +405,15 @@
             const[hours,minutes] = timeStr.split(':').map(Number);
             return hours + minutes/60;
         }
-        function getDayName(dayIndex) {
-            return ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"][dayIndex];
-        }
 
-        // --- AUTHENTIFICATION (Obfuscation maintenue) ---
-        const ALPHA_X='X';const BETA_Z='Z';const GAMMA_Q='Q';const DELTA_W='W';const EPS_F='F';const ZETA_J='J';const ETA_K='K';const THETA_L='L';const IOTA_P='P';const KAP_Y='Y';const LAMB_A='A';const MU_S='S';
-        const BASE_N_987=987.65;const CONST_42=42;const TINY_001=0.01;const CONST_15=15;const PI_APPROX=3.14159;const HUNDRED=100;const NINETEEN=19;
-        function getAuthData(){
-            const CALC_P2 = Math.round(Math.sqrt(HUNDRED / 25));
-            const CALC_P4 = Math.round((CONST_42 / 10.5));
-            const CALC_P7 = Math.round(Math.pow(2, 3) - 1);
-            const CALC_P9 = Math.round(CONST_15 * 0.6);
-            const PW = CALC_P2.toString() + CALC_P4.toString() + CALC_P7.toString() + CALC_P9.toString(); // 2479
-            const FRAG_M_BASE = HUNDRED + 9;
-            const FRAG_M = String.fromCharCode(FRAG_M_BASE + (CONST_15 * 0.0) + (NINETEEN - 19));
-            const FRAG_C = String.fromCharCode(HUNDRED - 1);
-            const FRAG_H = String.fromCharCode(HUNDRED + CONST_42 / 7 - 2);
-            const FRAG_E1 = String.fromCharCode(HUNDRED + 1);
-            const FRAG_V = String.fromCharCode(HUNDRED + 18);
-            const FRAG_A = String.fromCharCode(HUNDRED - 3);
-            const FRAG_L1 = String.fromCharCode(Math.round(HUNDRED + 8));
-            const FRAG_L2 = FRAG_L1;
-            const FRAG_I = String.fromCharCode(Math.round(HUNDRED + 5));
-            const FRAG_E2 = FRAG_E1;
-            const FRAG_R = String.fromCharCode(HUNDRED + 14);
-            const UN = FRAG_M + FRAG_C + FRAG_H + FRAG_E1 + FRAG_V + FRAG_A + FRAG_L1 + FRAG_L2 + FRAG_I + FRAG_E2 + FRAG_R; // mchevallier
-            return {UN, PW};
-        }
+        // --- Authentication ---
+        const AUTH_USER = 'mchevallier';
+        const AUTH_PASS = '2479';
+
         function checkLogin(){
             const u = document.getElementById('username-input').value.trim();
             const p = document.getElementById('password-input').value;
-            const auth = getAuthData();
-            if(u===auth.UN && p===auth.PW){
+            if(u===AUTH_USER && p===AUTH_PASS){
                 isHost = true;
                 document.getElementById('loginBtn').innerText = "Déconnexion";
                 document.getElementById('loginBtn').style.background = "#555";
@@ -473,15 +436,17 @@
                 document.getElementById('user-status').innerText = "(Mode Visiteur)";
                 updateUI();
                 renderSchedule();
-                renderActiveHomeworkList(); // Réaffiche sans les boutons de suppression
+                renderActiveHomeworkList();
             } else {
                 document.getElementById('login-modal').style.display = 'flex';
                 document.getElementById('username-input').focus();
             }
         }
 
-        // --- Gestion des Modals et de l'UI ---
+        // --- UI & Modal Handlers ---
         function closeModal(id){document.getElementById(id).style.display='none';}
+        function openUnderConstructionModal(){document.getElementById('under-construction-modal').style.display = 'flex';}
+        
         function updateUI(){
             const deleteBtns = document.querySelectorAll('.delete-btn');
             const studentsBtn = document.getElementById('host-button-students');
@@ -499,9 +464,8 @@
                 deleteBtns.forEach(btn=>btn.style.display='none');
             }
         }
-        function openUnderConstructionModal(){document.getElementById('under-construction-modal').style.display = 'flex';}
-
-        // --- Fonctions de sauvegarde et chargement ---
+        
+        // --- Data Management ---
         function save(){
             localStorage.setItem('myScheduleData',JSON.stringify(scheduleData));
             localStorage.setItem('studentsData',JSON.stringify(studentsData));
@@ -513,7 +477,7 @@
         }
         function resetData(){if(confirm("Tout effacer et remettre l'emploi du temps, les élèves, les absences ET les devoirs par défaut?")){scheduleData=[...courses];studentsData=[];absencesData=[];homeworkData=[];save();}}
         
-        // --- Emploi du Temps ---
+        // --- Schedule Rendering and Editing ---
         function generateTimeOptions(){
             const startSelect = document.getElementById('course-start-time');
             const endSelect = document.getElementById('course-end-time');
@@ -575,11 +539,37 @@
         }
         function openEditor(id=null){
             if(!isHost)return;
-            // ... (Logic for populating the course editor modal) ...
+            // Simplified logic for opening editor
+            document.getElementById('editor-title').innerText = id ? "Modifier Cours" : "Nouveau Cours";
+            document.getElementById('editor-action-btn').innerText = id ? "Sauvegarder les modifications" : "Ajouter";
+            
+            if (id) {
+                const course = scheduleData.find(c=>c.id===id);
+                document.getElementById('course-id').value = course.id;
+                document.getElementById('course-name').value = course.name;
+                document.getElementById('course-room').value = course.room;
+                document.getElementById('course-day').value = course.day;
+                document.getElementById('course-start-time').value = decimalToTimeStr(course.start);
+                document.getElementById('course-end-time').value = decimalToTimeStr(course.start + course.duration);
+                document.getElementById('course-color').value = course.color;
+            } else {
+                document.getElementById('course-id').value = '';
+                document.getElementById('course-name').value = '';
+                document.getElementById('course-room').value = 'G111';
+                document.getElementById('course-day').value = 0;
+                document.getElementById('course-start-time').value = '08:00';
+                document.getElementById('course-end-time').value = '09:00';
+                document.getElementById('course-color').value = 'c-jaune';
+            }
+
+            updateSelects(); 
+            document.getElementById('absence-student-select').value = '';
+            document.getElementById('absence-reason-input').value = '';
+            document.getElementById('absence-date-input').valueAsDate = new Date();
+            
             document.getElementById('editor-modal').style.display = 'flex';
         }
         function updateTimeLine(){
-            // ... (Logic to display the red current time line) ...
             const now = new Date();
             const h = now.getHours();
             const m = now.getMinutes();
@@ -593,7 +583,7 @@
             }else{line.style.display='none';}
         }
 
-        // --- Gestion des Élèves et Absences (Vie scolaire) ---
+        // --- Students and Absences (Vie Scolaire) ---
         function openStudentsModal(){if(!isHost)return;document.getElementById('students-modal').style.display='flex';renderStudentsList();}
         function addStudent(){
             if(!isHost)return;
@@ -632,18 +622,14 @@
             });
         }
         function updateSelects(){
-            const absenceSelect = document.getElementById('absence-student-select');
-            const homeworkSelect = document.getElementById('homework-student-select');
-            const viewAbsenceSelect = document.getElementById('select-student-for-absence-view');
-
-            [absenceSelect, homeworkSelect, viewAbsenceSelect].forEach(select => {
+            const selects = ['absence-student-select', 'homework-student-select', 'select-student-for-absence-view'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
                 const currentVal = select.value;
                 select.innerHTML = '';
-                // Only homework select gets the "all" option
-                if (select === homeworkSelect) {
+                
+                if (selectId === 'homework-student-select') {
                     select.add(new Option('Tous les élèves', 'all'));
-                } else if (select === viewAbsenceSelect) {
-                    select.add(new Option('-- Choisir un élève --', ''));
                 } else {
                     select.add(new Option('-- Choisir un élève --', ''));
                 }
@@ -653,7 +639,6 @@
                     select.add(option);
                 });
 
-                // Restore previous selection if possible
                 if (studentsData.some(s => s.id == currentVal) || currentVal === 'all' || currentVal === '') {
                     select.value = currentVal;
                 }
@@ -671,7 +656,8 @@
             
             const course = scheduleData.find(c=>c.id===courseId);
             const student = studentsData.find(s=>s.id==studentId);
-            if(!course)return alert("Cours introuvable.");
+            if(!course)return alert("Cours introuvable. Veuillez d'abord sauvegarder le cours.");
+            if(!student)return alert("Élève introuvable.");
 
             const newAbsence = {
                 id:Date.now(),
@@ -687,7 +673,6 @@
             absencesData.push(newAbsence);
             save();
             alert(`Absence enregistrée pour ${student.firstName} en ${course.name} le ${dateStr}.`);
-            // Reset form fields
             document.getElementById('absence-student-select').value = '';
             document.getElementById('absence-reason-input').value = '';
             document.getElementById('absence-date-input').valueAsDate = new Date();
@@ -696,7 +681,7 @@
             document.getElementById('absences-viewer-modal').style.display='flex';
             updateSelects(); 
             document.getElementById('select-student-for-absence-view').value = '';
-            renderAbsencesList(''); // Clear the list on open
+            renderAbsencesList(''); 
         }
         function renderAbsencesList(studentId){
             const listContainer = document.getElementById('absences-list');
@@ -746,7 +731,7 @@
             const container = document.getElementById('absence-summary-container');
             const recentAbsences = absencesData
                 .sort((a,b)=>new Date(b.date)-new Date(a.date))
-                .slice(0, 3); // Affiche les 3 dernières
+                .slice(0, 3); 
 
             if (recentAbsences.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: #888;">Aucune absence récente enregistrée.</p>';
@@ -770,7 +755,7 @@
         }
 
 
-        // --- Gestion des Devoirs (Cahier de Textes) ---
+        // --- Homework (Cahier de Textes) ---
         function openHomeworkEditorModal(){
             if(!isHost)return alert("Veuillez vous connecter en mode Hôte pour gérer les devoirs.");
             if(studentsData.length === 0) return alert("Veuillez d'abord ajouter des élèves via le bouton 'Gérer Élèves' pour pouvoir leur attribuer des devoirs.");
@@ -800,7 +785,7 @@
 
             const newHomework = {
                 id: Date.now(),
-                studentId: studentId, // 'all' or student ID
+                studentId: studentId, 
                 studentName: studentName,
                 date: dateStr,
                 subject: subject,
@@ -810,10 +795,10 @@
             homeworkData.push(newHomework);
             save();
             alert(`Devoir de ${subject} ajouté pour ${studentName}.`);
-            // Reset form
             document.getElementById('homework-subject').value = '';
             document.getElementById('homework-details').value = '';
             document.getElementById('homework-student-select').value = 'all';
+            renderActiveHomeworkList();
         }
         function deleteHomework(id){
             if(!isHost||!confirm("Voulez-vous vraiment supprimer ce devoir?"))return;
@@ -829,7 +814,6 @@
             }
         }
         function renderActiveHomeworkList() {
-             // Liste de suppression dans le modal (uniquement en mode Hôte)
             const activeListContainer = document.getElementById('active-homework-list');
             activeListContainer.innerHTML = '';
             
@@ -852,11 +836,9 @@
             });
         }
         function renderHomeworkList() {
-            // Liste d'affichage dans le bloc principal (pour tous les utilisateurs)
             const container = document.getElementById('devoirs-list-container');
             container.innerHTML = '';
             
-            // Filtrer les devoirs non faits et trier par date
             const pendingHomework = homeworkData
                 .filter(hw => !hw.done)
                 .sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -866,7 +848,6 @@
                 return;
             }
 
-            const today = new Date().setHours(0, 0, 0, 0);
             let currentDate = null;
 
             pendingHomework.forEach(hw => {
@@ -883,7 +864,7 @@
                         <div class="matiere">${hw.subject.toUpperCase()}</div>
                         <span class="student-name">${hw.studentName}</span>
                         <div class="actions">
-                            <button onclick="toggleHomeworkDone(${hw.id})" style="background-color: #d4edda; color: #155724; border-color: #c3e6cb;">Fait</button>
+                            <button onclick="toggleHomeworkDone(${hw.id})">Fait</button>
                         </div>
                         <div class="detail">${hw.details}</div>
                     </div>
@@ -891,7 +872,7 @@
             });
         }
 
-        // --- Initialisation au chargement ---
+        // --- Initialization ---
         window.onload=function(){
             generateTimeOptions();
             const timeCol = document.getElementById('time-column');
@@ -901,17 +882,17 @@
                 div.innerText = i+":00";
                 timeCol.appendChild(div);
             }
-            // Chargement des données
-            const storedSchedule = localStorage.getItem('myScheduleData');
-            if(storedSchedule) scheduleData = JSON.parse(storedSchedule);
-            const storedStudents = localStorage.getItem('studentsData');
-            if(storedStudents) studentsData = JSON.parse(storedStudents);
-            const storedAbsences = localStorage.getItem('absencesData');
-            if(storedAbsences) absencesData = JSON.parse(storedAbsences);
-            const storedHomework = localStorage.getItem('homeworkData');
-            if(storedHomework) homeworkData = JSON.parse(storedHomework);
+            // Load data from localStorage
+            const storedData = (key) => {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            };
+            scheduleData = storedData('myScheduleData').length ? storedData('myScheduleData') : courses;
+            studentsData = storedData('studentsData');
+            absencesData = storedData('absencesData');
+            homeworkData = storedData('homeworkData');
 
-            // Rendu initial
+            // Initial Render
             document.getElementById('absence-date-input').valueAsDate = new Date();
             document.getElementById('homework-date').valueAsDate = new Date();
             updateSelects();
@@ -919,7 +900,6 @@
             renderHomeworkList();
             renderAbsenceSummary();
             
-            // Timer pour la ligne de temps
             updateTimeLine();
             setInterval(updateTimeLine,60000);
         };
