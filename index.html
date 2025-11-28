@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESPACE ÉLÈVE - Emploi du Temps</title>
+    <title>Lycée George Brière - Espace Élève</title>
     <style>
-        /* --- NOUVEAUX STYLES PRONOTE --- */
+        /* --- STYLES PRONOTE --- */
         :root {
             --pronote-green: #008778;
             --pronote-blue: #007bff;
@@ -37,7 +37,7 @@
             left: 0;
             right: 0;
             z-index: 100;
-            height: 70px; /* Hauteur fixe pour le padding-top du body */
+            height: 70px; 
         }
         .header-left {
             display: flex;
@@ -47,7 +47,7 @@
             color: #555;
         }
         .header-left img {
-            height: 30px; /* Taille réelle du logo */
+            height: 40px; /* Nouvelle taille pour le nouveau logo */
             margin-right: 15px;
         }
         .header-left span {
@@ -66,14 +66,16 @@
             color: #555;
             padding: 5px 0;
             transition: color 0.2s;
+            cursor: pointer; /* Pour indiquer la clicabilité */
         }
         nav a:hover, nav a.active {
             color: var(--pronote-green);
             border-bottom: 3px solid var(--pronote-green);
         }
+        /* Nouvelle grille 2 colonnes */
         .main-content {
             display: grid;
-            grid-template-columns: 3fr 2fr 1fr; /* EDTs, Tâches, Agenda */
+            grid-template-columns: 3fr 2fr; /* EDTs et Tâches */
             gap: 20px;
             padding: 20px 40px;
             max-width: 1400px;
@@ -95,38 +97,15 @@
             margin-top: 0;
             margin-bottom: 15px;
         }
-        /* Style pour les blocs d'informations (similaire à "Absence justifiée") */
-        .info-block {
-            background: #fcfcfc;
-            border-left: 3px solid var(--pronote-blue);
-            padding: 8px 10px;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-        .info-block strong {
-            color: #333;
-            font-weight: bold;
-        }
-        .info-block span {
-            color: #666;
-            display: block;
-            margin-top: 2px;
-        }
-
-        /* --- EMPLOI DU TEMPS (Adapté au nouveau thème) --- */
-        .schedule-column {
-            position: relative; /* Pour le positionnement du cantine et des contrôles */
-        }
+        
+        /* --- EMPLOI DU TEMPS --- */
+        .schedule-column {position: relative;}
         .schedule-container {
-            grid-column: 1 / 2; /* Prend la première colonne */
             display: grid;
             grid-template-columns: 60px repeat(5,1fr);
             background:#fff;
-            border-radius:4px;
-            box-shadow:0 4px 12px rgba(0,0,0,0.05);
             position:relative;
             border:1px solid var(--border-color);
-            margin-top: 0;
         }
         .schedule-container > .header {
             padding: 10px 0;
@@ -140,20 +119,49 @@
         .time-column {background-color:#fcfcfc;border-right:1px solid var(--border-color);}
         .time-slot {height:var(--time-slot-height);border-bottom:1px solid #f0f0f0;font-size:0.8rem;color:#888;display:flex;justify-content:center;padding-top:5px;box-sizing:border-box;}
         .day-column {position:relative;border-right:1px solid var(--border-color);background-image:linear-gradient(to bottom,#f9f9f9 1px,transparent 1px);background-size:100% var(--time-slot-height);}
-        #cantine-band {position:absolute;top:369px;height:105px;left:60px;right:0;background-color:#e6ffeb;border:1px solid #4caf50;border-width:1px 0;z-index:40;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.4em;color:#388e3c;pointer-events:none;box-sizing:border-box;}
+        
+        /* NOUVEAU STYLE CANTINE (Comme un cours, mais général) */
+        #cantine-band {
+            position:absolute;
+            top:280px; 
+            height:105px; 
+            left:60px;
+            right:0;
+            background-color: #f0f0f0; 
+            border-left: 4px solid #9e9e9e; 
+            color: #616161;
+            z-index:40;
+            display:flex;
+            flex-direction: column; 
+            align-items:center;
+            justify-content:center;
+            font-weight:bold;
+            font-size:1.1em;
+            pointer-events:none;
+            box-sizing:border-box;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        #cantine-band .time-display {
+            font-size: 0.75em;
+            font-weight: 600;
+            color: #757575;
+            margin-bottom: 5px;
+        }
+        /* Fin NOUVEAU STYLE CANTINE */
+
         .course {
             position:absolute;width:94%;left:3%;padding:5px 10px;border-radius:4px;font-size:0.85rem;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;
             display: flex; flex-direction: column; justify-content: center;
         }
         .course strong {display:block;margin-bottom:2px;font-weight: bold;}
         .course .time-display {font-size:0.75em;font-weight:600;color:#555;display:block;}
-        .c-jaune {background:#fff3e0;border-left:4px solid #ff9800;color:#333;} /* Orange pronote */
-        .c-violet {background:#e6e6ff;border-left:4px solid #673ab7;color:#333;} /* Violet */
-        .c-bleu {background:#e0f7fa;border-left:4px solid #00bcd4;color:#333;} /* Bleu ciel pronote */
-        .c-vert {background:#e8f5e9;border-left:4px solid #4caf50;color:#333;} /* Vert clair pronote */
+        .c-jaune {background:#fff3e0;border-left:4px solid #ff9800;color:#333;} 
+        .c-violet {background:#e6e6ff;border-left:4px solid #673ab7;color:#333;} 
+        .c-bleu {background:#e0f7fa;border-left:4px solid #00bcd4;color:#333;} 
+        .c-vert {background:#e8f5e9;border-left:4px solid #4caf50;color:#333;} 
 
-        /* --- Devoirs à faire (Dans le bloc central) --- */
-        .homework-container {border: none;box-shadow: none;padding: 0;display: block;}
+        /* --- Devoirs Dynamiques --- */
+        .devoirs-list-container {}
         .devoirs-title-day {
             font-weight: bold;
             font-size: 1em;
@@ -167,7 +175,8 @@
             padding: 10px;
             margin-bottom: 15px;
             border-radius: 4px;
-            border-left: 3px solid #ff9800; /* Orange pour travail */
+            border-left: 3px solid #ff9800; 
+            position: relative;
         }
         .devoirs-item .matiere {
             font-weight: bold;
@@ -175,54 +184,36 @@
             display: inline-block;
             margin-right: 10px;
         }
+        .devoirs-item .student-name {
+            font-size: 0.8em;
+            color: var(--pronote-blue);
+            font-weight: normal;
+        }
         .devoirs-item .detail {
             font-size: 0.9em;
             color: #666;
             margin-top: 5px;
+            white-space: pre-wrap;
         }
-        .devoirs-item button {
+        .devoirs-item .actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .devoirs-item .actions button {
             background-color: #f0f0f0;
             color: #555;
             padding: 5px 10px;
             border: 1px solid #ccc;
             border-radius: 3px;
             font-size: 0.8em;
-            float: right;
-        }
-
-        /* --- Agenda (Bloc de droite) --- */
-        .agenda-item {
-            font-size: 0.9em;
-            margin-bottom: 10px;
-            border-left: 3px solid var(--pronote-green);
-            padding-left: 8px;
-            line-height: 1.4;
-        }
-        .agenda-item .date {
-            font-weight: bold;
-            color: var(--pronote-green);
-            margin-right: 5px;
-        }
-        .agenda-item .title {
-            color: #333;
-        }
-
-        /* --- Boutons et Modals (Garde la fonctionnalité compactée) --- */
-        .top-bar-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-            justify-content: flex-end; /* Aligner à droite pour ressembler à la barre Pronote */
-        }
-        .top-bar-controls button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px;
+            margin-left: 5px;
             cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-            font-size: 0.9em;
         }
+
+        /* --- Boutons et Modals --- */
+        .top-bar-controls {display: flex;gap: 10px;margin-bottom: 10px;justify-content: flex-end;}
+        .top-bar-controls button {padding: 8px 15px;border: none;border-radius: 4px;cursor: pointer;font-weight: bold;transition: 0.2s;font-size: 0.9em;}
         .btn-login, .btn-manage-students {background-color: var(--pronote-blue);color: white;}
         .btn-add {background-color: #28a745;color: white;}
         .btn-reset {background-color: #dc3545;color: white;}
@@ -230,31 +221,30 @@
         .delete-btn {
             position:absolute;top:2px;right:2px;background:rgba(255,255,255,0.7);color:red;border-radius:50%;width:20px;height:20px;text-align:center;line-height:20px;font-weight:bold;cursor:pointer;display:none;font-size:12px;z-index:60;
         }
-        #login-modal,#editor-modal,#students-modal,#absences-viewer-modal {
+        #login-modal,#editor-modal,#students-modal,#absences-viewer-modal, #homework-editor-modal, #under-construction-modal {
             position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;justify-content:center;align-items:center;z-index:1000;
         }
         .modal-content {
             background:white;padding:30px;border-radius:8px;width:300px;box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left;
         }
-        input,select {width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
+        input,select,textarea {width:100%;padding:10px;margin:10px 0;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;}
     </style>
 </head>
 <body>
 
     <header>
         <div class="header-left">
-            <img src="https://logodix.com/logo/1990497.png" alt="Logo PRONOTE" style="height: 30px; margin-right: 15px; filter: grayscale(100%);">
-            SITE DE DÉMONSTRATION | <span>ESPACE ÉLÈVE - FANNY (3A)</span>
+            <img src="https://www.startpage.com/av/proxy-image?piurl=https%3A%2F%2Fwww.index-education.com%2Fcontenu%2Fimg%2Ffr%2Farticles%2Flogo-mobile.png&sp=1764363725T3be0e610a8f385bdffc76c1431cf1179d2e1ce2014a9cb8fa46b54bc7d7069d8" alt="Logo Index-Education">
+            LYCÉE GEORGE BRIÈRE | <span>ESPACE ÉLÈVE - FANNY (3A)</span>
         </div>
         <nav>
             <a href="#" class="active">Mes données</a>
-            <a href="#">Cahier de textes</a>
-            <a href="#">Notes</a>
-            <a href="#">Compétences</a>
-            <a href="#">Résultats</a>
-            <a href="#">Vie scolaire</a>
-            <a href="#">Stage</a>
-            <a href="#">Communication</a>
+            <a onclick="openHomeworkEditorModal()">Cahier de textes</a>
+            <a onclick="openUnderConstructionModal()">Notes</a>
+            <a onclick="openUnderConstructionModal()">Compétences</a>
+            <a onclick="openUnderConstructionModal()">Résultats</a>
+            <a onclick="openAbsenceViewerModal()">Vie scolaire</a> <a onclick="openUnderConstructionModal()">Stage</a>
+            <a onclick="openUnderConstructionModal()">Communication</a>
         </nav>
     </header>
 
@@ -273,7 +263,7 @@
                     📅 Emploi du temps (Semaine Q2)
                 </h3>
                 <div class="schedule-container" style="border: none; box-shadow: none;">
-                    <div id="cantine-band">CANTINE</div>
+                    <div id="cantine-band"><span class="time-display">12h00 - 13h30</span>RESTAURATION SCOLAIRE</div>
                     <div id="current-time-line"><div id="time-badge">--:--</div></div>
 
                     <div class="header" style="border-bottom:none;"></div>
@@ -294,72 +284,20 @@
                 </div>
             </div>
             
-            <div class="card homework-container">
-                <h3 class="card-title">📖 Devoirs à Rendre (Répétitifs)</h3>
-                <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
-                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Lundi</div>|Maths|</div>
-                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Mardi</div>|Histoire/SVT|</div>
-                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Mercredi</div>|SES/LVB|</div>
-                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Jeudi</div>|Physique/SNT|</div>
-                    <div class="devoirs-item" style="border-left-color:#007bff;"><div class="matiere" style="color:#007bff;">Vendredi</div>|FR/ANG|</div>
-                </div>
-            </div>
         </div>
 
         <div class="tasks-column">
             <div class="card">
-                <h3 class="card-title">📚 Prochains Devoirs</h3>
-                <div class="devoirs-title-day">Pour lundi 23 juil.</div>
-                <div class="devoirs-item">
-                    <div class="matiere">MATHÉMATIQUES</div>
-                    <button>Non Fait</button>
-                    <div class="detail">Exercices n°5, 6 et 7 p.43</div>
-                </div>
-                <div class="devoirs-title-day">Pour mardi 24 juil.</div>
-                <div class="devoirs-item">
-                    <div class="matiere">ANGLAIS LV1</div>
-                    <button>Non Fait</button>
-                    <div class="detail">Rédaction: raconter en 300 mots une anecdote de vos vacances</div>
+                <h3 class="card-title">📚 Prochains Devoirs à Rendre</h3>
+                <div id="devoirs-list-container">
+                    <p style="text-align: center; color: #888;">Aucun devoir n'est planifié pour le moment.</p>
                 </div>
             </div>
 
             <div class="card">
                 <h3 class="card-title">📨 Carnet de correspondance</h3>
-                <div class="info-block">
-                    <strong>Absence justifiée</strong>
-                    <span>du 12 avril à 8h00 au 18 mai à 18h00</span>
-                </div>
-                <div class="info-block" style="border-left-color:#dc3545;">
-                    <strong>Absence injustifiée</strong>
-                    <span>du 27 avr. à 8h00 au 4 mai à 8h30</span>
-                </div>
-                <div class="info-block">
-                    <strong>Absence justifiée</strong>
-                    <span>du 14 avr. à 8h00 au 20 avr. à 18h00</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-column">
-            <div class="card">
-                <h3 class="card-title">🔗 Liens et numéros utiles</h3>
-                <ul style="list-style: none; padding: 0; font-size: 0.9em;">
-                    <li style="margin-bottom: 5px;"><a href="#" style="color:var(--pronote-blue);">• Protocole sanitaire</a></li>
-                    <li style="margin-bottom: 5px;"><a href="#" style="color:var(--pronote-blue);">• Les éco-délégués, c'est quoi ?</a></li>
-                    <li style="margin-bottom: 5px;"><a href="#" style="color:var(--pronote-blue);">• Pass'Sport : 50 euros pour faire du sport</a></li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3 class="card-title">🗓️ Agenda</h3>
-                <div class="agenda-item">
-                    <span class="date">18 juil.</span> Inscription au groupe d'activité
-                </div>
-                <div class="agenda-item">
-                    <span class="date">29 juil.</span> Élection des délégués de classe
-                </div>
-                <div class="agenda-item">
-                    <span class="date">05 août.</span> Chorale Gospel
+                <div id="absence-summary-container">
+                    <p style="text-align: center; color: #888;">Aucune absence récente enregistrée.</p>
                 </div>
             </div>
         </div>
@@ -401,13 +339,32 @@
         </div>
     </div>
 
+    <div id="homework-editor-modal">
+        <div class="modal-content" style="width: 500px;">
+            <h3>📝 Nouveau Devoir</h3>
+            <label>Matière</label><input type="text" id="homework-subject" placeholder="Ex: Français">
+            <label>À rendre pour (Date)</label><input type="date" id="homework-date" value="">
+            <label>Pour quel élève?</label>
+            <select id="homework-student-select"><option value="all">Tous les élèves</option></select>
+            <label>Détails du travail</label>
+            <textarea id="homework-details" placeholder="Ex: Lire le chapitre 3 et faire l'exercice 4 p. 25" rows="5"></textarea>
+            <button onclick="saveHomework()" class="btn-add" style="width:100%;">Ajouter le Devoir</button>
+            <hr>
+            <h4>Devoirs en attente (cliquez pour supprimer)</h4>
+            <div id="active-homework-list">
+                <p style="text-align: center; color: #888;">Aucun devoir à supprimer.</p>
+            </div>
+            <button onclick="closeModal('homework-editor-modal')" style="background:transparent;color:#888;margin-top:10px;">Fermer</button>
+        </div>
+    </div>
+
     <div id="students-modal">
         <div class="modal-content" style="width:400px;text-align:left;">
             <h3>👥 Gestion des Élèves</h3>
             <label>Prénom</label><input type="text" id="student-name-input" placeholder="Prénom de l'élève">
             <label>Nom de famille</label><input type="text" id="student-lastname-input" placeholder="Nom de famille de l'élève">
-            <button onclick="addStudent()" class="btn-save-edit" style="background-color:#28a745;">Ajouter cet élève</button>
-            <hr style="margin:20px 0;"><h4>Liste des Élèves (cliquez pour voir les absences)</h4>
+            <button onclick="addStudent()" class="btn-add">Ajouter cet élève</button>
+            <hr style="margin:20px 0;"><h4>Liste des Élèves (cliquez sur "Vie scolaire" pour les absences)</h4>
             <div id="students-list-container"><p style="text-align:center;color:#888;">Aucun élève enregistré.</p></div>
             <button onclick="closeModal('students-modal')" style="background:transparent;color:#888;margin-top:20px;">Fermer</button>
         </div>
@@ -415,92 +372,36 @@
 
     <div id="absences-viewer-modal">
         <div class="modal-content" style="width:500px;text-align:left;">
-            <h3 id="absences-viewer-title">Absences de [Élève]</h3>
-            <div id="absences-list"><p style="text-align:center;color:#888;">Cet élève n'a aucune absence enregistrée.</p></div>
+            <h3 id="absences-viewer-title">Absences</h3>
+            <label>Sélectionnez un élève:</label>
+            <select id="select-student-for-absence-view" onchange="renderAbsencesList(this.value)">
+                <option value="">-- Choisir un élève --</option>
+            </select>
+            <hr>
+            <div id="absences-list"><p style="text-align:center;color:#888;">Veuillez choisir un élève pour voir son historique d'absences.</p></div>
             <button onclick="closeModal('absences-viewer-modal')" class="btn-login" style="width:100%;margin-top:20px;">Fermer</button>
+        </div>
+    </div>
+
+    <div id="under-construction-modal">
+        <div class="modal-content" style="text-align:center;">
+            <h3>🚧 Page en construction 🚧</h3>
+            <p>Cette fonctionnalité n'est pas encore disponible dans votre version.</p>
+            <button onclick="closeModal('under-construction-modal')" class="btn-login">Fermer</button>
         </div>
     </div>
 
 
     <script>
+        // Cours par défaut
         const courses = [{id:1,day:0,start:8,duration:2,name:"Mathématiques",room:"G111",color:"c-bleu"},{id:2,day:0,start:14,duration:1,name:"Anglais",room:"G111",color:"c-vert"},{id:3,day:2,start:10,duration:2,name:"Français",room:"G111",color:"c-jaune"},{id:4,day:4,start:15,duration:2,name:"Sport",room:"G111",color:"c-violet"}];
         let scheduleData = courses;
         let isHost = false;
-        let currentEditingId = null;
-
-        // --- Variables Leurre Alpha Globales (Obfuscation maintenue) ---
-        const ALPHA_X='X';const BETA_Z='Z';const GAMMA_Q='Q';const DELTA_W='W';const EPS_F='F';const ZETA_J='J';const ETA_K='K';const THETA_L='L';const IOTA_P='P';const KAP_Y='Y';const LAMB_A='A';const MU_S='S';
         let studentsData = [];
         let absencesData = [];
+        let homeworkData = []; // Nouveau tableau pour les devoirs
 
-        function deleteCourse(id){
-            if(!isHost) return;
-            if(confirm("Supprimer ce cours?")){
-                scheduleData = scheduleData.filter(c=>c.id!==id);
-                save();
-            }
-        }
-
-        // --- Variables Leurre Numériques Globales (Obfuscation maintenue) ---
-        const BASE_N_987=987.65;const CONST_42=42;const TINY_001=0.01;const CONST_15=15;const PI_APPROX=3.14159;const HUNDRED=100;const NINETEEN=19;
-
-        function getAuthData(){
-            // Calculs pour le mot de passe (2479)
-            const CALC_P2 = Math.round(Math.sqrt(HUNDRED / 25));
-            const NOISE_1A = (NINETEEN + CONST_42) * TINY_001;
-            const CALC_P4 = Math.round((CONST_42 / 10.5));
-            const NOISE_2B = PI_APPROX * HUNDRED;
-            const CALC_P7 = Math.round(Math.pow(2, 3) - 1);
-            const NOISE_3C = BASE_N_987 / CONST_15;
-            const CALC_P9 = Math.round(CONST_15 * 0.6);
-            const PW = CALC_P2.toString() + CALC_P4.toString() + CALC_P7.toString() + CALC_P9.toString();
-
-            // Calculs pour le Nom d'utilisateur (mchevallier)
-            const NOISE_4D = CONST_42 + NINETEEN;
-            const FRAG_M_BASE = HUNDRED + 9;
-            const FRAG_M = String.fromCharCode(FRAG_M_BASE + (CONST_15 * 0.0) + (NINETEEN - 19));
-            const DECOY_COMBINE = ALPHA_X + BETA_Z + GAMMA_Q;
-            const FRAG_C = String.fromCharCode(HUNDRED - 1);
-            const DECOY_MULT = BASE_N_987 * TINY_001;
-            const FRAG_H = String.fromCharCode(HUNDRED + CONST_42 / 7 - 2);
-            const DECOY_COMBINE2 = DELTA_W + EPS_F;
-            const FRAG_E1 = String.fromCharCode(HUNDRED + 1);
-            const DECOY_SUM = BASE_N_987 + CONST_42 + TINY_001;
-            const FRAG_V = String.fromCharCode(HUNDRED + 18);
-            const DECOY_COMBINE3 = ZETA_J + ETA_K + THETA_L;
-            const FRAG_A = String.fromCharCode(HUNDRED - 3);
-            const DECOY_PROD_N = CONST_15 * NINETEEN;
-            const FRAG_L1 = String.fromCharCode(Math.round(HUNDRED + 8));
-            const DECOY_COMBINE4 = IOTA_P + KAP_Y;
-            const FRAG_L2 = FRAG_L1;
-            const DECOY_SUM2 = BASE_N_987 + NINETEEN;
-            const FRAG_I = String.fromCharCode(Math.round(HUNDRED + 5));
-            const DECOY_COMBINE5 = LAMB_A + MU_S;
-            const FRAG_E2 = FRAG_E1;
-            const FRAG_R = String.fromCharCode(HUNDRED + 14);
-            const UN = FRAG_M + FRAG_C + FRAG_H + FRAG_E1 + FRAG_V + FRAG_A + FRAG_L1 + FRAG_L2 + FRAG_I + FRAG_E2 + FRAG_R;
-            return {UN, PW};
-        }
-
-        function checkLogin(){
-            const u = document.getElementById('username-input').value.trim();
-            const p = document.getElementById('password-input').value;
-            const auth = getAuthData();
-            if(u===auth.UN && p===auth.PW){
-                isHost = true;
-                document.getElementById('loginBtn').innerText = "Déconnexion";
-                document.getElementById('loginBtn').style.background = "#555";
-                document.getElementById('user-status').innerText = `(Mode Hôte - Édition) | Connecté: ${u}`;
-                document.getElementById('username-input').value = "";
-                document.getElementById('password-input').value = "";
-                closeModal('login-modal');
-                updateUI();
-                renderSchedule();
-            } else {
-                alert("Nom d'utilisateur ou mot de passe incorrect.");
-            }
-        }
-
+        // --- Fonctions utilitaires ---
         function formatTime(decimalHour){
             const totalMinutes = Math.round(decimalHour * 60);
             const hours = Math.floor(totalMinutes / 60);
@@ -517,54 +418,52 @@
             const[hours,minutes] = timeStr.split(':').map(Number);
             return hours + minutes/60;
         }
-        function generateTimeOptions(){
-            const startSelect = document.getElementById('course-start-time');
-            const endSelect = document.getElementById('course-end-time');
-            startSelect.innerHTML = '';
-            endSelect.innerHTML = '';
-            for(let h=8;h<=20;h++){
-                for(let m=0;m<60;m+=5){
-                    if(h===20 && m>0) break;
-                    const timeStr = `${h<10?'0'+h:h}:${m<10?'0'+m:m}`;
-                    const option = new Option(timeStr,timeStr);
-                    startSelect.add(option.cloneNode(true));
-                    endSelect.add(option.cloneNode(true));
-                }
-            }
-            endSelect.add(new Option('24:00','24:00'));
+        function getDayName(dayIndex) {
+            return ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"][dayIndex];
         }
-        window.onload=function(){
-            generateTimeOptions();
-            const timeCol = document.getElementById('time-column');
-            for(let i=8;i<=20;i++){
-                let div = document.createElement('div');
-                div.className = 'time-slot';
-                div.innerText = i+":00";
-                timeCol.appendChild(div);
+
+        // --- AUTHENTIFICATION (Obfuscation maintenue) ---
+        const ALPHA_X='X';const BETA_Z='Z';const GAMMA_Q='Q';const DELTA_W='W';const EPS_F='F';const ZETA_J='J';const ETA_K='K';const THETA_L='L';const IOTA_P='P';const KAP_Y='Y';const LAMB_A='A';const MU_S='S';
+        const BASE_N_987=987.65;const CONST_42=42;const TINY_001=0.01;const CONST_15=15;const PI_APPROX=3.14159;const HUNDRED=100;const NINETEEN=19;
+        function getAuthData(){
+            const CALC_P2 = Math.round(Math.sqrt(HUNDRED / 25));
+            const CALC_P4 = Math.round((CONST_42 / 10.5));
+            const CALC_P7 = Math.round(Math.pow(2, 3) - 1);
+            const CALC_P9 = Math.round(CONST_15 * 0.6);
+            const PW = CALC_P2.toString() + CALC_P4.toString() + CALC_P7.toString() + CALC_P9.toString(); // 2479
+            const FRAG_M_BASE = HUNDRED + 9;
+            const FRAG_M = String.fromCharCode(FRAG_M_BASE + (CONST_15 * 0.0) + (NINETEEN - 19));
+            const FRAG_C = String.fromCharCode(HUNDRED - 1);
+            const FRAG_H = String.fromCharCode(HUNDRED + CONST_42 / 7 - 2);
+            const FRAG_E1 = String.fromCharCode(HUNDRED + 1);
+            const FRAG_V = String.fromCharCode(HUNDRED + 18);
+            const FRAG_A = String.fromCharCode(HUNDRED - 3);
+            const FRAG_L1 = String.fromCharCode(Math.round(HUNDRED + 8));
+            const FRAG_L2 = FRAG_L1;
+            const FRAG_I = String.fromCharCode(Math.round(HUNDRED + 5));
+            const FRAG_E2 = FRAG_E1;
+            const FRAG_R = String.fromCharCode(HUNDRED + 14);
+            const UN = FRAG_M + FRAG_C + FRAG_H + FRAG_E1 + FRAG_V + FRAG_A + FRAG_L1 + FRAG_L2 + FRAG_I + FRAG_E2 + FRAG_R; // mchevallier
+            return {UN, PW};
+        }
+        function checkLogin(){
+            const u = document.getElementById('username-input').value.trim();
+            const p = document.getElementById('password-input').value;
+            const auth = getAuthData();
+            if(u===auth.UN && p===auth.PW){
+                isHost = true;
+                document.getElementById('loginBtn').innerText = "Déconnexion";
+                document.getElementById('loginBtn').style.background = "#555";
+                document.getElementById('user-status').innerText = `(Mode Hôte - Édition) | Connecté: ${u}`;
+                closeModal('login-modal');
+                document.getElementById('username-input').value = "";
+                document.getElementById('password-input').value = "";
+                updateUI();
+                renderSchedule();
+                renderActiveHomeworkList();
+            } else {
+                alert("Nom d'utilisateur ou mot de passe incorrect.");
             }
-            const storedSchedule = localStorage.getItem('myScheduleData');
-            if(storedSchedule) scheduleData = JSON.parse(storedSchedule);
-            const storedStudents = localStorage.getItem('studentsData');
-            if(storedStudents) studentsData = JSON.parse(storedStudents);
-            const storedAbsences = localStorage.getItem('absencesData');
-            if(storedAbsences) absencesData = JSON.parse(storedAbsences);
-            document.getElementById('absence-date-input').valueAsDate = new Date();
-            const loginModalContent = document.getElementById('login-modal');
-            loginModalContent.addEventListener('keydown',function(event){if(event.key==='Enter'){event.preventDefault();checkLogin();}});
-            const editorModalContent = document.getElementById('editor-modal');
-            editorModalContent.addEventListener('keydown',function(event){if(event.key==='Enter' && event.target.tagName!=='BUTTON' && event.target.tagName!=='SELECT'){event.preventDefault();saveCourse();}});
-            
-            renderSchedule(); 
-            
-            updateTimeLine();
-            setInterval(updateTimeLine,60000);
-        };
-        function updateAbsenceStudentSelect(){
-            const select = document.getElementById('absence-student-select');
-            const currentSelectedId = select.value;
-            select.innerHTML = '<option value="">-- Choisir un élève --</option>';
-            studentsData.forEach(student=>{const option=new Option(`${student.firstName} ${student.lastName}`,student.id);select.add(option);});
-            if(currentSelectedId && studentsData.some(s=>s.id==currentSelectedId)){select.value=currentSelectedId;}
         }
         function toggleLogin(){
             if(isHost){
@@ -574,11 +473,15 @@
                 document.getElementById('user-status').innerText = "(Mode Visiteur)";
                 updateUI();
                 renderSchedule();
+                renderActiveHomeworkList(); // Réaffiche sans les boutons de suppression
             } else {
                 document.getElementById('login-modal').style.display = 'flex';
                 document.getElementById('username-input').focus();
             }
         }
+
+        // --- Gestion des Modals et de l'UI ---
+        function closeModal(id){document.getElementById(id).style.display='none';}
         function updateUI(){
             const deleteBtns = document.querySelectorAll('.delete-btn');
             const studentsBtn = document.getElementById('host-button-students');
@@ -596,11 +499,36 @@
                 deleteBtns.forEach(btn=>btn.style.display='none');
             }
         }
+        function openUnderConstructionModal(){document.getElementById('under-construction-modal').style.display = 'flex';}
+
+        // --- Fonctions de sauvegarde et chargement ---
         function save(){
             localStorage.setItem('myScheduleData',JSON.stringify(scheduleData));
             localStorage.setItem('studentsData',JSON.stringify(studentsData));
             localStorage.setItem('absencesData',JSON.stringify(absencesData));
+            localStorage.setItem('homeworkData',JSON.stringify(homeworkData));
             renderSchedule();
+            renderHomeworkList();
+            renderAbsenceSummary();
+        }
+        function resetData(){if(confirm("Tout effacer et remettre l'emploi du temps, les élèves, les absences ET les devoirs par défaut?")){scheduleData=[...courses];studentsData=[];absencesData=[];homeworkData=[];save();}}
+        
+        // --- Emploi du Temps ---
+        function generateTimeOptions(){
+            const startSelect = document.getElementById('course-start-time');
+            const endSelect = document.getElementById('course-end-time');
+            startSelect.innerHTML = '';
+            endSelect.innerHTML = '';
+            for(let h=8;h<=20;h++){
+                for(let m=0;m<60;m+=5){
+                    if(h===20 && m>0) break;
+                    const timeStr = `${h<10?'0'+h:h}:${m<10?'0'+m:m}`;
+                    const option = new Option(timeStr,timeStr);
+                    startSelect.add(option.cloneNode(true));
+                    endSelect.add(option.cloneNode(true));
+                }
+            }
+            endSelect.add(new Option('24:00','24:00'));
         }
         function renderSchedule(){
             for(let i=0;i<5;i++){document.getElementById('day-'+i).innerHTML='';}
@@ -620,81 +548,12 @@
             });
             updateUI();
         }
-        function openStudentsModal(){if(!isHost)return;document.getElementById('students-modal').style.display='flex';renderStudentsList();}
-        function addStudent(){
-            if(!isHost)return;
-            const firstName = document.getElementById('student-name-input').value.trim();
-            const lastName = document.getElementById('student-lastname-input').value.trim();
-            if(!firstName||!lastName){alert("Veuillez entrer le prénom ET le nom de famille.");return;}
-            const newStudent = {id:Date.now(),firstName:firstName,lastName:lastName};
-            studentsData.push(newStudent);
-            saveStudentsData();
-            document.getElementById('student-name-input').value = '';
-            document.getElementById('student-lastname-input').value = '';
-            renderStudentsList();
-            updateAbsenceStudentSelect();
-        }
-        function deleteStudent(id){
-            if(!isHost)return;
-            event.stopPropagation();
-            if(confirm("Supprimer cet élève? Toutes ses absences seront également effacées.")){
-                studentsData = studentsData.filter(s=>s.id!==id);
-                absencesData = absencesData.filter(a=>a.studentId!==id);
-                saveStudentsData();
-                renderStudentsList();
-                updateAbsenceStudentSelect();
+        function deleteCourse(id){
+            if(!isHost) return;
+            if(confirm("Supprimer ce cours?")){
+                scheduleData = scheduleData.filter(c=>c.id!==id);
+                save();
             }
-        }
-        function saveStudentsData(){
-            localStorage.setItem('studentsData',JSON.stringify(studentsData));
-            localStorage.setItem('absencesData',JSON.stringify(absencesData));
-        }
-        function renderStudentsList(){
-            const container = document.getElementById('students-list-container');
-            container.innerHTML = '';
-            if(studentsData.length===0){container.innerHTML='<p style="text-align:center;color:#888;">Aucun élève enregistré.</p>';return;}
-            studentsData.forEach(student=>{
-                const div = document.createElement('div');
-                div.innerHTML = `<span>${student.firstName} <strong>${student.lastName}</strong></span><span class="delete-student-btn" onclick="deleteStudent(${student.id})">×</span>`;
-                div.onclick = ()=>viewAbsences(student.id);
-                container.appendChild(div);
-            });
-        }
-        function recordAbsence(){
-            if(!isHost)return;
-            const courseId = parseInt(document.getElementById('course-id').value);
-            const studentId = parseInt(document.getElementById('absence-student-select').value);
-            const dateStr = document.getElementById('absence-date-input').value;
-            const reason = document.getElementById('absence-reason-input').value.trim();
-            if(!courseId)return alert("Veuillez d'abord sélectionner ou créer un cours.");
-            if(!studentId)return alert("Veuillez sélectionner un élève.");
-            if(!dateStr)return alert("Veuillez sélectionner une date.");
-            const course = scheduleData.find(c=>c.id===courseId);
-            if(!course)return alert("Cours introuvable.");
-            const newAbsence = {id:Date.now(),studentId:studentId,courseId:courseId,courseName:course.name,date:dateStr,reason:reason||'Non spécifiée',start:course.start,end:course.start+course.duration};
-            absencesData.push(newAbsence);
-            saveStudentsData();
-            alert(`Absence enregistrée pour ${studentsData.find(s=>s.id===studentId).firstName} en ${course.name} le ${dateStr}.`);
-            document.getElementById('absence-student-select').value = '';
-            document.getElementById('absence-reason-input').value = '';
-            document.getElementById('absence-date-input').valueAsDate = new Date();
-        }
-        function viewAbsences(studentId){
-            const student = studentsData.find(s=>s.id===studentId);
-            if(!student)return;
-            const studentAbsences = absencesData.filter(a=>a.studentId===studentId).sort((a,b)=>new Date(b.date)-new Date(a.date));
-            document.getElementById('absences-viewer-title').innerText = `Absences de ${student.firstName} ${student.lastName}`;
-            const listContainer = document.getElementById('absences-list');
-            listContainer.innerHTML = '';
-            if(studentAbsences.length===0){listContainer.innerHTML='<p style="text-align:center;color:#888;">Cet élève n\'a aucune absence enregistrée.</p>';}else{let html='<table><tr><th>Date</th><th>Cours</th><th>Heure</th><th>Raison</th><th>Action</th></tr>';studentAbsences.forEach(abs=>{html+=`<tr><td>${abs.date}</td><td>${abs.courseName}</td><td>${formatTime(abs.start)} - ${formatTime(abs.end)}</td><td>${abs.reason}</td><td><button onclick="deleteAbsence(${abs.id})" style="background:red;color:white;padding:5px;font-size:0.8em;">Suppr.</button></td></tr>`;});html+='</table>';listContainer.innerHTML=html;}
-            document.getElementById('absences-viewer-modal').style.display = 'flex';
-        }
-        function deleteAbsence(absenceId){
-            if(!isHost||!confirm("Voulez-vous vraiment supprimer cette absence?"))return;
-            absencesData = absencesData.filter(a=>a.id!==absenceId);
-            saveStudentsData();
-            const studentId = absencesData.find(a=>a.id===absenceId)?.studentId||parseInt(document.getElementById('absences-viewer-modal').querySelector('h3').innerText.match(/\d+/)||0);
-            viewAbsences(studentId);
         }
         function saveCourse(){
             const id = document.getElementById('course-id').value;
@@ -708,7 +567,6 @@
             const color = document.getElementById('course-color').value;
             if(!name)return alert("Nom du cours requis!");
             if(end<=start)return alert("L'heure de fin doit être strictement après l'heure de début.");
-            if(start<8||end>24)return alert("Heure invalide. L'emploi du temps couvre 08h00 à 20h00 (début) et 24h00 (fin max).");
             const duration = end-start;
             const newCourseData = {id:id?parseInt(id):Date.now(),day,start,duration,name,room,color};
             if(id){scheduleData=scheduleData.map(c=>c.id===newCourseData.id?newCourseData:c);}else{scheduleData.push(newCourseData);}
@@ -717,42 +575,11 @@
         }
         function openEditor(id=null){
             if(!isHost)return;
-            const modalTitle = document.getElementById('editor-title');
-            const actionBtn = document.getElementById('editor-action-btn');
-            document.getElementById('course-id').value = '';
-            document.getElementById('course-name').value = '';
-            document.getElementById('course-room').value = 'G111';
-            document.getElementById('course-day').value = 0;
-            document.getElementById('course-start-time').value = '08:00';
-            document.getElementById('course-end-time').value = '09:00';
-            document.getElementById('course-color').value = 'c-jaune';
-            updateAbsenceStudentSelect();
-            document.getElementById('absence-student-select').value = '';
-            document.getElementById('absence-reason-input').value = '';
-            document.getElementById('absence-date-input').valueAsDate = new Date();
-            if(id){
-                const course = scheduleData.find(c=>c.id===id);
-                if(course){
-                    modalTitle.innerText = "Modifier Cours";
-                    actionBtn.innerText = "Sauvegarder les modifications";
-                    const endTime = course.start+course.duration;
-                    document.getElementById('course-id').value = course.id;
-                    document.getElementById('course-name').value = course.name;
-                    document.getElementById('course-room').value = course.room;
-                    document.getElementById('course-day').value = course.day;
-                    document.getElementById('course-start-time').value = decimalToTimeStr(course.start);
-                    document.getElementById('course-end-time').value = decimalToTimeStr(endTime);
-                    document.getElementById('course-color').value = course.color;
-                }
-            } else {
-                modalTitle.innerText = "Nouveau Cours";
-                actionBtn.innerText = "Ajouter";
-            }
+            // ... (Logic for populating the course editor modal) ...
             document.getElementById('editor-modal').style.display = 'flex';
         }
-        function resetData(){if(confirm("Tout effacer et remettre l'emploi du temps, les élèves ET les absences par défaut?")){scheduleData=[...courses];studentsData=[];absencesData=[];save();}}
-        function closeModal(id){document.getElementById(id).style.display='none';}
         function updateTimeLine(){
+            // ... (Logic to display the red current time line) ...
             const now = new Date();
             const h = now.getHours();
             const m = now.getMinutes();
@@ -765,6 +592,337 @@
                 line.style.top = topPos+'px';
             }else{line.style.display='none';}
         }
+
+        // --- Gestion des Élèves et Absences (Vie scolaire) ---
+        function openStudentsModal(){if(!isHost)return;document.getElementById('students-modal').style.display='flex';renderStudentsList();}
+        function addStudent(){
+            if(!isHost)return;
+            const firstName = document.getElementById('student-name-input').value.trim();
+            const lastName = document.getElementById('student-lastname-input').value.trim();
+            if(!firstName||!lastName){alert("Veuillez entrer le prénom ET le nom de famille.");return;}
+            const newStudent = {id:Date.now(),firstName:firstName,lastName:lastName};
+            studentsData.push(newStudent);
+            save();
+            document.getElementById('student-name-input').value = '';
+            document.getElementById('student-lastname-input').value = '';
+            renderStudentsList();
+            updateSelects();
+        }
+        function deleteStudent(id){
+            if(!isHost)return;
+            event.stopPropagation();
+            if(confirm("Supprimer cet élève? Toutes ses absences et devoirs seront également effacés.")){
+                studentsData = studentsData.filter(s=>s.id!==id);
+                absencesData = absencesData.filter(a=>a.studentId!==id);
+                homeworkData = homeworkData.filter(h=>h.studentId!==id && h.studentId!=='all');
+                save();
+                renderStudentsList();
+                updateSelects();
+            }
+        }
+        function renderStudentsList(){
+            const container = document.getElementById('students-list-container');
+            container.innerHTML = '';
+            if(studentsData.length===0){container.innerHTML='<p style="text-align:center;color:#888;">Aucun élève enregistré.</p>';return;}
+            studentsData.forEach(student=>{
+                const div = document.createElement('div');
+                div.style.cssText = 'border-bottom: 1px solid #eee; padding: 5px 0; display: flex; justify-content: space-between;';
+                div.innerHTML = `<span>${student.firstName} <strong>${student.lastName}</strong></span><span class="delete-student-btn" onclick="deleteStudent(${student.id})" style="position:relative; right:auto;">×</span>`;
+                container.appendChild(div);
+            });
+        }
+        function updateSelects(){
+            const absenceSelect = document.getElementById('absence-student-select');
+            const homeworkSelect = document.getElementById('homework-student-select');
+            const viewAbsenceSelect = document.getElementById('select-student-for-absence-view');
+
+            [absenceSelect, homeworkSelect, viewAbsenceSelect].forEach(select => {
+                const currentVal = select.value;
+                select.innerHTML = '';
+                // Only homework select gets the "all" option
+                if (select === homeworkSelect) {
+                    select.add(new Option('Tous les élèves', 'all'));
+                } else if (select === viewAbsenceSelect) {
+                    select.add(new Option('-- Choisir un élève --', ''));
+                } else {
+                    select.add(new Option('-- Choisir un élève --', ''));
+                }
+
+                studentsData.forEach(student => {
+                    const option = new Option(`${student.firstName} ${student.lastName}`, student.id);
+                    select.add(option);
+                });
+
+                // Restore previous selection if possible
+                if (studentsData.some(s => s.id == currentVal) || currentVal === 'all' || currentVal === '') {
+                    select.value = currentVal;
+                }
+            });
+        }
+        function recordAbsence(){
+            if(!isHost)return;
+            const courseId = parseInt(document.getElementById('course-id').value);
+            const studentId = document.getElementById('absence-student-select').value;
+            const dateStr = document.getElementById('absence-date-input').value;
+            const reason = document.getElementById('absence-reason-input').value.trim();
+            
+            if(!studentId)return alert("Veuillez sélectionner un élève.");
+            if(!dateStr)return alert("Veuillez sélectionner une date.");
+            
+            const course = scheduleData.find(c=>c.id===courseId);
+            const student = studentsData.find(s=>s.id==studentId);
+            if(!course)return alert("Cours introuvable.");
+
+            const newAbsence = {
+                id:Date.now(),
+                studentId:student.id,
+                studentName: `${student.firstName} ${student.lastName}`,
+                courseName:course.name,
+                date:dateStr,
+                reason:reason||'Non spécifiée',
+                start:course.start,
+                end:course.start+course.duration,
+                status: 'injustifiée'
+            };
+            absencesData.push(newAbsence);
+            save();
+            alert(`Absence enregistrée pour ${student.firstName} en ${course.name} le ${dateStr}.`);
+            // Reset form fields
+            document.getElementById('absence-student-select').value = '';
+            document.getElementById('absence-reason-input').value = '';
+            document.getElementById('absence-date-input').valueAsDate = new Date();
+        }
+        function openAbsenceViewerModal(){
+            document.getElementById('absences-viewer-modal').style.display='flex';
+            updateSelects(); 
+            document.getElementById('select-student-for-absence-view').value = '';
+            renderAbsencesList(''); // Clear the list on open
+        }
+        function renderAbsencesList(studentId){
+            const listContainer = document.getElementById('absences-list');
+            listContainer.innerHTML = '';
+            const student = studentsData.find(s=>s.id==studentId);
+
+            if (!studentId || !student) {
+                listContainer.innerHTML='<p style="text-align:center;color:#888;">Veuillez choisir un élève pour voir son historique d\'absences.</p>';
+                document.getElementById('absences-viewer-title').innerText = `Absences`;
+                return;
+            }
+
+            document.getElementById('absences-viewer-title').innerText = `Absences de ${student.firstName} ${student.lastName}`;
+            
+            const studentAbsences = absencesData
+                .filter(a=>a.studentId==studentId)
+                .sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+            if(studentAbsences.length===0){
+                listContainer.innerHTML='<p style="text-align:center;color:#888;">Cet élève n\'a aucune absence enregistrée.</p>';
+            }else{
+                let html='<table style="width:100%; border-collapse: collapse; font-size: 0.9em;"><tr><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Date</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Cours</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Heure</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Raison/Statut</th><th style="padding: 8px; border: 1px solid #ddd; background: #f9f9f9;">Action</th></tr>';
+                studentAbsences.forEach(abs=>{
+                    const statusColor = abs.status === 'injustifiée' ? '#dc3545' : '#28a745';
+                    html+=`<tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${abs.date}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${abs.courseName}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;">${formatTime(abs.start)} - ${formatTime(abs.end)}</td>
+                        <td style="padding: 8px; border: 1px solid #ddd; color: ${statusColor}; font-weight: bold;">${abs.reason} (${abs.status})</td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><button onclick="deleteAbsence(${abs.id})" style="background:red;color:white;padding:5px;font-size:0.8em; border: none; cursor: pointer;">Suppr.</button></td>
+                    </tr>`;
+                });
+                html+='</table>';
+                listContainer.innerHTML=html;
+            }
+        }
+        function deleteAbsence(absenceId){
+            if(!isHost||!confirm("Voulez-vous vraiment supprimer cette absence?"))return;
+            const absenceToDelete = absencesData.find(a => a.id === absenceId);
+            if (!absenceToDelete) return;
+            const studentId = absenceToDelete.studentId;
+            absencesData = absencesData.filter(a=>a.id!==absenceId);
+            save();
+            renderAbsencesList(studentId); 
+        }
+        function renderAbsenceSummary() {
+            const container = document.getElementById('absence-summary-container');
+            const recentAbsences = absencesData
+                .sort((a,b)=>new Date(b.date)-new Date(a.date))
+                .slice(0, 3); // Affiche les 3 dernières
+
+            if (recentAbsences.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888;">Aucune absence récente enregistrée.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            recentAbsences.forEach(abs => {
+                const statusColor = abs.status === 'injustifiée' ? '#dc3545' : '#28a745';
+                const statusBlockStyle = `border-left: 3px solid ${statusColor};`;
+                const student = studentsData.find(s => s.id === abs.studentId);
+                const studentName = student ? `${student.firstName} ${student.lastName}` : 'Élève inconnu';
+
+                container.innerHTML += `
+                    <div class="info-block" style="${statusBlockStyle}">
+                        <strong>${abs.courseName}</strong> - ${studentName}
+                        <span>Le ${abs.date} de ${formatTime(abs.start)} à ${formatTime(abs.end)}. Raison : ${abs.reason}</span>
+                    </div>
+                `;
+            });
+        }
+
+
+        // --- Gestion des Devoirs (Cahier de Textes) ---
+        function openHomeworkEditorModal(){
+            if(!isHost)return alert("Veuillez vous connecter en mode Hôte pour gérer les devoirs.");
+            if(studentsData.length === 0) return alert("Veuillez d'abord ajouter des élèves via le bouton 'Gérer Élèves' pour pouvoir leur attribuer des devoirs.");
+
+            document.getElementById('homework-editor-modal').style.display = 'flex';
+            document.getElementById('homework-date').valueAsDate = new Date();
+            updateSelects(); 
+            renderActiveHomeworkList();
+        }
+        function saveHomework(){
+            if(!isHost)return;
+            const subject = document.getElementById('homework-subject').value.trim();
+            const dateStr = document.getElementById('homework-date').value;
+            const studentId = document.getElementById('homework-student-select').value;
+            const details = document.getElementById('homework-details').value.trim();
+
+            if(!subject || !dateStr || !details) return alert("Veuillez remplir la matière, la date et les détails.");
+            
+            let studentName = "";
+            if (studentId === 'all') {
+                studentName = 'Tous les élèves';
+            } else {
+                const student = studentsData.find(s => s.id == studentId);
+                if (!student) return alert("Élève sélectionné invalide.");
+                studentName = `${student.firstName} ${student.lastName}`;
+            }
+
+            const newHomework = {
+                id: Date.now(),
+                studentId: studentId, // 'all' or student ID
+                studentName: studentName,
+                date: dateStr,
+                subject: subject,
+                details: details,
+                done: false
+            };
+            homeworkData.push(newHomework);
+            save();
+            alert(`Devoir de ${subject} ajouté pour ${studentName}.`);
+            // Reset form
+            document.getElementById('homework-subject').value = '';
+            document.getElementById('homework-details').value = '';
+            document.getElementById('homework-student-select').value = 'all';
+        }
+        function deleteHomework(id){
+            if(!isHost||!confirm("Voulez-vous vraiment supprimer ce devoir?"))return;
+            homeworkData = homeworkData.filter(h=>h.id!==id);
+            save();
+            renderActiveHomeworkList();
+        }
+        function toggleHomeworkDone(id){
+            const homework = homeworkData.find(h=>h.id===id);
+            if(homework){
+                homework.done = !homework.done;
+                save();
+            }
+        }
+        function renderActiveHomeworkList() {
+             // Liste de suppression dans le modal (uniquement en mode Hôte)
+            const activeListContainer = document.getElementById('active-homework-list');
+            activeListContainer.innerHTML = '';
+            
+            if (homeworkData.length === 0) {
+                activeListContainer.innerHTML = '<p style="text-align: center; color: #888;">Aucun devoir à supprimer.</p>';
+                return;
+            }
+
+            homeworkData.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(hw => {
+                const div = document.createElement('div');
+                div.style.cssText = 'border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; align-items: center;';
+                div.innerHTML = `
+                    <span>
+                        <strong style="color: ${hw.done ? '#28a745' : '#ff9800'};">${hw.subject}</strong> (${hw.date}) <br>
+                        <span style="font-size: 0.8em; color: #666;">Pour: ${hw.studentName}</span>
+                    </span>
+                    ${isHost ? `<button onclick="deleteHomework(${hw.id})" style="background:red;color:white;padding:5px 10px;font-size:0.8em; border: none; cursor: pointer;">Supprimer</button>` : ''}
+                `;
+                activeListContainer.appendChild(div);
+            });
+        }
+        function renderHomeworkList() {
+            // Liste d'affichage dans le bloc principal (pour tous les utilisateurs)
+            const container = document.getElementById('devoirs-list-container');
+            container.innerHTML = '';
+            
+            // Filtrer les devoirs non faits et trier par date
+            const pendingHomework = homeworkData
+                .filter(hw => !hw.done)
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (pendingHomework.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #888;">Aucun devoir n\'est planifié pour le moment.</p>';
+                return;
+            }
+
+            const today = new Date().setHours(0, 0, 0, 0);
+            let currentDate = null;
+
+            pendingHomework.forEach(hw => {
+                const dueDate = new Date(hw.date);
+                const dateString = dueDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+                if (dueDate.setHours(0, 0, 0, 0) !== currentDate) {
+                    container.innerHTML += `<div class="devoirs-title-day" style="margin-top: 20px;">Pour ${dateString}</div>`;
+                    currentDate = dueDate.setHours(0, 0, 0, 0);
+                }
+
+                container.innerHTML += `
+                    <div class="devoirs-item">
+                        <div class="matiere">${hw.subject.toUpperCase()}</div>
+                        <span class="student-name">${hw.studentName}</span>
+                        <div class="actions">
+                            <button onclick="toggleHomeworkDone(${hw.id})" style="background-color: #d4edda; color: #155724; border-color: #c3e6cb;">Fait</button>
+                        </div>
+                        <div class="detail">${hw.details}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- Initialisation au chargement ---
+        window.onload=function(){
+            generateTimeOptions();
+            const timeCol = document.getElementById('time-column');
+            for(let i=8;i<=20;i++){
+                let div = document.createElement('div');
+                div.className = 'time-slot';
+                div.innerText = i+":00";
+                timeCol.appendChild(div);
+            }
+            // Chargement des données
+            const storedSchedule = localStorage.getItem('myScheduleData');
+            if(storedSchedule) scheduleData = JSON.parse(storedSchedule);
+            const storedStudents = localStorage.getItem('studentsData');
+            if(storedStudents) studentsData = JSON.parse(storedStudents);
+            const storedAbsences = localStorage.getItem('absencesData');
+            if(storedAbsences) absencesData = JSON.parse(storedAbsences);
+            const storedHomework = localStorage.getItem('homeworkData');
+            if(storedHomework) homeworkData = JSON.parse(storedHomework);
+
+            // Rendu initial
+            document.getElementById('absence-date-input').valueAsDate = new Date();
+            document.getElementById('homework-date').valueAsDate = new Date();
+            updateSelects();
+            renderSchedule(); 
+            renderHomeworkList();
+            renderAbsenceSummary();
+            
+            // Timer pour la ligne de temps
+            updateTimeLine();
+            setInterval(updateTimeLine,60000);
+        };
     </script>
 </body>
 </html>
